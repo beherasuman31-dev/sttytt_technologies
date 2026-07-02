@@ -1,0 +1,413 @@
+:root{
+
+    --blue:#004aad;
+    --orange:#ff7b00;
+    --dark:#111827;
+    --light:#f7f9fc;
+    --white:#ffffff;
+
+}
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+
+}
+
+body{
+
+    background:var(--light);
+    color:#333;
+    line-height:1.7;
+
+}
+
+/* ================= HEADER ================= */
+
+header{
+
+    width:100%;
+    background:var(--white);
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.logo{
+
+    font-size:28px;
+    font-weight:bold;
+    color:var(--blue);
+
+}
+
+nav a{
+
+    text-decoration:none;
+    margin-left:25px;
+    color:#444;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+nav a:hover{
+
+    color:var(--orange);
+
+}
+
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+}
+
+.logo img{
+    width:100px;
+    height:100px;
+    object-fit:contain;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+
+    min-height:90vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    padding:40px;
+
+    color:white;
+
+    background:
+    linear-gradient(rgba(0,74,173,.82),
+    rgba(0,0,0,.82)),
+    url("image/banner.jpg");
+
+    background-size:cover;
+    background-position:center;
+
+}
+
+.hero-content{
+
+    max-width:850px;
+
+}
+
+.hero h1{
+
+    font-size:52px;
+    margin-bottom:20px;
+
+}
+
+.hero p{
+
+    font-size:20px;
+    margin-bottom:35px;
+
+}
+
+.btn{
+
+    display:inline-block;
+    background:var(--orange);
+    color:white;
+    text-decoration:none;
+    padding:15px 35px;
+    border-radius:8px;
+    font-weight:bold;
+    transition:.3s;
+
+}
+
+.btn:hover{
+
+    background:#ff9100;
+    transform:translateY(-3px);
+
+}
+
+/* ================= COMMON ================= */
+
+section{
+
+    padding:80px 10%;
+
+}
+
+.section-title{
+
+    text-align:center;
+    margin-bottom:50px;
+
+}
+
+.section-title h2{
+
+    font-size:40px;
+    color:var(--blue);
+
+}
+
+.about-text{
+
+    max-width:900px;
+    margin:auto;
+    text-align:center;
+
+}
+
+.about-text p{
+
+    margin-bottom:20px;
+    font-size:18px;
+
+}
+
+/* ================= TIMELINE ================= */
+
+.timeline-box{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+
+}
+
+.timeline-item{
+
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+
+}
+
+.timeline-item:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.timeline-item span{
+
+    color:var(--orange);
+    font-weight:bold;
+
+}
+
+.timeline-item h3{
+
+    margin:15px 0;
+
+}
+
+/* ================= FEATURES ================= */
+
+.feature-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:30px;
+
+}
+
+.card{
+
+    background:white;
+    border-radius:15px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+.card i{
+
+    font-size:45px;
+    color:var(--orange);
+    margin-bottom:20px;
+
+}
+
+.card h3{
+
+    margin-bottom:15px;
+    color:var(--blue);
+
+}
+
+/* ================= TEAM ================= */
+
+.team-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+    gap:30px;
+
+}
+
+.member{
+
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    transition:.3s;
+
+}
+
+.member:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.member h3{
+
+    color:var(--blue);
+    margin-bottom:10px;
+
+}
+
+.member h4{
+
+    color:var(--orange);
+    margin-bottom:20px;
+
+}
+
+/* ================= MISSION ================= */
+
+.mission{
+
+    text-align:center;
+    background:white;
+
+}
+
+.mission p{
+
+    max-width:850px;
+    margin:auto;
+    font-size:18px;
+
+}
+
+/* ================= VISION ================= */
+
+.vision{
+
+    background:linear-gradient(135deg,#004aad,#0b2b68);
+    color:white;
+    text-align:center;
+
+}
+
+.vision h2{
+
+    color:white;
+
+}
+
+.vision p{
+
+    max-width:850px;
+    margin:25px auto;
+    font-size:19px;
+
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+
+    background:#101010;
+    color:white;
+    text-align:center;
+    padding:35px;
+
+}
+
+footer h3{
+
+    color:var(--orange);
+    margin-bottom:10px;
+
+}
+
+footer p{
+
+    margin:8px 0;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+header{
+
+    flex-direction:column;
+
+}
+
+nav{
+
+    margin-top:20px;
+
+}
+
+nav a{
+
+    margin:10px;
+
+}
+
+.hero h1{
+
+    font-size:36px;
+
+}
+
+.hero p{
+
+    font-size:17px;
+
+}
+
+.section-title h2{
+
+    font-size:30px;
+
+}
+
+}

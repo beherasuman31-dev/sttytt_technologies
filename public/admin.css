@@ -1,0 +1,459 @@
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+    --primary:#2563eb;
+    --primary-hover:#1d4ed8;
+    --danger:#dc2626;
+    --danger-hover:#b91c1c;
+    --sidebar:#0f172a;
+    --sidebar-hover:#1e293b;
+    --bg:#f8fafc;
+    --white:#ffffff;
+    --border:#e2e8f0;
+    --text:#0f172a;
+}
+
+body{
+    background:var(--bg);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.admin-container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:260px;
+    background:var(--sidebar);
+    color:#fff;
+    padding:30px 20px;
+    position:sticky;
+    top:0;
+    height:100vh;
+}
+
+.sidebar h2{
+    font-size:30px;
+    margin-bottom:35px;
+    text-align:center;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:10px;
+    cursor:pointer;
+    transition:.3s;
+    font-size:15px;
+}
+
+.sidebar ul li:hover{
+    background:var(--sidebar-hover);
+    transform:translateX(5px);
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content{
+    flex:1;
+    padding:30px;
+    width:100%;
+    overflow-x:auto;
+}
+
+.top-bar{
+    margin-bottom:25px;
+}
+
+.top-bar h1{
+    color:var(--text);
+    font-size:32px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.form-card,
+.table-card{
+    background:var(--white);
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+.form-card h2,
+.table-card h2{
+    margin-bottom:20px;
+    color:var(--text);
+}
+
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+}
+
+.logo img{
+    width:100px;
+    height:100px;
+    object-fit:contain;
+}
+
+/* =========================
+   FORM
+========================= */
+
+form{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:18px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+}
+
+textarea{
+    resize:none;
+    min-height:120px;
+}
+
+button{
+    border:none;
+    background:var(--primary);
+    color:#fff;
+    padding:14px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+button:hover{
+    background:var(--primary-hover);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    border-radius:15px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:850px;
+}
+
+th{
+    background:#f8fafc;
+    color:#475569;
+    font-weight:600;
+}
+
+th,
+td{
+    padding:16px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+}
+
+td img{
+    width:80px;
+    height:60px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.delete-btn{
+    background:var(--danger);
+}
+
+.delete-btn:hover{
+    background:var(--danger-hover);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:992px){
+
+    .sidebar{
+        width:220px;
+    }
+
+    .top-bar h1{
+        font-size:28px;
+    }
+
+    .main-content{
+        padding:20px;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .admin-container{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+        padding:20px;
+    }
+
+    .sidebar h2{
+        font-size:24px;
+        margin-bottom:20px;
+    }
+
+  .sidebar ul{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.sidebar ul li{
+    text-align:center;
+}
+
+    .main-content{
+        padding:15px;
+    }
+
+    .top-bar h1{
+        font-size:24px;
+    }
+
+    .form-card,
+    .table-card{
+        padding:18px;
+        border-radius:16px;
+    }
+
+    form{
+        grid-template-columns:1fr;
+    }
+
+    button{
+        width:100%;
+    }
+    .table-wrapper{
+    overflow:visible;
+}
+
+table,
+thead,
+tbody,
+th,
+td,
+tr{
+    display:block;
+    width:100%;
+}
+
+thead{
+    display:none;
+}
+
+table{
+    min-width:100%;
+}
+
+tr{
+    background:#fff;
+    margin-bottom:18px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    padding:15px;
+}
+
+td{
+    border:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    font-size:14px;
+}
+
+td::before{
+    font-weight:600;
+    color:#64748b;
+}
+
+td:nth-child(1)::before{
+    content:"Image";
+}
+
+td:nth-child(2)::before{
+    content:"Name";
+}
+
+td:nth-child(3)::before{
+    content:"Category";
+}
+
+td:nth-child(4)::before{
+    content:"Price";
+}
+
+td:nth-child(5)::before{
+    content:"Stock";
+}
+
+td:nth-child(6)::before{
+    content:"Action";
+}
+
+td img{
+    width:90px;
+    height:70px;
+    border-radius:10px;
+}
+
+form input,
+form select,
+form textarea,
+form button{
+    width:100%;
+}
+
+input[type="file"]{
+    padding:10px;
+}
+
+}
+
+@media(max-width:768px){
+
+    .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+        padding:20px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .logo{
+        width:100%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin-bottom:20px;
+    }
+
+    .logo img{
+        width:90px;
+        height:90px;
+    }
+
+    .sidebar h2{
+        text-align:center;
+        margin-bottom:20px;
+    }
+
+}
+
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media(max-width:480px){
+
+    .top-bar h1{
+        font-size:22px;
+    }
+
+    .sidebar h2{
+        font-size:22px;
+    }
+
+    th,
+    td{
+        padding:12px;
+        font-size:13px;
+    }
+
+    td img{
+        width:60px;
+        height:45px;
+    }
+
+    input,
+    select,
+    textarea,
+    button{
+        font-size:14px;
+        padding:12px;
+    }
+}

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STTYTT Admin Panel</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="admin-container">
+
+        <div class="sidebar">
+
+    <a href="#" class="logo">
+            <img src="image/1000521806-removebg-preview.png" alt="STTYTT Logo">
+        </a>
+
+    <ul>
+
+        <li onclick="showSection('dashboardSection')">
+            Dashboard
+        </li>
+
+        <li onclick="showSection('productSection')">
+            Products
+        </li>
+
+        <li onclick="showSection('orderSection')">
+            Orders
+        </li>
+
+        <li onclick="showSection('customerSection')">
+            Customers
+        </li>
+
+        <li onclick="showSection('notificationSection')">
+            Notification
+        </li>
+
+        <li onclick="showSection('reviewSection')">
+           Reviews
+        </li>
+
+
+    </ul>
+
+</div>
+
+
+<div class="main-content">
+
+    <!-- DASHBOARD -->
+
+    <div id="dashboardSection"
+    class="section"
+    style="display:none;">
+
+        <h1>Dashboard</h1>
+
+        <div class="cards">
+
+            <div class="card">
+                Total Products
+            </div>
+
+            <div class="card">
+                Total Orders
+            </div>
+
+            <div class="card">
+                Total Customers
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- PRODUCTS -->
+
+    <div id="productSection"
+    class="section">
+
+        <div class="top-bar">
+
+            <h1>Product Management</h1>
+
+        </div>
+
+        <div class="form-card">
+
+            <h2>Add New Cycles</h2>
+
+            <form id="productForm" enctype="multipart/form-data">
+
+                <input
+                type="text"
+                id="name"
+                placeholder="Bike Name"
+                required>
+
+                <select
+                id="category"
+                required>
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Sport">
+                        Sport
+                    </option>
+
+                    <option value="Urban">
+                        Urban
+                    </option>
+
+                    <option value="Offroad">
+                        Offroad
+                    </option>
+
+                </select>
+
+                <textarea
+                id="description"
+                placeholder="Description"
+                required></textarea>
+
+                <input
+                type="number"
+                id="price"
+                placeholder="Price"
+                required>
+
+                <input
+                type="text"
+                id="speed"
+                placeholder="Top Speed"
+                required>
+
+                <input
+                type="text"
+                id="range_km"
+                placeholder="Range"
+                required>
+
+                <input
+                type="text"
+                id="battery"
+                placeholder="Battery"
+                required>
+
+                 <input
+                type="text"
+                id="warranty"
+                placeholder="Warranty"
+                required>
+
+                 <input
+                type="number"
+                id="fast_charging_hours"
+                placeholder="Fast_charging_hours"
+                required>
+
+                 <input
+                type="text"
+                id="brake_type"
+                placeholder="Brake_type"
+                required>
+                
+
+
+                <input
+type="file"
+id="image"
+accept=".jpg,.jpeg,.png,.webp"
+required>
+
+<input
+type="file"
+id="image2"
+accept=".jpg,.jpeg,.png,.webp">
+
+<input
+type="file"
+id="image3"
+accept=".jpg,.jpeg,.png,.webp">
+
+<input
+type="file"
+id="image4"
+accept=".jpg,.jpeg,.png,.webp">
+             
+
+                <button type="submit">
+                    Add Product
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="table-card">
+
+            <h2>All Products</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="productTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ORDERS -->
+
+    <div id="orderSection"
+    class="section"
+    style="display:none;">
+
+        <h2>Orders Management</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Cancelled By</th>
+                    <th>Tracking</th>
+                    <th>Action</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>pincode</th>
+
+
+                </tr>
+
+            </thead>
+
+            <tbody id="ordersTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- CUSTOMERS -->
+
+    <div id="customerSection"
+    class="section"
+    style="display:none;">
+
+        <h2>Customers</h2>
+
+        <table id="userTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="userBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <!-- NOTIFICATIONS -->
+
+    <div id="notificationSection"
+    class="section"
+    style="display:none;">
+
+        <h2>Send Notification</h2>
+
+        <input
+        type="text"
+        id="notificationTitle"
+        placeholder="Notification Title">
+
+        <br><br>
+
+        <textarea
+        id="notificationMessage"
+        placeholder="Notification Message"></textarea>
+
+        <br><br>
+
+        <button onclick="sendNotification()">
+
+            Send Notification
+
+        </button>
+
+    </div>
+
+    <!-- REVIEWS -->
+
+<div id="reviewSection"
+class="section"
+style="display:none;">
+
+    <h2>Customer Reviews</h2>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Review</th>
+                <th>Date</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="reviewTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</div>
+
+
+
+
+    </div>
+
+    <script src="admin.js"></script>
+
+</body>
+</html>
