@@ -151,6 +151,14 @@ if (order.payment_method === "COD") {
                 .toLocaleDateString()}
             </p>
 
+            <p>
+    <strong>Estimated Delivery:</strong>
+
+    ${order.estimated_delivery
+        ? new Date(order.estimated_delivery).toLocaleDateString()
+        : "Not Available"}
+</p>
+
             <h3>Ordered Products</h3>
 
             ${productsHTML}
@@ -159,38 +167,86 @@ if (order.payment_method === "COD") {
 
                 <div class="step ${statusIndex>=1?'active':''}">
                     <div class="circle"></div>
-                    <div class="label">
+                     <div class="label">
                         Order Placed
-                    </div>
+                                   <br>
+                        <small>
+                   ${new Date(order.created_at).toLocaleDateString()}
+                        </small>
+                           </div>
                 </div>
+
+
+
 
                 <div class="step ${statusIndex>=2?'active':''}">
                     <div class="circle"></div>
                     <div class="label">
                         Confirmed
-                    </div>
+                          <br>
+                        <small>
+        ${
+            order.confirmed_at
+            ? new Date(order.confirmed_at).toLocaleDateString()
+            : ""
+        }
+            </small>
+                 </div> 
                 </div>
+
+
 
                 <div class="step ${statusIndex>=3?'active':''}">
                     <div class="circle"></div>
-                    <div class="label">
-                        Shipped
-                    </div>
+                   <div class="label">
+    Shipped
+    <br>
+    <small>
+        ${
+            order.shipped_at
+            ? new Date(order.shipped_at).toLocaleDateString()
+            : ""
+        }
+    </small>
+</div>
                 </div>
+
+
+
+
 
                 <div class="step ${statusIndex>=4?'active':''}">
                     <div class="circle"></div>
-                    <div class="label">
-                        Out For Delivery
-                    </div>
+                     <div class="label">
+    Out For Delivery
+    <br>
+    <small>
+        ${
+            order.out_for_delivery_at
+            ? new Date(order.out_for_delivery_at).toLocaleDateString()
+            : ""
+        }
+    </small>
+</div>
                 </div>
 
                 <div class="step ${statusIndex>=5?'active':''}">
                     <div class="circle"></div>
-                    <div class="label">
-                        Delivered
-                    </div>
+                  <div class="label">
+    Delivered
+    <br>
+    <small>
+        ${
+            order.delivered_at
+            ? new Date(order.delivered_at).toLocaleDateString()
+            : ""
+        }
+    </small>
+</div>
                 </div>
+
+
+                
 
             </div>
                ${order.order_status === "Cancelled" ? `

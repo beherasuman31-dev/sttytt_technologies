@@ -195,6 +195,37 @@ async function loadOrders(){
             <td>${order.cancelled_by || "-"}</td>
 
             <td>${order.tracking_id}</td>
+            <td>${new Date(order.created_at).toLocaleDateString()}</td>
+
+<td>
+${order.estimated_delivery
+? new Date(order.estimated_delivery).toLocaleDateString()
+: "-"}
+</td>
+
+<td>
+${order.confirmed_at
+? new Date(order.confirmed_at).toLocaleString()
+: "-"}
+</td>
+
+<td>
+${order.shipped_at
+? new Date(order.shipped_at).toLocaleString()
+: "-"}
+</td>
+
+<td>
+${order.out_for_delivery_at
+? new Date(order.out_for_delivery_at).toLocaleString()
+: "-"}
+</td>
+
+<td>
+${order.delivered_at
+? new Date(order.delivered_at).toLocaleString()
+: "-"}
+</td>
 
             <td>${order.address}</td>
 
@@ -205,25 +236,50 @@ async function loadOrders(){
             <td>${order.pincode}</td>
 
 
-
             <td>
 
-                <select
-                onchange="updateStatus(
-                ${order.id},
-                this.value
-                )">
+    <select
+    onchange="updateStatus(${order.id}, this.value)">
 
-                    <option>Processing</option>
-                    <option>Confirmed</option>
-                    <option>Shipped</option>
-                    <option>Out For Delivery</option>
-                    <option>Delivered</option>
-                    <option>Cancelled</option>
+        <option value="Processing"
+            ${order.order_status==="Processing"?"selected":""}>
+            Processing
+        </option>
 
-                </select>
+        <option value="Confirmed"
+            ${order.order_status==="Confirmed"?"selected":""}>
+            Confirmed
+        </option>
 
-            </td>
+         <option value="Estimated Delivery"
+            ${order.order_status==="Estimated Delivery"?"selected":""}>
+            Estimated Delivery
+        </option>
+
+        <option value="Shipped"
+            ${order.order_status==="Shipped"?"selected":""}>
+            Shipped
+        </option>
+
+        <option value="Out For Delivery"
+            ${order.order_status==="Out For Delivery"?"selected":""}>
+            Out For Delivery
+        </option>
+
+        <option value="Delivered"
+            ${order.order_status==="Delivered"?"selected":""}>
+            Delivered
+        </option>
+
+        <option value="Cancelled"
+            ${order.order_status==="Cancelled"?"selected":""}>
+            Cancelled
+        </option>
+
+    </select>
+
+</td>
+        
 
         </tr>
 

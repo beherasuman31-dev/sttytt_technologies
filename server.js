@@ -1717,7 +1717,16 @@ cartSql,
             userResult[0];
 
            const trackingId =
-"EB" + Date.now();
+           "EB" + Date.now();
+              const estimatedDelivery = new Date();
+               estimatedDelivery.setDate(
+                 estimatedDelivery.getDate() + 7
+                   );
+
+
+                   const estimatedDeliveryDate =
+estimatedDelivery.toISOString().split("T")[0];
+console.log("Estimated Delivery:", estimatedDeliveryDate);
 
 const orderSql = `
 
@@ -1730,6 +1739,7 @@ INSERT INTO orders
     payment_id,
     tracking_id,
     order_status,
+    estimated_delivery,
     customer_name,
     phone,
     address,
@@ -1738,10 +1748,10 @@ INSERT INTO orders
     pincode
 )
 
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 
 `;
-
+            console.log("Estimated Delivery:", estimatedDeliveryDate);
             db.query(orderSql,[
 
                 req.user.email,
@@ -1755,6 +1765,8 @@ VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
                 trackingId,
 
                 "Processing",
+
+                estimatedDeliveryDate,
 
                 user.name,
 
@@ -1877,11 +1889,11 @@ app.put("/api/orders/:id/cancel", verifyToken, (req,res)=>{
                 });
             }
 
-            db.query(
+     db.query(
 
-                "UPDATE orders SET order_status='Cancelled', cancelled_by='User' WHERE id=?",
+    "UPDATE orders SET order_status='Cancelled', cancelled_by='User', cancelled_at=NOW() WHERE id=?",
 
-                [orderId],
+    [orderId],
 
                 ()=>{
 
@@ -2728,11 +2740,35 @@ app.get("/api/admin/orders",verifyToken,verifyAdmin,(req,res)=>{
 
 
 // order status
-app.put("/api/admin/order-status/:id",verifyToken,verifyAdmin,(req,res)=>{
+app.put("/api/admin/order-status/:id", verifyToken, verifyAdmin, (req, res) => {
 
     const { status } = req.body;
-
     const orderId = req.params.id;
+
+    let dateField = "";
+
+    switch(status){
+
+        case "Confirmed":
+            dateField = "confirmed_at";
+            break;
+
+        case "Shipped":
+            dateField = "shipped_at";
+            break;
+
+        case "Out For Delivery":
+            dateField = "out_for_delivery_at";
+            break;
+
+        case "Delivered":
+            dateField = "delivered_at";
+            break;
+
+        case "Cancelled":
+            dateField = "cancelled_at";
+            break;
+    }
 
     db.query(
 
@@ -2747,68 +2783,87 @@ app.put("/api/admin/order-status/:id",verifyToken,verifyAdmin,(req,res)=>{
                 return res.json({
                     success:false
                 });
+
             }
 
             const order = result[0];
 
-            if(status === "Cancelled"){
+            let sql;
 
-                db.query(
+            if(dateField){
 
-                    "UPDATE orders SET order_status=?, cancelled_by='Admin' WHERE id=?",
-
-                    [status, orderId],
-
-                    ()=>{
-
-                        createNotification(
-
-                            order.user_email,
-
-                            "Order Update",
-
-                            `Your order ${order.tracking_id} is now ${status}`
-
-                        );
-
-                        res.json({
-                            success:true
-                        });
-
-                    }
-
-                );
+                sql = `UPDATE orders
+                SET order_status=?,
+                ${dateField}=NOW()
+                WHERE id=?`;
 
             }else{
 
-                db.query(
-
-                    "UPDATE orders SET order_status=? WHERE id=?",
-
-                    [status, orderId],
-
-                    ()=>{
-
-                        createNotification(
-
-                            order.user_email,
-
-                            "Order Update",
-
-                            `Your order ${order.tracking_id} is now ${status}`
-
-                        );
-
-                        res.json({
-                            success:true
-                        });
-
-                    }
-
-                );
+                sql = `UPDATE orders
+                SET order_status=?
+                WHERE id=?`;
 
             }
 
+            db.query(
+
+    sql,
+
+    [status, orderId],
+
+    ()=>{
+
+        let message = `Your order ${order.tracking_id} is now ${status}.`;
+
+        if(status === "Confirmed"){
+            message += "\nYour order has been confirmed.";
+        }
+
+        if(status === "Shipped"){
+            message += "\nYour order has been shipped.";
+        }
+
+        if(status === "Out For Delivery"){
+            message += "\nYour order is out for delivery and should arrive today.";
+        }
+
+        if(status === "Delivered"){
+            message += "\nYour order has been delivered successfully.";
+        }
+
+        if(status === "Cancelled"){
+            message += "\nYour order has been cancelled.";
+        }
+        
+
+        if(order.estimated_delivery){
+
+    message += `
+
+Estimated Delivery:
+${new Date(order.estimated_delivery).toLocaleDateString()}`;
+
+}
+
+
+
+        createNotification(
+
+            order.user_email,
+
+            "Order Update",
+
+            message
+
+        );
+
+        res.json({
+            success:true
+        });
+
+    }
+
+);
         }
 
     );

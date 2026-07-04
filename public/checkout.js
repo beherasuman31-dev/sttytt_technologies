@@ -170,7 +170,7 @@ async function loadCheckoutItems(){
         document.getElementById(
             "finalTotal"
         ).innerText =
-        `₹${subtotal + 500}`;
+        `₹${subtotal}`;
 
     }catch(error){
 

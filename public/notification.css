@@ -1,98 +1,106 @@
+/* =========================
+   STTYTT — Notifications Page
+   Consistent Navy × Blue System
+========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root{
+    --navy:#0B1F3A;
+    --blue:#2F6FED;
+    --blue-tint:#E8EEFC;
+    --teal:#14B8A6;
+    --bg:#F7F5F0;
+    --white:#FFFFFF;
+    --ink:#12172B;
+    --muted:#667085;
+    --border:#E4E1D8;
+    --shadow:0 6px 20px rgba(11,31,58,.06);
+    --shadow-hover:0 14px 32px rgba(11,31,58,.10);
+}
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+    font-family:'DM Sans', sans-serif;
 }
 
 body{
-
-    background:#f4f6f9;
-    padding:20px;
+    background:var(--bg);
+    padding:32px 20px;
     min-height:100vh;
 }
 
 h1{
-
     text-align:center;
-    margin-bottom:25px;
-    color:#004aad;
-    font-size:32px;
+    margin-bottom:30px;
+    color:var(--navy);
+    font-family:'Big Shoulders Display', sans-serif;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:.3px;
 }
 
 #notificationContainer{
-
     max-width:900px;
     margin:auto;
-
     display:flex;
     flex-direction:column;
-    gap:15px;
+    gap:14px;
 }
 
 .notification{
-
-    background:#fff;
-
-    border-left:6px solid #004aad;
-
-    padding:18px;
-
+    background:var(--white);
+    border-left:4px solid var(--blue);
+    padding:20px 22px;
     border-radius:14px;
-
-    box-shadow:
-    0 4px 12px rgba(0,0,0,0.08);
-
-    transition:0.3s;
+    box-shadow:var(--shadow);
+    border-top:1px solid var(--border);
+    border-right:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    transition:.3s ease;
 }
 
 .notification:hover{
-
     transform:translateY(-3px);
-
-    box-shadow:
-    0 8px 18px rgba(0,0,0,0.12);
+    box-shadow:var(--shadow-hover);
+    border-left-color:var(--teal);
 }
 
 .notification h3{
-
-    color:#004aad;
+    color:var(--navy);
     margin-bottom:8px;
+    font-family:'Big Shoulders Display', sans-serif;
     font-size:20px;
+    font-weight:700;
 }
 
 .notification p{
-
-    color:#444;
+    color:var(--muted);
     line-height:1.6;
     font-size:15px;
     margin-bottom:10px;
 }
 
 .notification small{
-
-    color:#888;
+    color:#9AA3B0;
     display:block;
     text-align:right;
-    font-size:13px;
+    font-size:12.5px;
+    font-weight:500;
 }
 
 /* Empty Message */
 
 .empty{
-
-    background:#fff;
-
-    padding:30px;
-
-    border-radius:12px;
-
+    background:var(--white);
+    padding:50px 30px;
+    border-radius:16px;
     text-align:center;
-
-    color:#777;
-
-    box-shadow:
-    0 4px 12px rgba(0,0,0,0.08);
+    color:var(--muted);
+    box-shadow:var(--shadow);
+    border:1px dashed var(--border);
 }
 
 /* Tablet */
@@ -100,7 +108,7 @@ h1{
 @media(max-width:768px){
 
     body{
-        padding:15px;
+        padding:20px 15px;
     }
 
     h1{
@@ -108,17 +116,14 @@ h1{
     }
 
     .notification{
-
-        padding:16px;
+        padding:18px;
     }
 
     .notification h3{
-
         font-size:18px;
     }
 
     .notification p{
-
         font-size:14px;
     }
 }
@@ -128,7 +133,7 @@ h1{
 @media(max-width:480px){
 
     body{
-        padding:12px;
+        padding:16px 12px;
     }
 
     h1{
@@ -136,23 +141,19 @@ h1{
     }
 
     .notification{
-
-        padding:14px;
-        border-left:5px solid #004aad;
+        padding:16px;
+        border-left:4px solid var(--blue);
     }
 
     .notification h3{
-
         font-size:17px;
     }
 
     .notification p{
-
         font-size:13px;
     }
 
     .notification small{
-
         font-size:12px;
     }
 }
