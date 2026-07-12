@@ -334,25 +334,25 @@ function showDetails(id){
 
         <div class="details-right">
 
-            <span class="detail-category">
+            <span class="detail-category">Catagory:
 
                 ${product.category}
 
             </span>
 
-            <h1 class="detail-title">
+            <h1 class="detail-title">Name:
 
                 ${product.name}
 
             </h1>
 
-            <div class="rating">
+            <div class="rating">Rating:
 
                 ★★★★★
 
             </div>
 
-            <h2 class="detail-price">
+            <h2 class="detail-price">Price:
 
                 ₹${product.price}
 
@@ -366,27 +366,27 @@ function showDetails(id){
 
             <div class="detail-features">
 
-                <span>
+                <span>Speed:
                     ${product.speed}
                 </span>
 
-                <span>
+                <span>Range:
                     ${product.range_km}
                 </span>
 
-                <span>
+                <span>Battery:
                     ${product.battery}
                 </span>
 
-                 <span>
+                 <span>Warranty:
                     ${product.warranty}
                 </span>
 
-                 <span>
+                 <span>Charging_Hour:
                     ${product.fast_charging_hours}
                 </span>
 
-                 <span>
+                 <span>Break_Type:
                     ${product.brake_type}
                 </span>
 

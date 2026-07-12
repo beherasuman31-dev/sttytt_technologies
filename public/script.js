@@ -250,12 +250,10 @@ async function loadFeaturedProducts(){
 
         container.innerHTML = "";
 
-          products
-         .sort((a,b)=>
-          new Date(b.created_at)-new Date(a.created_at)
-                             )
-                          .slice(0,3)
-                       .forEach(product=>{
+         products
+.sort((a,b)=> b.id - a.id)
+.slice(0,3)
+.forEach(product=>{
 
             container.innerHTML += `
 

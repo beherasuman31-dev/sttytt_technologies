@@ -13,7 +13,7 @@
     --ink:#2A0E0E;
     --muted:#7A6A5D;
     --gold:#D4AF37;
-    --gold-dark:#8B6914;
+    --gold-dark:#f3b009;
     --gold-light:#F5DEB3;
     --gold-tint:#FBF0D9;
     --border:#E6D9BE;
@@ -466,7 +466,7 @@ body{
 }
 
 .rating{
-    color:#F59E0B;
+    color:green;
     font-size:17px;
 }
 
@@ -602,8 +602,9 @@ body{
 }
 
 .cart-btn:hover{
-    background:var(--maroon-3);
+    background:var(--gold);
     transform:translateY(-1px);
+    color: #3D0000;
 }
 
 /* ================= DESCRIPTION ================= */
@@ -741,7 +742,7 @@ body{
         width:100%;
         flex-direction:column;
         gap:0;
-        background:var(--white);
+        background:linear-gradient(120deg, var(--maroon-3) 0%, var(--maroon-2) 55%, var(--maroon) 100%);;
         box-shadow:0 12px 24px rgba(31,0,0,.15);
         max-height:0;
         overflow:hidden;
