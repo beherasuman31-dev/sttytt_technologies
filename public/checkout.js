@@ -7,6 +7,10 @@ const token = localStorage.getItem("token");
 console.log("TOKEN => ", token);
 
 
+
+
+
+
 // ================= LOAD ADDRESS =================
 
 async function loadAddress(){
@@ -48,15 +52,12 @@ async function loadAddress(){
         const user = data.user;
 
 
-        document.getElementById(
-            "addressBox"
-        ).innerHTML = `
-
+        document.getElementById("addressBox").innerHTML = `
             <h3>${user.name || ""}</h3>
 
             <p>
                 ${user.address || ""},
-                ${user.city || ""},
+                ${user.district || ""},
                 ${user.state || ""}
                 - ${user.pincode || ""}
             </p>
@@ -76,8 +77,8 @@ async function loadAddress(){
         document.getElementById("address").value =
         user.address || "";
 
-        document.getElementById("city").value =
-        user.city || "";
+        document.getElementById("district").value =
+        user.district || "";
 
         document.getElementById("state").value =
         user.state || "";
@@ -104,79 +105,114 @@ async function loadCheckoutItems(){
 
     try{
 
-        const res = await fetch(
-
-            "http://localhost:5000/api/cart",
-            {
-                headers:{
-                    Authorization:token}
-                }
-        )
-        
-
-        const data = await res.json();
-
-        const container =
-        document.getElementById(
-            "checkoutItems"
-        );
-
-        container.innerHTML = "";
-
-        let subtotal = 0;
+       const cartIds = JSON.parse(
+localStorage.getItem("selectedCartIds")
+) || [];
 
 
-        data.forEach(item=>{
+const container = document.getElementById("checkoutItems");
 
-            subtotal +=
-            item.product_price *
-            item.quantity;
+container.innerHTML = `
+<div class="loading">
+Loading Checkout Items...
+</div>
+`;
+
+const res = await fetch(
+
+"http://localhost:5000/api/checkout-summary",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+Authorization:token
+
+},
+
+body:JSON.stringify({
+
+cartIds
+
+})
+
+}
+
+);
 
 
-            container.innerHTML += `
 
-            <div class="checkoutItem">
 
-                <img src="${item.product_image}">
+const result = await res.json();
 
-                <div class="itemDetails">
+const data = result.items;
+container.innerHTML = "";
 
-                    <h2>
-                        ${item.product_name}
-                    </h2>
+if(!result.success){
 
-                    <div class="price">
-                        ₹${item.product_price}
-                    </div>
+    return;
 
-                    <div class="qty">
-                        Quantity: ${item.quantity}
-                    </div>
+}
 
-                </div>
+data.forEach(item=>{
+
+    container.innerHTML += `
+  
+
+    <div class="checkoutItem">
+
+        <img src="http://localhost:5000${item.product_image}">
+
+        <div class="itemDetails">
+
+            <h2>${item.product_name}</h2>
+
+            <div class="price">
+
+                ₹${item.product_price}
 
             </div>
 
-            `;
-        });
+            <div class="qty">
+
+                Quantity : ${item.quantity}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+});
+
+document.getElementById("subtotal").innerText =
+`₹${result.subtotal}`;
+
+document.getElementById("shippingCharge").innerText =
+`₹${result.shipping}`;
+
+document.getElementById("finalTotal").innerText =
+`₹${result.total}`;
 
 
-        document.getElementById(
-            "subtotal"
-        ).innerText =
-        `₹${subtotal}`;
+    }
 
-
-        document.getElementById(
-            "finalTotal"
-        ).innerText =
-        `₹${subtotal}`;
-
-    }catch(error){
+    catch(error){
 
         console.log(error);
+
     }
+
 }
+
+
+
 
 
 
@@ -220,8 +256,8 @@ document.getElementById(
                 address:
                 document.getElementById("address").value,
 
-                city:
-                document.getElementById("city").value,
+                district:
+                document.getElementById("district").value,
 
                 state:
                 document.getElementById("state").value,
@@ -268,22 +304,112 @@ document.getElementById(
                     "addressModal"
                 ).style.display = "none";
 
+            
 
-                loadAddress();
 
-            }else{
 
-                alert(data.message);
-            }
+    await Promise.all([
+        loadAddress(),
+        loadCheckoutItems()
+    ]);
 
-        }catch(error){
+}else{
 
-            console.log(error);
+    alert(data.message);
 
-            alert("Update Failed");
-        }
-    }
+}
+
+}catch(error){
+
+    console.log(error);
+
+    alert("Update Failed");
+
+}
+
+});
+
+
+
+
+
+document.getElementById("pincode")
+
+.addEventListener(
+
+"blur",
+
+async()=>{
+
+const pincode=
+
+document.getElementById("pincode")
+
+.value.trim();
+
+if(pincode.length!==6){
+
+return;
+
+}
+
+try{
+
+const res=
+
+await fetch(
+
+`https://api.postalpincode.in/pincode/${pincode}`
+
 );
+
+const data=
+
+await res.json();
+
+if(
+
+data[0].Status==="Success"
+
+){
+
+const office=
+
+data[0].PostOffice[0];
+
+document.getElementById("state").innerHTML=
+
+`<option value="${office.State}" selected>
+
+${office.State}
+
+</option>`;
+
+document.getElementById("district").innerHTML=
+
+`<option value="${office.District}" selected>
+
+${office.District}
+
+</option>`;
+
+}
+
+else{
+
+alert("Invalid Pincode");
+
+}
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+});
 
 
 
@@ -311,6 +437,25 @@ document.getElementById(
                 return;
             }
 
+
+          if (paymentMethod === "QR") {
+
+    const utr = document
+        .getElementById("utrNumber")
+        .value
+        .trim();
+
+    if (!utr) {
+        alert("Please enter Transaction ID / UTR Number");
+        return;
+    }
+
+    await placeOrder("QR",null, utr);
+
+    return;
+}
+
+
             // Razorpay
 
             const total = Number(
@@ -327,9 +472,9 @@ document.getElementById(
 
                 currency: "INR",
 
-                name: "STTYTT Bikes",
+                name: "STTYTT Cycle",
 
-                description: "Bike Order Payment",
+                description: "Cycle Order Payment",
 
               config: {
         display: {
@@ -371,7 +516,7 @@ document.getElementById(
                 },
 
                 theme: {
-                    color: "#ff6600"
+                    color: "#3D0000"
                 }
             };
 
@@ -391,10 +536,16 @@ document.getElementById(
 
 
 // ================= ORDER FUNCTION =================
+const cartIds = JSON.parse(
 
+localStorage.getItem("selectedCartIds")
+
+) || [];
 async function placeOrder(
     paymentMethod,
-    paymentId = null
+    paymentId = null,
+    utr = null
+
 ){
 
     try{
@@ -414,13 +565,21 @@ async function placeOrder(
                     Authorization: token
                 },
 
+                
+                
                 body:JSON.stringify({
 
                     payment_method:
                     paymentMethod,
 
                     payment_id:
-                    paymentId
+                    paymentId,
+
+                     utr_number: utr,
+
+                    cartIds
+
+                    
                 })
             }
         );
@@ -429,6 +588,11 @@ async function placeOrder(
         await res.json();
 
         if(data.success){
+             localStorage.removeItem(
+
+        "selectedCartIds"
+
+    );
 
             alert(
                 "Order Placed Successfully"
@@ -449,31 +613,6 @@ async function placeOrder(
         alert("Order Failed");
     }
 }
-
-
-// ======================
-// UPI DROPDOWN
-// ======================
-
-const upiToggle =
-document.getElementById("upiToggle");
-
-const upiApps =
-document.getElementById("upiApps");
-
-
-upiToggle.addEventListener("click",()=>{
-
-    if(upiApps.style.display === "block"){
-
-        upiApps.style.display = "none";
-    }
-
-    else{
-
-        upiApps.style.display = "block";
-    }
-});
 
 
 
@@ -512,12 +651,53 @@ function payUPI(app){
 
 
 
+const qrRadio =
+document.querySelector('input[value="QR"]');
+
+const codRadio =
+document.querySelector('input[value="COD"]');
+
+const upiRadio =
+document.querySelector('input[value="UPI"]');
+
+const qrBox =
+document.getElementById("qrBox");
+
+qrRadio.onchange = () => {
+
+    qrBox.style.display = "block";
+
+};
+
+codRadio.onchange = () => {
+
+    qrBox.style.display = "none";
+
+};
+
+upiRadio.onchange = () => {
+
+    qrBox.style.display = "none";
+
+};
 
 
 
 
-// ================= INIT =================
 
-loadAddress();
 
-loadCheckoutItems();
+async function init(){
+
+    document.getElementById("addressBox").innerHTML =
+    "Loading Address...";
+
+    document.getElementById("checkoutItems").innerHTML =
+    "Loading Checkout Items...";
+
+    await Promise.all([
+        loadAddress(),
+        loadCheckoutItems()
+    ]);
+}
+
+init();

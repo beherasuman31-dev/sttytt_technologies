@@ -1,23 +1,25 @@
 /* =========================
    STTYTT — About / Company Page
-   Consistent Navy × Blue System
+   Consistent Maroon × Gold System
 ========================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-    --navy:#0B1F3A;
-    --navy-2:#132A4D;
-    --blue:#2F6FED;
-    --blue-tint:#E8EEFC;
-    --teal:#14B8A6;
-    --bg:#F7F5F0;
+    --maroon:#3D0000;
+    --maroon-2:#6B0000;
+    --maroon-3:#1F0000;
+    --gold:#D4AF37;
+    --gold-dark:#8B6914;
+    --gold-light:#F5DEB3;
+    --gold-tint:#FBF0D9;
+    --bg:#FAF3E0;
     --white:#FFFFFF;
-    --ink:#12172B;
-    --muted:#5B6472;
-    --border:#E4E1D8;
-    --shadow:0 10px 30px rgba(11,31,58,.07);
-    --shadow-lg:0 20px 50px rgba(11,31,58,.12);
+    --ink:#6B0000;
+    --muted:#7A6A5D;
+    --border:#E6D9BE;
+    --shadow:0 10px 30px rgba(31,0,0,.08);
+    --shadow-lg:0 20px 50px rgba(31,0,0,.14);
 }
 
 *{
@@ -29,7 +31,7 @@
 
 body{
     background:var(--bg);
-    color:var(--ink);
+    color:var(--maroon-2);
     line-height:1.7;
 }
 
@@ -41,7 +43,7 @@ h1,h2,h3{
 
 header{
     width:100%;
-    background:rgba(247,245,240,.85);
+    background:linear-gradient(120deg, var(--maroon-3) 0%, var(--maroon-2) 55%, var(--maroon) 100%);
     backdrop-filter:blur(14px);
     padding:16px 8%;
     display:flex;
@@ -60,20 +62,20 @@ header{
     text-decoration:none;
     font-size:26px;
     font-weight:700;
-    color:var(--navy);
+    color:var(--maroon-2);
     letter-spacing:.3px;
 }
 
 .logo img{
     width:100px;
     height:56px;
-    object-fit:contain;
+    object-fit:cover;
 }
 
 nav a{
     text-decoration:none;
     margin-left:28px;
-    color:var(--ink);
+    color:var(--gold);
     font-weight:500;
     transition:.3s;
     position:relative;
@@ -86,17 +88,18 @@ nav a::after{
     bottom:-6px;
     width:0;
     height:2px;
-    background:var(--blue);
+    background:var(--gold-dark);
     transition:width .3s ease;
 }
 
 nav a:hover{
-    color:var(--blue);
+    color:var(--bg);
 }
 
 nav a:hover::after{
     width:100%;
 }
+
 
 /* ================= HERO ================= */
 
@@ -109,11 +112,11 @@ nav a:hover::after{
     padding:40px;
     color:#fff;
     background:
-        linear-gradient(rgba(11,31,58,.88), rgba(8,20,38,.92)),
-        url("image/banner.jpg");
-    background-size:cover;
+        linear-gradient(#c8a1a1, rgba(31,0,0,.92)),
+        url("image/IMG-20260409-WA0003.jpg");
+    background-size:contain;
     background-position:center;
-    position:relative;
+    background-repeat:no-repeat ;
 }
 
 .hero-content{
@@ -134,26 +137,26 @@ nav a:hover::after{
 .hero p{
     font-size:19px;
     margin-bottom:35px;
-    color:#B7C0D1;
+    color:#D9C9AE;
     font-family:'DM Sans', sans-serif;
 }
 
 .btn{
     display:inline-block;
-    background:var(--blue);
-    color:#fff;
+    background:linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color:var(--maroon-3);
     text-decoration:none;
     padding:15px 36px;
     border-radius:10px;
     font-weight:600;
     transition:.3s ease;
-    box-shadow:0 10px 26px rgba(47,111,237,.3);
+    box-shadow:0 10px 26px rgba(212,175,55,.35);
 }
 
 .btn:hover{
-    background:#1D4ED8;
+    background:linear-gradient(135deg, var(--gold), var(--gold-light));
     transform:translateY(-3px);
-    box-shadow:0 16px 34px rgba(47,111,237,.4);
+    box-shadow:0 16px 34px rgba(212,175,55,.45);
 }
 
 /* ================= COMMON ================= */
@@ -169,7 +172,7 @@ section{
 
 .section-title h2{
     font-size:40px;
-    color:var(--navy);
+    color:var(--maroon-2);
     font-weight:700;
 }
 
@@ -199,7 +202,7 @@ section{
     border-radius:18px;
     box-shadow:var(--shadow);
     border:1px solid var(--border);
-    border-top:3px solid var(--blue);
+    border-top:3px solid var(--gold-dark);
     transition:.35s ease;
 }
 
@@ -209,7 +212,7 @@ section{
 }
 
 .timeline-item span{
-    color:var(--blue);
+    color:var(--gold-dark);
     font-weight:700;
     font-family:'Big Shoulders Display', sans-serif;
     font-size:22px;
@@ -218,7 +221,7 @@ section{
 
 .timeline-item h3{
     margin:15px 0;
-    color:var(--navy);
+    color:var(--maroon-2);
     font-weight:700;
     font-size:21px;
 }
@@ -248,19 +251,19 @@ section{
 .card:hover{
     transform:translateY(-10px);
     box-shadow:var(--shadow-lg);
-    border-color:var(--blue);
+    border-color:var(--gold-dark);
 }
 
 .card i{
     font-size:42px;
-    color:var(--teal);
+    color:var(--gold-dark);
     margin-bottom:20px;
     display:inline-block;
 }
 
 .card h3{
     margin-bottom:12px;
-    color:var(--navy);
+    color:var(--maroon-2);
     font-weight:700;
     font-size:20px;
 }
@@ -293,14 +296,14 @@ section{
 }
 
 .member h3{
-    color:var(--navy);
+    color:var(--maroon-2);
     margin-bottom:8px;
     font-weight:700;
     font-size:20px;
 }
 
 .member h4{
-    color:var(--blue);
+    color:var(--gold-dark);
     margin-bottom:18px;
     font-family:'DM Sans', sans-serif;
     font-weight:600;
@@ -321,7 +324,7 @@ section{
 }
 
 .mission h2{
-    color:var(--navy);
+    color:var(--maroon-2);
 }
 
 .mission p{
@@ -334,7 +337,7 @@ section{
 /* ================= VISION ================= */
 
 .vision{
-    background:linear-gradient(135deg,var(--navy),#081426);
+    background:linear-gradient(135deg,var(--maroon-2),var(--maroon-3));
     color:#fff;
     text-align:center;
     position:relative;
@@ -345,7 +348,7 @@ section{
     content:"";
     position:absolute;
     inset:0;
-    background:radial-gradient(circle at 80% 20%, rgba(47,111,237,.22), transparent 45%);
+    background:radial-gradient(circle at 80% 20%, rgba(212,175,55,.22), transparent 45%);
     pointer-events:none;
 }
 
@@ -358,21 +361,21 @@ section{
     max-width:850px;
     margin:25px auto 0;
     font-size:19px;
-    color:#B7C0D1;
+    color:#D9C9AE;
     position:relative;
 }
 
 /* ================= FOOTER ================= */
 
 footer{
-    background:var(--navy);
+    background:var(--maroon-3);
     color:#fff;
     text-align:center;
     padding:40px;
 }
 
 footer h3{
-    color:var(--teal);
+    color:var(--gold);
     margin-bottom:10px;
     font-family:'Big Shoulders Display', sans-serif;
     font-size:22px;
@@ -380,7 +383,7 @@ footer h3{
 
 footer p{
     margin:8px 0;
-    color:#AEB9CC;
+    color:#D9C9AE;
 }
 
 /* ================= RESPONSIVE ================= */

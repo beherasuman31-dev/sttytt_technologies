@@ -809,8 +809,52 @@ app.post("/api/reset-password", async(req,res)=>{
 
 
 
+// HERO STATES
+app.get("/api/hero-stats",(req,res)=>{
+
+const sql = `
+SELECT *
+FROM hero_stats
+ORDER BY display_order ASC
+`;
+
+db.query(sql,(err,result)=>{
+
+if(err) return res.status(500).json(err);
+
+res.json(result);
+
+});
+
+});
 
 
+// UPDATE HERO STATES
+app.put("/api/hero-stats/:id",verifyToken,verifyAdmin,(req,res)=>{
+
+const {value}=req.body;
+
+const id=req.params.id;
+
+db.query(
+
+"UPDATE hero_stats SET value=? WHERE id=?",
+
+[value,id],
+
+(err)=>{
+
+if(err) return res.status(500).json(err);
+
+res.json({
+
+message:"Updated"
+
+});
+
+});
+
+});
 
 
 
@@ -1180,7 +1224,7 @@ verifyToken,
         name,
         phone,
         address,
-        city,
+        district,
         state,
         pincode
 
@@ -1196,7 +1240,7 @@ verifyToken,
     name=?,
     phone=?,
     address=?,
-    city=?,
+    district=?,
     state=?,
     pincode=?
 
@@ -1214,7 +1258,7 @@ verifyToken,
         name,
         phone,
         address,
-        city,
+        district,
         state,
         pincode,
         req.user.email
@@ -1303,7 +1347,7 @@ console.log(req.body);
         battery,
         warranty,
         fast_charging_hours,
-        brake_type
+        brake_type,
     
 
     } = req.body;
@@ -1637,46 +1681,207 @@ app.post(
 
 
 
-
-
-
-
-
-
-
-
 // ================= PLACE ORDER =================
 
 app.post(
-
 "/api/place-order",
-
 verifyToken,
-
 (req,res)=>{
 
-    const {
+    const { payment_method, payment_id,utr_number,cartIds } = req.body;
 
-        payment_method,
-        payment_id
+    if(!cartIds || cartIds.length===0){
 
-    } = req.body;
+    return res.json({
 
+        success:false,
 
-    const cartSql =
+        message:"No Product Selected"
 
-`SELECT *
-FROM cart
-WHERE user_email=?`;
+    });
 
+}
 
-    db.query(
+ db.query(
 
-cartSql,
+"SELECT * FROM cart WHERE user_email=? AND id IN (?)",
 
-[req.user.email],
+[req.user.email, cartIds],
 
 (err,cartItems)=>{
+
+            if(err){
+
+                return res.json({
+                    success:false,
+                    message:"Cart Error"
+                });
+
+            }
+
+                if (cartItems.length === 0) {
+
+        return res.json({
+            success: false,
+            message: "Selected products not found"
+        });
+
+    }
+
+            db.query(
+
+                "SELECT * FROM users WHERE email=?",
+
+                [req.user.email],
+
+                (err,userResult)=>{
+
+                    if(err || userResult.length===0){
+
+                        return res.json({
+                            success:false,
+                            message:"User Not Found"
+                        });
+
+                    }
+
+                     
+                    // ================= SUBTOTAL =================
+
+                    let subtotal = 0;
+
+                    cartItems.forEach(item=>{
+
+                        subtotal +=
+                        item.product_price *
+                        item.quantity;
+
+                    });
+
+                    // ================= SHIPPING =================
+                      const user = userResult[0];
+
+                    const shippingCharge =
+                    getShippingCharge(user.state);
+
+                    // ================= TOTAL =================
+
+                    const total =
+                    subtotal + shippingCharge;
+
+                    const trackingId =
+                    "EB" + Date.now();
+
+                    const estimatedDelivery =
+                    new Date();
+
+                    estimatedDelivery.setDate(
+                        estimatedDelivery.getDate() + 7
+                    );
+
+                    const estimatedDeliveryDate =
+                    estimatedDelivery
+                    .toISOString()
+                    .split("T")[0];
+
+                    const orderSql = `
+
+                    INSERT INTO orders
+                    (
+                        user_email,
+                        products,
+                        total_price,
+                        shipping_charge,
+                        payment_method,
+                        payment_id,
+                        utr_number,
+                        tracking_id,
+                        order_status,
+                        estimated_delivery,
+                        customer_name,
+                        phone,
+                        address,
+                        district,
+                        state,
+                        pincode
+                    )
+
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+
+                    `;
+
+                    db.query(
+
+                        orderSql,
+
+                        [
+
+                            req.user.email,
+
+                            JSON.stringify(cartItems),
+
+                            total,
+
+                            shippingCharge,
+
+                            payment_method,
+
+                            payment_id,
+                            
+                            utr_number,
+
+                            trackingId,
+
+                            "Processing",
+
+                            estimatedDeliveryDate,
+
+                            user.name,
+
+                            user.phone,
+
+                            user.address,
+
+                            user.district,
+
+                            user.state,
+
+                            user.pincode
+
+                        ],
+
+                        (err,result)=>{
+
+                            if(err){
+
+                                console.log(err);
+
+                                return res.json({
+
+                                    success:false,
+
+                                    message:err.sqlMessage
+
+                                });
+
+                            }
+
+                            createNotification(
+
+                                req.user.email,
+
+                                "Order Placed",
+
+                                `Your order ${trackingId} has been placed successfully.`
+
+                            );
+                             db.query(
+
+    "DELETE FROM cart WHERE id IN (?)",
+
+    [cartIds],
+
+    (err)=>{
 
         if(err){
 
@@ -1684,152 +1889,66 @@ cartSql,
 
                 success:false,
 
-                message:"Cart Error"
+                message:"Cart Delete Failed"
+
             });
+
         }
 
+        res.json({
 
-        let total = 0;
+            success:true,
 
-        cartItems.forEach(item=>{
+            message:"Order Placed"
 
-            total +=
-
-            item.product_price *
-            item.quantity;
         });
 
+    }
 
-        total += 0;
+);
 
+                        }
 
-        const userSql =
-        "SELECT * FROM users WHERE email=?";
+                    );
 
-
-        db.query(userSql,
-
-        [req.user.email],
-
-        (err,userResult)=>{
-
-            const user =
-            userResult[0];
-
-           const trackingId =
-           "EB" + Date.now();
-              const estimatedDelivery = new Date();
-               estimatedDelivery.setDate(
-                 estimatedDelivery.getDate() + 7
-                   );
-
-
-                   const estimatedDeliveryDate =
-estimatedDelivery.toISOString().split("T")[0];
-console.log("Estimated Delivery:", estimatedDeliveryDate);
-
-const orderSql = `
-
-INSERT INTO orders
-(
-    user_email,
-    products,
-    total_price,
-    payment_method,
-    payment_id,
-    tracking_id,
-    order_status,
-    estimated_delivery,
-    customer_name,
-    phone,
-    address,
-    city,
-    state,
-    pincode
-)
-
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-
-`;
-            console.log("Estimated Delivery:", estimatedDeliveryDate);
-            db.query(orderSql,[
-
-                req.user.email,
-
-                JSON.stringify(cartItems),
-
-                total,
-
-                payment_method,
-                payment_id,
-                trackingId,
-
-                "Processing",
-
-                estimatedDeliveryDate,
-
-                user.name,
-
-                user.phone,
-
-                user.address,
-
-                user.city,
-
-                user.state,
-
-                user.pincode
-
-            ],
-
-            (err,result)=>{
-
-                if(err){
-
-                    console.log("ORDER SQL ERROR");
-                    console.log(err);
-
-                    return res.json({
-
-                        success:false,
-
-                        message:err.sqlMessage
-                    });
                 }
 
+            );
 
-                // NOTIFICATION
+        }
 
-    createNotification(
-
-        req.user.email,
-
-        "Order Placed",
-
-        `Your order ${trackingId} has been placed successfully.`
     );
 
-
-                // CLEAR CART
-
-                db.query(
-
-                "DELETE FROM cart WHERE user_email=?",
-                [req.user.email]
-                );
-
-
-                res.json({
-
-                    success:true,
-
-                    message:"Order Placed"
-                });
-            });
-        });
-    });
 });
 
+
+
+
+function getShippingCharge(state){
+
+    const shipping = {
+
+        "Odisha":299,
+        "West Bengal":499,
+        "Jharkhand":499,
+        "Chhattisgarh":499,
+        "Andhra Pradesh":599,
+        "Telangana":699,
+        "Karnataka":699,
+        "Tamil Nadu":799,
+        "Maharashtra":799,
+        "Delhi":899,
+        "Gujarat":899,
+        "Rajasthan":899,
+        "Punjab":999,
+        "Haryana":899,
+        "Kerala":999,
+        "Assam":999
+
+    };
+
+    return shipping[state] || 999;
+}
 
 // ================= GET ORDERS =================
 
@@ -1924,16 +2043,120 @@ app.put("/api/orders/:id/cancel", verifyToken, (req,res)=>{
 
 
 
+// ================= CHECKOUT SUMMARY =================
+app.post(
+"/api/checkout-summary",
+verifyToken,
+(req,res)=>{
+
+const { cartIds } = req.body;
+if(!cartIds || cartIds.length===0){
+
+    return res.json({
+
+        success:false,
+
+        message:"No Product Selected"
+
+    });
+
+}
+
+db.query(
+
+"SELECT * FROM users WHERE email=?",
+
+[req.user.email],
+
+(err,userResult)=>{
+
+if(err || userResult.length===0){
+
+return res.json({
+
+success:false,
+
+message:"User Not Found"
+
+});
+
+}
+
+const user=userResult[0];
+
+db.query(
+
+"SELECT * FROM cart WHERE user_email=? AND id IN (?)",
+
+[req.user.email,cartIds],
+
+(err,cart)=>{
+
+if(err){
+
+return res.json({
+
+success:false,
+
+message:"Cart Error"
+
+});
+
+}
+
+let subtotal=0;
+
+cart.forEach(item=>{
+
+subtotal+=
+
+Number(item.product_price)*
+
+Number(item.quantity);
+
+});
+
+const shipping=
+
+getShippingCharge(user.state);
+
+const total=
+
+subtotal+shipping;
+
+res.json({
+
+success:true,
+
+items:cart,
+
+subtotal,
+
+shipping,
+
+total
+
+});
+
+});
+
+});
+
+});
 
 
 
-
-
-// INVOICE
-
-// ======================
-// PROFESSIONAL INVOICE
-// ======================
+// ================= THEME COLORS =================
+const COLOR = {
+    maroon: "#4A0E1F",       // deep velvet maroon (headers, titles)
+    maroonLight: "#6E1B33",  // secondary maroon (table header bg)
+    gold: "#C9A227",         // golden accent (lines, borders, highlights)
+    goldLight: "#E8D9A0",    // soft gold (highlight boxes)
+    offWhite: "#FBF8F1",     // background tint
+    ink: "#2B2B2B",          // main text
+    subtext: "#6F6F6F",      // secondary text
+    border: "#E4D9C4"        // soft border tone
+};
 
 app.get("/api/invoice/:id", verifyToken, async (req, res) => {
 
@@ -1957,7 +2180,6 @@ app.get("/api/invoice/:id", verifyToken, async (req, res) => {
             });
 
             res.setHeader("Content-Type", "application/pdf");
-
             res.setHeader(
                 "Content-Disposition",
                 `attachment; filename=Invoice-${order.id}.pdf`
@@ -1966,626 +2188,414 @@ app.get("/api/invoice/:id", verifyToken, async (req, res) => {
             doc.pipe(res);
 
             // ======================
+            // PAGE BACKGROUND TINT
+            // ======================
+
+            doc
+                .rect(0, 0, doc.page.width, doc.page.height)
+                .fill(COLOR.offWhite);
+
+            // ======================
+            // HEADER BAND (Velvet Maroon)
+            // ======================
+
+            doc
+                .rect(0, 0, doc.page.width, 130)
+                .fill(COLOR.maroon);
+
+            // Thin gold accent line under header
+            doc
+                .rect(0, 130, doc.page.width, 4)
+                .fill(COLOR.gold);
+
+            // ======================
             // LOGO
             // ======================
+const headerHeight = 130;
+const logoWidth = 130;
+const logoHeight = 65;
 
-            try {
+const logoX = 30;
+const logoY = (headerHeight - logoHeight) / 2; 
 
-                doc.image(
-                    path.join(__dirname, "public/images/logo.png"),
-                    40,
-                    35,
-                    {
-                        width: 55
-                    }
-                );
 
-            } catch (e) {
+try {
+doc.image(
+    path.join(__dirname, "public/image/1000561758-removebg-preview.png"),
+    logoX,
+    logoY,
+    {
+        fit: [logoWidth, logoHeight]
+    }
+);
+} catch (err) {
+    console.log("Logo Missing");
+}
 
-                console.log("Logo Missing");
-
-            }
-
+const textX = logoX + logoWidth + 25;
             // ======================
-            // COMPANY
-            // ======================
-
-            doc
-                .fontSize(22)
-                .fillColor("#ff6600")
-                .text("STTYTT TECHNOLOGIES", 110, 40);
-
-            doc
-                .fontSize(11)
-                .fillColor("#444")
-                .text("Sustainable Electric Mobility", 110, 68);
-
-            doc.text("Bhubaneswar, Odisha", 110, 84);
-
-            doc.text("support@sttytt.com", 110, 100);
-
-            doc.text("+91 8480114554", 110, 116);
-
-            // ======================
-            // INVOICE TITLE
+            // COMPANY NAME + TAGLINE
             // ======================
 
             doc
-                .fontSize(28)
-                .fillColor("#111")
-                .text("INVOICE", 420, 45);
+                .fontSize(10)
+                .fillColor("#EDE3C8")
+                .text("Sustainable Electric Mobility", textX, 48);
 
-            doc.moveTo(40, 150)
-                .lineTo(555, 150)
-                .stroke("#dddddd");
+            doc
+                .fontSize(9)
+                .fillColor("#D8C9A3")
+                .text("Bhubaneswar, Odisha  |  sttytt.com@gmail.com |  +91 8480114554", textX,68);
 
             // ======================
-            // INVOICE DETAILS
+            // INVOICE TITLE (right side of header)
             // ======================
 
             doc
-                .fontSize(11)
-                .fillColor("black");
+                .fontSize(30)
+                .fillColor(COLOR.gold)
+                .text("INVOICE", 380, 40, { width: 175, align: "right" });
 
-            doc.text(
-                `Invoice No : INV-${1000 + order.id}`,
-                40,
-                170
-            );
+            doc
+                .fontSize(10)
+                .fillColor("#EDE3C8")
+                .text(`INV-${1000 + order.id}`, 380, 78, { width: 175, align: "right" });
 
-            doc.text(
-                `Order ID : ${order.id}`,
-                40,
-                190
-            );
+            // ======================
+            // INVOICE DETAILS STRIP
+            // ======================
 
-            doc.text(
-                `Tracking ID : ${order.tracking_id}`,
-                40,
-                210
-            );
+            let y = 155;
 
-            doc.text(
-                `Invoice Date : ${new Date(order.created_at).toLocaleDateString()}`,
-                40,
-                230
-            );
+            doc
+                .roundedRect(40, y, 515, 80, 6)
+                .fillAndStroke("#ffffff", COLOR.border);
 
-            doc.text(
-                `Payment : ${order.payment_method}`,
-                330,
-                170
-            );
+            doc.fillColor(COLOR.subtext).fontSize(9);
+            doc.text("ORDER ID", 55, y + 12);
+            doc.text("TRACKING ID", 195, y + 12);
+            doc.text("INVOICE DATE", 335, y + 12);
+
+            doc.fillColor(COLOR.ink).fontSize(11);
+            doc.text(order.id.toString(), 55, y + 26);
+            doc.text(order.tracking_id || "N/A", 195, y + 26);
+            doc.text(new Date(order.created_at).toLocaleDateString(), 335, y + 26);
 
             const paymentStatus =
                 order.payment_method === "COD"
-                    ? (order.order_status === "Delivered"
-                        ? "Paid"
-                        : "Pending")
+                    ? (order.order_status === "Delivered" ? "Paid" : "Pending")
                     : "Paid";
 
-            doc.text(
-                `Payment Status : ${paymentStatus}`,
-                330,
-                190
-            );
+            doc.fillColor(COLOR.subtext).fontSize(9);
+            doc.text("PAYMENT METHOD", 55, y + 48);
+            doc.text("PAYMENT STATUS", 195, y + 48);
+            doc.text("ORDER STATUS", 335, y + 48);
 
-            doc.text(
-                `Order Status : ${order.order_status}`,
-                330,
-                210
-            );
+            doc.fillColor(COLOR.ink).fontSize(11);
+            doc.text(order.payment_method, 55, y + 62);
 
-            doc.moveTo(40, 255)
-                .lineTo(555, 255)
-                .stroke("#dddddd");
+            doc
+                .fillColor(paymentStatus === "Paid" ? "#2E7D32" : COLOR.maroon)
+                .text(paymentStatus, 195, y + 62);
+
+            doc.fillColor(COLOR.ink).text(order.order_status, 335, y + 62);
+
+            y += 100;
 
             // ======================
-            // CUSTOMER DETAILS
+            // BILL TO
             // ======================
 
             doc
-                .fontSize(15)
-                .fillColor("#ff6600")
-                .text("Bill To", 40, 275);
+                .fontSize(13)
+                .fillColor(COLOR.maroon)
+                .text("BILL TO", 40, y);
 
             doc
-                .fontSize(11)
-                .fillColor("black");
+                .moveTo(40, y + 16)
+                .lineTo(120, y + 16)
+                .lineWidth(2)
+                .stroke(COLOR.gold);
 
-            doc.text(order.customer_name, 40, 300);
+            y += 26;
 
-            doc.text(order.phone, 40, 318);
+            doc.fillColor(COLOR.ink).fontSize(11);
+            doc.text(order.customer_name, 40, y);
+            doc.text(order.phone, 40, y + 16);
+            doc.text(order.address, 40, y + 32, { width: 300 });
+            doc.text(`${order.district}, ${order.state} - ${order.pincode}`, 40, y + 48);
 
-            doc.text(order.address, 40, 336);
-
-            doc.text(
-                `${order.city}, ${order.state} - ${order.pincode}`,
-                40,
-                354
-            );
+            y += 80;
 
             // ======================
-            // PRODUCT TABLE
-            // (Continue in Part 2)
+            // PRODUCT TABLE HEADER
             // ======================
+
+            const drawTableHeader = (yPos) => {
+                doc
+                    .roundedRect(40, yPos, 515, 30, 4)
+                    .fill(COLOR.maroonLight);
+
+                doc.fillColor(COLOR.goldLight).fontSize(10);
+                doc.text("PRODUCT", 55, yPos + 10);
+                doc.text("QTY", 300, yPos + 10, { width: 40, align: "center" });
+                doc.text("PRICE", 365, yPos + 10, { width: 70, align: "right" });
+                doc.text("TOTAL", 470, yPos + 10, { width: 70, align: "right" });
+
+                doc.fillColor(COLOR.ink);
+                return yPos + 30;
+            };
+
+            y = drawTableHeader(y);
+
+            let subtotal = 0;
+
             // ======================
-// PRODUCT TABLE HEADER
-// ======================
+            // PRODUCT ROWS
+            // ======================
 
-let y = 390;
+            products.forEach((item, index) => {
 
-doc
-    .rect(40, y, 515, 28)
-    .fill("#ff6600");
+                if (y > 700) {
+                    doc.addPage();
+                    doc.rect(0, 0, doc.page.width, doc.page.height).fill(COLOR.offWhite);
+                    y = 50;
+                    y = drawTableHeader(y);
+                }
 
-doc
-    .fillColor("white")
-    .fontSize(11);
+                const total = Number(item.product_price) * Number(item.quantity);
+                subtotal += total;
 
-doc.text("Product", 50, y + 8);
+                // Zebra striping for readability
+                if (index % 2 === 0) {
+                    doc.rect(40, y, 515, 30).fill("#FFFFFF");
+                } else {
+                    doc.rect(40, y, 515, 30).fill("#F3ECD9");
+                }
 
-doc.text("Qty", 300, y + 8, {
-    width: 40,
-    align: "center"
-});
+                doc
+                    .rect(40, y, 515, 30)
+                    .stroke(COLOR.border);
 
-doc.text("Price", 365, y + 8, {
-    width: 70,
-    align: "right"
-});
+                doc
+                    .fillColor(COLOR.ink)
+                    .fontSize(10)
+                    .text(item.product_name, 50, y + 9, { width: 220 });
 
-doc.text("Total", 470, y + 8, {
-    width: 70,
-    align: "right"
-});
+                doc.text(item.quantity.toString(), 305, y + 9, { width: 30, align: "center" });
+                doc.text(`Rs. ${item.product_price}`, 360, y + 9, { width: 70, align: "right" });
+                doc.text(`Rs. ${total}`, 465, y + 9, { width: 70, align: "right" });
 
-doc.fillColor("black");
+                y += 30;
+            });
 
-y += 28;
+            y += 25;
 
-let subtotal = 0;
+            // ======================
+            // TOTALS
+            // ======================
 
-// ======================
-// PRODUCTS
-// ======================
+            const shipping =
+            Number(order.shipping_charge || 0);
+            const discount = 0;
+            const gst = 0;
+            const grandTotal = Number(order.total_price);
 
-products.forEach((item, index) => {
-
-    // Automatic new page
-    if (y > 700) {
-
-        doc.addPage();
-
-        y = 50;
-
-        doc
-            .rect(40, y, 515, 28)
-            .fill("#ff6600");
-
-        doc.fillColor("white");
-
-        doc.text("Product", 50, y + 8);
-
-        doc.text("Qty", 300, y + 8, {
-            width: 40,
-            align: "center"
-        });
-
-        doc.text("Price", 365, y + 8, {
-            width: 70,
-            align: "right"
-        });
-
-        doc.text("Total", 470, y + 8, {
-            width: 70,
-            align: "right"
-        });
-
-        doc.fillColor("black");
-
-        y += 28;
-    }
-
-    const total =
-        Number(item.product_price) *
-        Number(item.quantity);
-
-    subtotal += total;
-
-    // Row Border
-    doc
-        .rect(40, y, 515, 30)
-        .stroke("#dddddd");
-
-    // Product Name
-    doc
-        .fontSize(10)
-        .text(
-            item.product_name,
-            50,
-            y + 9,
-            {
-                width: 220
+            if (y > 600) {
+                doc.addPage();
+                doc.rect(0, 0, doc.page.width, doc.page.height).fill(COLOR.offWhite);
+                y = 60;
             }
-        );
 
-    // Qty
-    doc.text(
-        item.quantity.toString(),
-        305,
-        y + 9,
-        {
-            width: 30,
-            align: "center"
+            doc.moveTo(300, y).lineTo(555, y).stroke(COLOR.gold);
+            y += 18;
+
+            const totalRow = (label, value, bold = false) => {
+                doc
+                    .fontSize(bold ? 12 : 10)
+                    .fillColor(bold ? COLOR.maroon : COLOR.subtext)
+                    .text(label, 320, y);
+
+                doc
+                    .fillColor(bold ? COLOR.maroon : COLOR.ink)
+                    .text(value, 465, y, { width: 75, align: "right" });
+
+                y += bold ? 24 : 20;
+            };
+
+            totalRow("Subtotal", `Rs. ${subtotal.toFixed(2)}`);
+            totalRow("Shipping", shipping === 0 ? "FREE" : `Rs. ${shipping}`);
+            totalRow("Discount", `Rs. ${discount}`);
+            totalRow("GST", gst === 0 ? "Included" : `Rs. ${gst}`);
+
+            y += 8;
+
+            // ======================
+            // GRAND TOTAL — GOLD BOX
+            // ======================
+
+            doc
+                .roundedRect(300, y - 10, 255, 42, 6)
+                .fillAndStroke(COLOR.goldLight, COLOR.gold);
+
+            doc
+                .fillColor(COLOR.maroon)
+                .fontSize(15)
+                .text("GRAND TOTAL", 315, y + 3);
+
+            doc
+                .fontSize(16)
+                .text(`Rs. ${grandTotal.toFixed(2)}`, 440, y + 2, { width: 95, align: "right" });
+
+            y += 75;
+
+            // ======================
+            // QR CODE — TRACKING / PAYMENT VERIFICATION
+            // ======================
+
+            try {
+                const qrData = `https://sttytt.com/track/${order.tracking_id || order.id}`;
+                const qrBuffer = await QRCode.toBuffer(qrData, {
+                    margin: 1,
+                    color: {
+                        dark: COLOR.maroon,
+                        light: "#FFFFFF"
+                    }
+                });
+
+                if (y > 640) {
+                    doc.addPage();
+                    doc.rect(0, 0, doc.page.width, doc.page.height).fill(COLOR.offWhite);
+                    y = 60;
+                }
+
+                doc
+                    .fontSize(13)
+                    .fillColor(COLOR.maroon)
+                    .text("Scan to Track Your Order", 40, y);
+
+                doc.image(qrBuffer, 40, y + 18, { width: 80 });
+
+                doc
+                    .fontSize(9)
+                    .fillColor(COLOR.subtext)
+                    .text(qrData, 130, y + 45, { width: 200 });
+
+                // Payment details beside QR
+                doc
+                    .fontSize(13)
+                    .fillColor(COLOR.maroon)
+                    .text("Payment Details", 340, y);
+
+                doc.fontSize(10).fillColor(COLOR.ink);
+                doc.text(`Method: ${order.payment_method}`, 340, y + 20);
+                doc.text(`Status: ${paymentStatus}`, 340, y + 36);
+                doc.text(`Order Status: ${order.order_status}`, 340, y + 52);
+
+                y += 115;
+
+            } catch (e) {
+                console.log("QR generation failed:", e.message);
+                y += 20;
+            }
+
+            // ======================
+            // THANK YOU BAND
+            // ======================
+
+            if (y > 650) {
+                doc.addPage();
+                doc.rect(0, 0, doc.page.width, doc.page.height).fill(COLOR.offWhite);
+                y = 60;
+            }
+
+            doc.moveTo(40, y).lineTo(555, y).stroke(COLOR.border);
+            y += 22;
+
+            doc
+                .fontSize(18)
+                .fillColor(COLOR.maroon)
+                .text("Thank You For Shopping With Us!", 40, y, { width: 515, align: "center" });
+
+            y += 28;
+
+            doc
+                .fontSize(10)
+                .fillColor(COLOR.subtext)
+                .text(
+                    "We appreciate your trust in sustainable electric mobility from STTYTT Technologies.",
+                    40, y, { width: 515, align: "center" }
+                );
+
+            y += 35;
+
+            // ======================
+            // TERMS & CONDITIONS
+            // ======================
+
+            doc
+                .fontSize(12)
+                .fillColor(COLOR.maroon)
+                .text("Terms & Conditions", 40, y);
+
+            y += 18;
+
+            doc.fontSize(9).fillColor(COLOR.ink);
+            doc.text("•  Goods once sold will not be taken back except for manufacturing defects.", 40, y);
+            doc.text("•  Warranty is applicable strictly as per company policy.", 40, y + 14);
+            doc.text("•  This is a computer-generated invoice and does not require a physical signature.", 40, y + 28);
+
+            y += 55;
+
+            // ======================
+            // FOOTER BAND
+            // ======================
+
+            doc.rect(0, y, doc.page.width, doc.page.height - y).fill(COLOR.maroon);
+            doc.rect(0, y, doc.page.width, 3).fill(COLOR.gold);
+
+            y += 22;
+
+            doc
+                .fontSize(13)
+                .fillColor(COLOR.gold)
+                .text("STTYTT TECHNOLOGIES PVT. LTD.", 40, y, { width: 515, align: "center" });
+
+            y += 20;
+
+            doc
+                .fontSize(9)
+                .fillColor("#F8E8B0")
+                .text("Sustainable Electric Mobility Store", 40, y, { width: 515, align: "center" });
+
+            y += 18;
+
+            doc
+                .fillColor("#FFFFFF")
+                .text(
+               "Email: sttytt.com@gmail.com  |  Website: www.sttytt.com  |  Phone: +91 8480114554  |  Bhubaneswar, Odisha",
+                40, y, { width: 515, align: "center" }
+            );
+
+            y += 22;
+            
+            
+            doc
+                .fontSize(8)
+                .fillColor("#D7C18A")
+                .text(
+                    "© 2026 STTYTT Technologies Pvt. Ltd. All Rights Reserved.",
+                    40, y, { width: 515, align: "center" }
+                );
+
+            // ======================
+            // FINISH PDF
+            // ======================
+
+            doc.end();
         }
     );
-
-    // Price
-    doc.text(
-        `₹${item.product_price}`,
-        360,
-        y + 9,
-        {
-            width: 70,
-            align: "right"
-        }
-    );
-
-    // Total
-    doc.text(
-        `₹${total}`,
-        465,
-        y + 9,
-        {
-            width: 70,
-            align: "right"
-        }
-    );
-
-    y += 30;
-
 });
-
-// ======================
-// SPACE AFTER TABLE
-// ======================
-
-y += 25;
-
-// Continue in Part 3...
-// ======================
-// TOTAL SECTION
-// ======================
-
-const shipping = 0;
-const discount = 0;
-const gst = 0;
-const grandTotal = Number(order.total_price);
-
-// Agar page me space kam ho to new page
-if (y > 620) {
-    doc.addPage();
-    y = 60;
-}
-
-// Line
-doc
-    .moveTo(300, y)
-    .lineTo(555, y)
-    .stroke("#cccccc");
-
-y += 20;
-
-// Subtotal
-doc
-    .fontSize(11)
-    .fillColor("black")
-    .text("Subtotal", 320, y);
-
-doc.text(
-    `₹${subtotal.toFixed(2)}`,
-    470,
-    y,
-    {
-        width: 70,
-        align: "right"
-    }
-);
-
-y += 22;
-
-// Shipping
-doc.text("Shipping", 320, y);
-
-doc.text(
-    shipping === 0 ? "FREE" : `₹${shipping}`,
-    470,
-    y,
-    {
-        width: 70,
-        align: "right"
-    }
-);
-
-y += 22;
-
-// Discount
-doc.text("Discount", 320, y);
-
-doc.text(
-    `₹${discount}`,
-    470,
-    y,
-    {
-        width: 70,
-        align: "right"
-    }
-);
-
-y += 22;
-
-// GST
-doc.text("GST", 320, y);
-
-doc.text(
-    gst === 0 ? "Included" : `₹${gst}`,
-    470,
-    y,
-    {
-        width: 70,
-        align: "right"
-    }
-);
-
-y += 30;
-
-// ======================
-// GRAND TOTAL BOX
-// ======================
-
-doc
-    .roundedRect(300, y - 10, 255, 40, 5)
-    .fill("#fff4e8");
-
-doc
-    .fillColor("#ff6600")
-    .fontSize(16)
-    .text("Grand Total", 315, y + 2);
-
-doc.text(
-    `₹${grandTotal.toFixed(2)}`,
-    445,
-    y + 2,
-    {
-        width: 90,
-        align: "right"
-    }
-);
-
-doc.fillColor("black");
-
-y += 70;
-
-// ======================
-// PAYMENT DETAILS
-// ======================
-
-if (y > 650) {
-    doc.addPage();
-    y = 60;
-}
-
-doc
-    .fontSize(15)
-    .fillColor("#ff6600")
-    .text("Payment Details", 40, y);
-
-y += 28;
-
-doc
-    .fontSize(11)
-    .fillColor("black");
-
-doc.text(
-    `Payment Method : ${order.payment_method}`,
-    40,
-    y
-);
-
-y += 20;
-
-doc.text(
-    `Payment Status : ${paymentStatus}`,
-    40,
-    y
-);
-
-y += 20;
-
-doc.text(
-    `Order Status : ${order.order_status}`,
-    40,
-    y
-);
-
-y += 20;
-
-doc.text(
-    `Tracking ID : ${order.tracking_id}`,
-    40,
-    y
-);
-
-y += 40;
-
-// ======================
-// Continue in Part 4
-// ======================
-// ======================
-// THANK YOU
-// ======================
-
-doc
-    .moveTo(40, y)
-    .lineTo(555, y)
-    .stroke("#dddddd");
-
-y += 20;
-
-doc
-    .fontSize(20)
-    .fillColor("#ff6600")
-    .text(
-        "Thank You For Shopping!",
-        40,
-        y,
-        {
-            width: 515,
-            align: "center"
-        }
-    );
-
-y += 35;
-
-doc
-    .fontSize(11)
-    .fillColor("#444444")
-    .text(
-        "We appreciate your purchase from STTYTT Technologies.",
-        40,
-        y,
-        {
-            width: 515,
-            align: "center"
-        }
-    );
-
-y += 35;
-
-// ======================
-// TERMS
-// ======================
-
-doc
-    .fontSize(13)
-    .fillColor("#ff6600")
-    .text("Terms & Conditions", 40, y);
-
-y += 20;
-
-doc
-    .fontSize(10)
-    .fillColor("black");
-
-doc.text("• Goods once sold will not be taken back except manufacturing defects.");
-
-doc.text("• Warranty is applicable as per company policy.");
-
-doc.text("• This is a computer-generated invoice and does not require a physical signature.");
-
-y += 40;
-
-// ======================
-// FOOTER
-// ======================
-
-doc.moveTo(40, y)
-    .lineTo(555, y)
-    .stroke("#dddddd");
-
-y += 15;
-
-doc
-    .fontSize(14)
-    .fillColor("#ff6600")
-    .text(
-        "STTYTT TECHNOLOGIES PVT. LTD.",
-        40,
-        y,
-        {
-            width: 515,
-            align: "center"
-        }
-    );
-
-y += 22;
-
-doc
-    .fontSize(10)
-    .fillColor("#555555")
-    .text(
-        "Sustainable Electric Mobility Store",
-        40,
-        y,
-        {
-            width: 515,
-            align: "center"
-        }
-    );
-
-y += 18;
-
-doc.text(
-    "Email : sttytt.com@gmail.com",
-    40,
-    y,
-    {
-        width: 515,
-        align: "center"
-    }
-);
-
-y += 16;
-
-doc.text(
-    "Website : www.sttytt.com",
-    40,
-    y,
-    {
-        width: 515,
-        align: "center"
-    }
-);
-
-y += 16;
-
-doc.text(
-    "Customer Care : +91 8480114554",
-    40,
-    y,
-    {
-        width: 515,
-        align: "center"
-    }
-);
-
-y += 25;
-
-doc
-    .fontSize(9)
-    .fillColor("#888888")
-    .text(
-        "© 2026 STTYTT Technologies Pvt. Ltd. All Rights Reserved.",
-        40,
-        y,
-        {
-            width: 515,
-            align: "center"
-        }
-    );
-
-// ======================
-// FINISH PDF
-// ======================
-
-doc.end();
-
-        }
-    );
-
-});
-
 
 
 
@@ -2923,7 +2933,7 @@ app.get("/api/admin/users",verifyToken,verifyAdmin, (req, res) => {
         email,
         phone,
         address,
-        city,
+        district,
         state,
         pincode
     FROM users

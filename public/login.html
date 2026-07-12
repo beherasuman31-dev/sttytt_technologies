@@ -13,6 +13,9 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- GOOGLE LOGIN -->
     <script src="https://accounts.google.com/gsi/client"
         async defer></script>
@@ -20,7 +23,23 @@
     <style>
 
         :root{
-            --primary-blue:#004aad;
+            --bg:#FAF3E0;
+            --white:#FFFFFF;
+            --ink:#2A0E0E;
+            --text:#6B5A4E;
+            --border:#E6D9BE;
+
+            --maroon:#3D0000;
+            --maroon-2:#6B0000;
+            --maroon-3:#1F0000;
+
+            --gold:#D4AF37;
+            --gold-light:#F5DEB3;
+            --gold-dark:#8B6914;
+            --gold-tint:#FBF0D9;
+
+            --shadow-lg:0 15px 35px rgba(31,0,0,0.12);
+            --shadow-gold:0 6px 20px rgba(212,175,55,.35);
         }
 
         *{
@@ -31,9 +50,11 @@
 
         body{
 
-            font-family:'Segoe UI',sans-serif;
+            font-family:'DM Sans', 'Segoe UI', sans-serif;
 
-            background:#e9ecef;
+            background:var(--bg);
+
+            color:var(--ink);
 
             display:flex;
 
@@ -44,15 +65,22 @@
             min-height:100vh;
         }
 
+        h2{
+            font-family:'Big Shoulders Display', sans-serif;
+            color:var(--maroon-2);
+        }
+
         .auth-card{
 
-            background:white;
+            background:var(--white);
 
             padding:30px;
 
             border-radius:18px;
 
-            box-shadow:0 15px 35px rgba(0,0,0,0.1);
+            box-shadow:var(--shadow-lg);
+
+            border:1px solid var(--border);
 
             width:100%;
 
@@ -65,7 +93,7 @@
 
             margin-bottom:25px;
 
-            border-bottom:2px solid #eee;
+            border-bottom:2px solid var(--border);
         }
 
         .tab-btn{
@@ -80,16 +108,16 @@
 
             font-weight:bold;
 
-            color:#888;
+            color:#9A8B7A;
 
             transition:0.3s;
         }
 
         .tab-btn.active{
 
-            color:var(--primary-blue);
+            color:var(--maroon-2);
 
-            border-bottom:3px solid var(--primary-blue);
+            border-bottom:3px solid var(--gold-dark);
         }
 
         .form-section{
@@ -116,6 +144,8 @@
             margin-bottom:5px;
 
             font-weight:600;
+
+            color:var(--ink);
         }
 
         input{
@@ -124,16 +154,22 @@
 
             padding:12px;
 
-            border:1px solid #ddd;
+            border:1px solid var(--border);
 
             border-radius:8px;
 
             outline:none;
+
+            font-family:'DM Sans', sans-serif;
+
+            color:var(--ink);
         }
 
         input:focus{
 
-            border-color:var(--primary-blue);
+            border-color:var(--gold-dark);
+
+            box-shadow:0 0 0 4px var(--gold-tint);
         }
 
         .eye-icon{
@@ -146,7 +182,7 @@
 
             cursor:pointer;
 
-            color:#999;
+            color:#B0A18E;
         }
 
         .submit-btn{
@@ -155,9 +191,9 @@
 
             padding:14px;
 
-            background:var(--primary-blue);
+            background:linear-gradient(135deg, var(--gold-dark), var(--gold) 50%, var(--gold-light));
 
-            color:white;
+            color:var(--maroon-3);
 
             border:none;
 
@@ -168,6 +204,17 @@
             font-weight:bold;
 
             margin-top:10px;
+
+            transition:0.3s ease;
+        }
+
+        .submit-btn:hover{
+
+            background:linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+
+            box-shadow:var(--shadow-gold);
+
+            transform:translateY(-2px);
         }
 
         .social-container{
@@ -183,7 +230,7 @@
 
             font-size:12px;
 
-            color:#aaa;
+            color:#A0937E;
 
             position:relative;
         }
@@ -201,7 +248,7 @@
 
             height:1px;
 
-            background:#eee;
+            background:var(--border);
         }
 
         .divider::before{
@@ -220,9 +267,9 @@
 
             border-radius:8px;
 
-            background:black;
+            background:var(--maroon-3);
 
-            color:white;
+            color:var(--gold-light);
 
             border:none;
 
@@ -237,6 +284,13 @@
             font-weight:500;
 
             margin-top:10px;
+
+            transition:0.3s ease;
+        }
+
+        .apple-btn:hover{
+
+            background:var(--maroon-2);
         }
 
     </style>
@@ -300,7 +354,7 @@
             <div style="text-align:right;margin-top:10px;margin-bottom:15px;">
 
                  <a href="#" id="forgot-link"
-                 style="color:#004aad;font-size:14px;text-decoration:none;">
+                 style="color:var(--gold-dark);font-size:14px;text-decoration:none;">
 
               Forgot Password?
 
@@ -328,7 +382,8 @@
         id="forgot-otp"
         placeholder="Enter 6 digit OTP">
 
-    <button id="verify-forgot-otp-btn">
+    <button id="verify-forgot-otp-btn"
+        class="submit-btn">
 
         Verify OTP
 
@@ -352,7 +407,8 @@ type="password"
 id="confirm-new-password"
 placeholder="Confirm Password">
 
-<button id="reset-password-btn">
+<button id="reset-password-btn"
+    class="submit-btn">
 
 Reset Password
 
@@ -428,7 +484,7 @@ Reset Password
         Verify Your Email
     </h2>
 
-    <p style="text-align:center;color:#666;margin-bottom:20px;">
+    <p style="text-align:center;color:var(--text);margin-bottom:20px;">
         We have sent a 6 digit OTP to your email.
     </p>
 
@@ -456,7 +512,8 @@ Reset Password
 
     Didn't receive OTP?
 
-    <a href="#" id="resend-register-otp">
+    <a href="#" id="resend-register-otp"
+        style="color:var(--gold-dark);">
 
         Resend OTP
 
@@ -468,7 +525,8 @@ Reset Password
     style="text-align:center;margin-top:15px;">
 
         <a href="#"
-        id="back-register">
+        id="back-register"
+        style="color:var(--gold-dark);">
 
             Back To Register
 
@@ -511,7 +569,8 @@ Reset Password
 
         <a
         href="#"
-        id="back-login">
+        id="back-login"
+        style="color:var(--gold-dark);">
 
             Back to Login
 
@@ -673,14 +732,6 @@ if(password !== confirm){
 
 }
 
-
-
-
-
-
-
-
-
     try{
 
         const response = await fetch(
@@ -795,7 +846,7 @@ document
 
 }else{
 
-    window.location.href = "index.html";
+    window.location.href = "product.html";
 
 }
         }

@@ -68,7 +68,7 @@ href="checkout.css"><link rel="stylesheet"href="https://cdnjs.cloudflare.com/aja
 
             <span>Shipping</span>
 
-            <span>
+            <span id="shippingCharge">
             ₹0
             </span>
 
@@ -118,7 +118,7 @@ href="checkout.css"><link rel="stylesheet"href="https://cdnjs.cloudflare.com/aja
         value="UPI"
     >
 
-    <span>UPI Payment</span>
+    <span>UPI Payment(Rozerpay)</span>
 
     
     <!-- ARROW -->
@@ -129,7 +129,29 @@ href="checkout.css"><link rel="stylesheet"href="https://cdnjs.cloudflare.com/aja
     </button>
 
 </div>
-   
+
+<!-- Scan QR -->
+<div class="paymentOption">
+    <input
+        type="radio"
+        name="payment"
+        value="QR"
+        id="qrPayment"
+    >
+
+    <span>Scan QR & Pay</span>
+</div>
+   <div id="qrBox" style="display:none">
+
+    <img src="image/QR.jpeg">
+
+   <input
+    id="utrNumber"
+    type="text"
+    maxlength="22"
+    placeholder="Enter UTR / Transaction ID">
+
+</div>
 
     </div>
 
@@ -161,18 +183,20 @@ id="addressModal"><div class="modalContent">
     id="address"
     placeholder="Address"></textarea>
 
-    <input type="text"
-    id="city"
-    placeholder="City">
+   <select id="country">
+    <option value="India">India</option>
+</select>
 
-    <input type="text"
-    id="state"
-    placeholder="State">
+<select id="state"><option value="">Select State</option></select>
 
-    <input type="text"
-    id="pincode"
-    placeholder="Pincode">
+<select id="district"><option value="">
+        Select District
+    </option></select>
 
+<input
+type="text"
+id="pincode"
+placeholder="Pincode">
     <button id="saveAddress">
 
     Save Address

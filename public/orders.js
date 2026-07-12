@@ -61,6 +61,11 @@ fetch("http://localhost:5000/api/orders",{
                 productsHTML += `
 
                 <div class="ordered-product">
+                 <img
+            src="http://localhost:5000${item.product_image}"
+           class="ordered-product-image">
+
+               <div>
 
                     <h4>
                         ${item.product_name}
@@ -75,6 +80,8 @@ fetch("http://localhost:5000/api/orders",{
                     </p>
 
                 </div>
+                </div>
+                
 
                 `;
             });
@@ -124,6 +131,15 @@ if (order.payment_method === "COD") {
                 ${order.payment_method}
             </p>
 
+             ${order.payment_method === "QR" ? `
+
+<p>
+<strong>UTR Number:</strong>
+${order.utr_number || "Not Submitted"}
+</p>
+
+` : ""}
+
             <p>
                 <strong>Customer:</strong>
                 ${order.customer_name}
@@ -138,7 +154,7 @@ if (order.payment_method === "COD") {
                 <strong>Address:</strong>
 
                 ${order.address},
-                ${order.city},
+                ${order.district},
                 ${order.state}
                 -
                 ${order.pincode}

@@ -16,7 +16,6 @@ document.getElementById("totalPrice");
 const checkoutBtn =
 document.querySelector(".checkout-btn");
 
-let shipping = 500;
 let cartData = [];
 
 
@@ -51,15 +50,19 @@ async function loadCart(){
 
             <div class="empty-cart">
 
-                Your cart is empty
+            🛒
+
+Your Cart is Empty
+
+Continue Shopping
 
             </div>
 
             `;
 
-            subtotalElement.innerText = "₹0";
-            totalPriceElement.innerText = "₹0";
+             subtotalElement.innerText="₹0";
 
+    totalPriceElement.innerText="₹0";
             return;
         }
 
@@ -73,9 +76,19 @@ async function loadCart(){
 
             <div class="cart-card">
 
-                <div class="cart-product">
 
-                    <img src="${item.product_image}">
+                <div class="checkbox-box">
+
+        <input
+            type="checkbox"
+            class="cart-checkbox"
+            data-id="${item.id}"
+            checked>
+
+    </div>
+
+                <div class="cart-product">
+                 <img src="http://localhost:5000${item.product_image}" class="cart_img">
 
                     <div class="cart-details">
 
@@ -102,23 +115,17 @@ async function loadCart(){
 
                             </button>
 
-                            <span class="quantity-number">
+                            <span class="quantity-number" id="qty-${item.id}" >
 
                                 ${item.quantity}
 
                             </span>
 
                             <button
-                            class="quantity-btn"
-
-                            onclick="increaseQty(
-                            ${item.id},
-                            ${item.quantity}
-                            )">
-
-                            +
-
-                            </button>
+class="quantity-btn"
+onclick="increaseQty(${item.id}, ${item.quantity})">
++
+</button>
 
                         </div>
 
@@ -135,7 +142,7 @@ async function loadCart(){
 
                 </div>
 
-                <div class="cart-price">
+                <div class="cart-price" id="price-${item.id}">
 
                     ₹${item.product_price}
 
@@ -146,11 +153,14 @@ async function loadCart(){
             `;
         });
 
-        subtotalElement.innerText =
-        `₹${subtotal}`;
+        document.querySelectorAll(".cart-checkbox").forEach(box=>{
 
-        totalPriceElement.innerText =
-        `₹${subtotal + shipping}`;
+    box.addEventListener("change",updateSummary);
+
+});
+
+updateSummary();
+
 
     }
 
@@ -159,6 +169,46 @@ async function loadCart(){
         console.log("LOAD CART ERROR");
         console.log(err);
     }
+}
+
+// ================= CHECKOUT =================
+
+if(checkoutBtn){
+
+    checkoutBtn.addEventListener("click",()=>{
+
+        const selectedIds=[];
+
+        document.querySelectorAll(".cart-checkbox").forEach(box=>{
+
+            if(box.checked){
+
+                selectedIds.push(Number(box.dataset.id));
+
+            }
+
+        });
+
+        if(selectedIds.length===0){
+
+            alert("Please select at least one product.");
+
+            return;
+
+        }
+
+        localStorage.setItem(
+
+            "selectedCartIds",
+
+            JSON.stringify(selectedIds)
+
+        );
+
+        window.location.href="checkout.html";
+
+    });
+
 }
 
 
@@ -222,7 +272,16 @@ async function increaseQty(id,qty){
             }
         );
 
-        loadCart();
+          const item = cartData.find(p => p.id == id);
+
+item.quantity = qty;
+
+document.getElementById(`qty-${id}`).innerText = qty;
+
+document.getElementById(`price-${id}`).innerText =
+`₹${item.product_price * qty}`;
+
+updateSummary();
 
     }catch(err){
 
@@ -266,7 +325,16 @@ async function decreaseQty(id,qty){
             }
         );
 
-        loadCart();
+        const item = cartData.find(p => p.id == id);
+
+item.quantity = qty;
+
+document.getElementById(`qty-${id}`).innerText = qty;
+
+document.getElementById(`price-${id}`).innerText =
+`₹${item.product_price * qty}`;
+
+updateSummary();
 
     }catch(err){
 
@@ -275,29 +343,41 @@ async function decreaseQty(id,qty){
 }
 
 
+function updateSummary(){
 
-// ================= CHECKOUT =================
+    let subtotal=0;
 
-if(checkoutBtn){
+    document.querySelectorAll(".cart-checkbox").forEach(box=>{
 
-    checkoutBtn.addEventListener(
+        if(box.checked){
 
-        "click",
+            const item=cartData.find(
 
-        ()=>{
+                p=>p.id==box.dataset.id
 
-            localStorage.setItem(
-
-                "checkoutItems",
-
-                JSON.stringify(cartData)
             );
 
-            window.location.href =
-            "checkout.html";
+            if(item){
+
+                subtotal+=
+                Number(item.product_price)*
+                Number(item.quantity);
+
+            }
+
         }
-    );
+
+    });
+
+    subtotalElement.innerText=`₹${subtotal}`;
+
+    totalPriceElement.innerText=`₹${subtotal}`;
+       // Buy Now button enable/disable
+    checkoutBtn.disabled = (subtotal === 0);
+
 }
+
+
 
 
 

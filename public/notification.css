@@ -1,22 +1,24 @@
 /* =========================
    STTYTT — Notifications Page
-   Consistent Navy × Blue System
+   Consistent Maroon × Gold System
 ========================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-    --navy:#0B1F3A;
-    --blue:#2F6FED;
-    --blue-tint:#E8EEFC;
-    --teal:#14B8A6;
-    --bg:#F7F5F0;
+    --maroon:#3D0000;
+    --maroon-2:#6B0000;
+    --maroon-3:#1F0000;
+    --gold:#D4AF37;
+    --gold-dark:#8B6914;
+    --gold-light:#F5DEB3;
+    --bg:#FAF3E0;
     --white:#FFFFFF;
-    --ink:#12172B;
-    --muted:#667085;
-    --border:#E4E1D8;
-    --shadow:0 6px 20px rgba(11,31,58,.06);
-    --shadow-hover:0 14px 32px rgba(11,31,58,.10);
+    --ink:#2A0E0E;
+    --muted:#7A6A5D;
+    --border:#E6D9BE;
+    --shadow:0 6px 20px rgba(31,0,0,.07);
+    --shadow-hover:0 14px 32px rgba(31,0,0,.12);
 }
 
 *{
@@ -35,7 +37,7 @@ body{
 h1{
     text-align:center;
     margin-bottom:30px;
-    color:var(--navy);
+    color:var(--maroon-2);
     font-family:'Big Shoulders Display', sans-serif;
     font-size:34px;
     font-weight:700;
@@ -52,7 +54,7 @@ h1{
 
 .notification{
     background:var(--white);
-    border-left:4px solid var(--blue);
+    border-left:4px solid var(--gold-dark);
     padding:20px 22px;
     border-radius:14px;
     box-shadow:var(--shadow);
@@ -65,11 +67,11 @@ h1{
 .notification:hover{
     transform:translateY(-3px);
     box-shadow:var(--shadow-hover);
-    border-left-color:var(--teal);
+    border-left-color:var(--gold);
 }
 
 .notification h3{
-    color:var(--navy);
+    color:var(--maroon-2);
     margin-bottom:8px;
     font-family:'Big Shoulders Display', sans-serif;
     font-size:20px;
@@ -84,7 +86,7 @@ h1{
 }
 
 .notification small{
-    color:#9AA3B0;
+    color:#A0937E;
     display:block;
     text-align:right;
     font-size:12.5px;
@@ -142,7 +144,7 @@ h1{
 
     .notification{
         padding:16px;
-        border-left:4px solid var(--blue);
+        border-left:4px solid var(--gold-dark);
     }
 
     .notification h3{

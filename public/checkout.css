@@ -1,24 +1,26 @@
 /* =========================
    STTYTT — Checkout Page
-   Consistent Navy × Blue System
+   Consistent Maroon × Gold System
 ========================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root{
-    --navy:#0B1F3A;
-    --navy-2:#132A4D;
-    --blue:#2F6FED;
-    --blue-tint:#E8EEFC;
-    --teal:#14B8A6;
-    --bg:#F7F5F0;
+    --maroon:#3D0000;
+    --maroon-2:#6B0000;
+    --maroon-3:#1F0000;
+    --gold:#D4AF37;
+    --gold-dark:#eaab0d;
+    --gold-light:#F5DEB3;
+    --gold-tint:#FBF0D9;
+    --bg:#FAF3E0;
     --white:#FFFFFF;
-    --ink:#12172B;
-    --muted:#667085;
-    --border:#E4E1D8;
+    --ink:#2A0E0E;
+    --muted:#7A6A5D;
+    --border:#E6D9BE;
     --danger:#E23D3D;
-    --shadow:0 6px 22px rgba(11,31,58,.06);
-    --shadow-lg:0 16px 38px rgba(11,31,58,.12);
+    --shadow:0 6px 22px rgba(31,0,0,.07);
+    --shadow-lg:0 16px 38px rgba(31,0,0,.14);
 }
 
 *{
@@ -85,11 +87,11 @@ ADDRESS
     font-family:'Big Shoulders Display', sans-serif;
     font-size:22px;
     font-weight:700;
-    color:var(--navy);
+    color:var(--maroon-2);
 }
 
 .addressTop button{
-    background:var(--navy);
+    background:var(--maroon-2);
     color:#fff;
     border:none;
     padding:12px 20px;
@@ -101,7 +103,7 @@ ADDRESS
 }
 
 .addressTop button:hover{
-    background:var(--blue);
+    background:var(--maroon-3);
     transform:translateY(-2px);
 }
 
@@ -128,10 +130,31 @@ PRODUCT CARD
 .checkoutItem img{
     width:140px;
     height:140px;
-    object-fit:cover;
-    border-radius:14px;
+    object-fit:contain;
     background:var(--bg);
 }
+
+#qrBox{
+    display:none;
+    text-align:center;
+    margin-top:15px;
+}
+
+#qrBox img{
+    width:220px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    padding:10px;
+    background:#fff;
+}
+
+#utrNumber{
+    width:100%;
+    padding:10px;
+    margin-top:12px;
+}
+
+
 
 .itemDetails{
     flex:1;
@@ -142,7 +165,7 @@ PRODUCT CARD
     font-size:23px;
     font-weight:700;
     margin-bottom:10px;
-    color:var(--navy);
+    color:var(--maroon-2);
 }
 
 .price{
@@ -174,7 +197,7 @@ PRICE DETAILS
     font-family:'JetBrains Mono', monospace;
     font-size:24px;
     font-weight:600;
-    color:var(--navy);
+    color:var(--maroon-2);
     border-top:1px dashed var(--border);
     padding-top:16px;
 }
@@ -195,8 +218,8 @@ PAYMENT
 }
 
 .paymentOption:hover{
-    background:var(--blue-tint);
-    border-color:var(--blue);
+    background:var(--gold-tint);
+    border-color:var(--gold-dark);
 }
 
 #upiToggle{
@@ -229,7 +252,7 @@ UPI CARD
 }
 
 .upiCard:hover{
-    border-color:var(--blue);
+    border-color:var(--gold-dark);
     transform:translateY(-2px);
     box-shadow:var(--shadow);
 }
@@ -238,7 +261,7 @@ UPI CARD
     padding:10px 20px;
     border:none;
     border-radius:10px;
-    background:var(--navy);
+    background:var(--maroon-2);
     color:#fff;
     font-weight:600;
     cursor:pointer;
@@ -247,7 +270,7 @@ UPI CARD
 }
 
 .upiCard button:hover{
-    background:var(--blue);
+    background:var(--gold-dark);
 }
 
 .upiIcons{
@@ -274,8 +297,8 @@ PLACE ORDER BUTTON
 #placeOrderBtn{
     width:100%;
     padding:17px;
-    background:var(--blue);
-    color:#fff;
+    background:linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color:var(--maroon-3);
     border:none;
     border-radius:14px;
     font-size:17px;
@@ -284,13 +307,13 @@ PLACE ORDER BUTTON
     font-family:'DM Sans', sans-serif;
     letter-spacing:.2px;
     transition:.3s ease;
-    box-shadow:0 10px 26px rgba(47,111,237,.28);
+    box-shadow:0 10px 26px rgba(212,175,55,.35);
 }
 
 #placeOrderBtn:hover{
-    background:#1D4ED8;
+    background:linear-gradient(135deg, var(--gold), var(--gold-light));
     transform:translateY(-2px);
-    box-shadow:0 14px 32px rgba(47,111,237,.36);
+    box-shadow:0 14px 32px rgba(212,175,55,.45);
 }
 
 /* =========================
@@ -300,7 +323,7 @@ MODAL
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(8,20,38,.65);
+    background:rgba(31,0,0,.68);
     display:none;
     justify-content:center;
     align-items:center;
@@ -333,12 +356,12 @@ MODAL
 
 .modalContent input:focus,
 .modalContent textarea:focus{
-    border-color:var(--blue);
+    border-color:var(--gold-dark);
 }
 
 .modalContent button{
-    background:var(--blue);
-    color:#fff;
+    background:linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color:var(--maroon-3);
     border:none;
     padding:14px;
     border-radius:12px;
@@ -349,7 +372,7 @@ MODAL
 }
 
 .modalContent button:hover{
-    background:#1D4ED8;
+    background:linear-gradient(135deg, var(--gold), var(--gold-light));
 }
 
 /* =========================

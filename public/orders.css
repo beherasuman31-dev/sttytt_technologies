@@ -1,23 +1,26 @@
 /* ============================================
    STTYTT — Orders Page
-   Theme: Electric charge / scrap-to-EV
+   Theme: Maroon × Gold, scrap-to-EV
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 :root{
-    --navy:#0B1F3A;
-    --blue:#2F6FED;
-    --charge:#00D9A3;
-    --bg:#F4F7FB;
+    --maroon:#3D0000;
+    --maroon-2:#6B0000;
+    --maroon-3:#1F0000;
+    --gold:#D4AF37;
+    --gold-dark:#8B6914;
+    --gold-light:#F5DEB3;
+    --bg:#FAF3E0;
     --card:#FFFFFF;
-    --text:#1E293B;
-    --muted:#64748B;
-    --border:#E4EAF3;
+    --text:#2A0E0E;
+    --muted:#7A6A5D;
+    --border:#E6D9BE;
     --danger:#E23D3D;
     --danger-bg:#FDECEC;
-    --shadow: 0 4px 24px rgba(11,31,58,.06);
-    --shadow-hover: 0 8px 32px rgba(11,31,58,.10);
+    --shadow: 0 4px 24px rgba(31,0,0,.07);
+    --shadow-hover: 0 8px 32px rgba(31,0,0,.12);
 }
 
 *{ box-sizing:border-box; }
@@ -25,8 +28,8 @@
 body{
     background:var(--bg);
     background-image:
-        radial-gradient(circle at 100% 0%, rgba(47,111,237,.05), transparent 40%),
-        radial-gradient(circle at 0% 100%, rgba(0,217,163,.05), transparent 40%);
+        radial-gradient(circle at 100% 0%, rgba(212,175,55,.07), transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(139,105,20,.06), transparent 40%);
     font-family:'DM Sans', Arial, sans-serif;
     color:var(--text);
     padding:32px 20px;
@@ -41,15 +44,17 @@ body{
 /* ---------- Order Card ---------- */
 
 .order-card{
-    background:var(--card);
-    padding:28px 30px;
-    margin-bottom:24px;
+
+    background:#fff;
+
     border-radius:16px;
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-    position:relative;
-    overflow:hidden;
-    transition:box-shadow .25s ease, transform .25s ease;
+
+    padding:22px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+
 }
 
 .order-card::before{
@@ -58,7 +63,7 @@ body{
     top:0; left:0;
     width:4px;
     height:100%;
-    background:linear-gradient(180deg, var(--blue), var(--charge));
+    background:linear-gradient(180deg, var(--gold), var(--gold-dark));
 }
 
 .order-card:hover{
@@ -70,7 +75,7 @@ body{
     font-family:'Space Grotesk', sans-serif;
     font-size:20px;
     font-weight:600;
-    color:var(--navy);
+    color:var(--maroon-2);
     margin:0 0 16px;
     letter-spacing:.2px;
 }
@@ -91,13 +96,34 @@ body{
 }
 
 .status{
-    color:var(--charge);
-    font-weight:700;
-    background:rgba(0,217,163,.1);
-    padding:2px 10px;
+
+    background:#e8f5e9;
+
+    color:#2e7d32;
+
+    padding:4px 12px;
+
     border-radius:20px;
+
     font-size:13px;
-    display:inline-block;
+
+    font-weight:600;
+
+}
+
+
+.order-actions button{
+
+    width:180px;
+
+    height:45px;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    font-weight:600;
+
 }
 
 /* ---------- Ordered Products ---------- */
@@ -106,32 +132,74 @@ body{
     font-family:'Space Grotesk', sans-serif;
     font-size:15px;
     font-weight:600;
-    color:var(--navy);
+    color:var(--maroon-2);
     margin:22px 0 10px;
     padding-top:16px;
     border-top:1px dashed var(--border);
 }
 
 .ordered-product{
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 16px;
-    margin-bottom:8px;
+   
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    background:#fff;
+
+    border:1px solid #e7e7e7;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    margin-bottom:12px;
 }
 
 .ordered-product h4{
-    font-size:14.5px;
-    font-weight:600;
-    color:var(--navy);
-    margin:0 0 4px;
+
+    margin:0 0 8px;
+
+    font-size:16px;
+
+    color:#222;
+
 }
 
 .ordered-product p{
-    font-size:13px;
-    color:var(--muted);
-    margin:2px 0;
+ margin:4px 0;
+
+    color:#555;
+
+    font-size:14px;
 }
+
+.ordered-product-image{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+    background:#f8f8f8;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+    flex-shrink:0;
+
+}
+
+
+.ordered-product div{
+
+    flex:1;
+
+}
+
 
 /* ---------- Timeline (charge-progress motif) ---------- */
 
@@ -165,7 +233,7 @@ body{
 }
 
 .step.active::before{
-    background:linear-gradient(90deg, var(--charge), var(--blue));
+    background:linear-gradient(90deg, var(--gold-dark), var(--gold));
 }
 
 .circle{
@@ -181,9 +249,9 @@ body{
 }
 
 .active .circle{
-    background:var(--charge);
-    border-color:var(--charge);
-    box-shadow:0 0 0 4px rgba(0,217,163,.18);
+    background:var(--maroon);
+    border-color:var(--maroon);
+    box-shadow:0 0 0 4px rgba(139,105,20,.22);
 }
 
 .step.active:last-child .circle,
@@ -197,8 +265,8 @@ body{
 }
 
 @keyframes pulse{
-    0%,100%{ box-shadow:0 0 0 4px rgba(0,217,163,.18); }
-    50%{ box-shadow:0 0 0 8px rgba(0,217,163,.10); }
+    0%,100%{ box-shadow:0 0 0 4px rgba(139,105,20,.22); }
+    50%{ box-shadow:0 0 0 8px rgba(139,105,20,.12); }
 }
 
 .label{
@@ -209,7 +277,7 @@ body{
 }
 
 .step.active .label{
-    color:var(--navy);
+    color:var(--maroon-2);
 }
 
 .label small{
@@ -223,28 +291,29 @@ body{
 /* ---------- Actions ---------- */
 
 .order-actions{
-    margin-top:22px;
+    margin-top:20px;
     display:flex;
     gap:10px;
 }
 
 .order-actions button{
-    background:var(--navy);
+    background:var(--maroon-2);
     color:#fff;
     border:none;
     padding:11px 22px;
     border-radius:8px;
     cursor:pointer;
     font-family:'DM Sans', sans-serif;
-    font-size:14px;
+    font-size:12px;
     font-weight:600;
-    letter-spacing:.2px;
+    letter-spacing:.1px;
     transition:background .2s ease, transform .15s ease;
 }
 
 .order-actions button:hover{
-    background:var(--blue);
+    background:var(--gold);
     transform:translateY(-1px);
+    color: #3D0000;
 }
 
 .order-actions .cancel-btn{
@@ -284,7 +353,7 @@ body{
 
 .empty-orders h2{
     font-family:'Space Grotesk', sans-serif;
-    color:var(--navy);
+    color:var(--maroon-2);
     font-size:20px;
     margin-bottom:8px;
 }
@@ -305,4 +374,29 @@ body{
 @media (prefers-reduced-motion:reduce){
     .active .circle{ animation:none; }
     .order-card{ transition:none; }
+}
+
+
+@media(max-width:768px){
+
+.ordered-product{
+
+    align-items:flex-start;
+
+}
+
+.ordered-product-image{
+
+    width:70px;
+
+    height:70px;
+
+}
+
+.order-card{
+
+    padding:16px;
+
+}
+
 }

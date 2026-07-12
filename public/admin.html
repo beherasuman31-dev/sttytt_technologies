@@ -17,14 +17,10 @@
         <div class="sidebar">
 
     <a href="#" class="logo">
-            <img src="image/1000521806-removebg-preview.png" alt="STTYTT Logo">
+            <img src="image/1000561758-removebg-preview.png" alt="STTYTT Logo">
         </a>
 
     <ul>
-
-        <li onclick="showSection('dashboardSection')">
-            Dashboard
-        </li>
 
         <li onclick="showSection('productSection')">
             Products
@@ -44,6 +40,9 @@
 
         <li onclick="showSection('reviewSection')">
            Reviews
+        </li>
+         <li onclick="showSection('heroStatsSection')">
+             Hero Stats
         </li>
 
 
@@ -255,6 +254,8 @@ accept=".jpg,.jpeg,.png,.webp">
 <th>ID</th>
 <th>Customer</th>
 <th>Total</th>
+<th>Payment</th>
+<th>UTR</th>
 <th>Status</th>
 <th>Cancelled By</th>
 <th>Tracking</th>
@@ -267,7 +268,7 @@ accept=".jpg,.jpeg,.png,.webp">
 <th>Delivered</th>
 
 <th>Address</th>
-<th>City</th>
+<th>District</th>
 <th>State</th>
 <th>Pincode</th>
 <th>Action</th>
@@ -304,7 +305,7 @@ accept=".jpg,.jpeg,.png,.webp">
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>City</th>
+                    <th>District</th>
                     <th>State</th>
                     <th>Action</th>
 
@@ -384,6 +385,37 @@ style="display:none;">
     </table>
 
 </div>
+
+</div>
+   
+
+<!-- HERO STATS -->
+
+<div id="heroStatsSection"
+class="section"
+style="display:none;">
+
+    <h2>Hero Statistics</h2>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Title</th>
+                <th>Value</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="heroStatsTable">
+
+        </tbody>
+
+    </table>
 
 </div>
 

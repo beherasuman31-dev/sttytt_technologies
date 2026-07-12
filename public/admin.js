@@ -182,20 +182,36 @@ async function loadOrders(){
 
         table.innerHTML += `
 
-        <tr>
 
-            <td>${order.id}</td>
+          <tr>
 
-            <td>${order.customer_name}</td>
+<td>${order.id}</td>
 
-            <td>₹${order.total_price}</td>
+<td>${order.customer_name}</td>
 
-            <td>${order.order_status}</td>
+<td>₹${order.total_price}</td>
 
-            <td>${order.cancelled_by || "-"}</td>
+<td>${order.payment_method}</td>
 
-            <td>${order.tracking_id}</td>
-            <td>${new Date(order.created_at).toLocaleDateString()}</td>
+<td>
+${order.payment_method === "QR"
+? `
+<div>${order.utr_number || "-"}</div>
+<button onclick="verifyQR(${order.id})">
+Verify
+</button>
+`
+: "-"
+}
+</td>
+
+<td>${order.order_status}</td>
+
+<td>${order.cancelled_by || "-"}</td>
+
+<td>${order.tracking_id}</td>
+
+<td>${new Date(order.created_at).toLocaleDateString()}</td>
 
 <td>
 ${order.estimated_delivery
@@ -227,13 +243,17 @@ ${order.delivered_at
 : "-"}
 </td>
 
-            <td>${order.address}</td>
+<td>${order.address}</td>
 
-            <td>${order.city}</td>
+<td>${order.district}</td>
 
-            <td>${order.state}</td>
+<td>${order.state}</td>
 
-            <td>${order.pincode}</td>
+<td>${order.pincode}</td>
+
+<td>
+    <!-- Status Select -->
+</td>
 
 
             <td>
@@ -251,10 +271,6 @@ ${order.delivered_at
             Confirmed
         </option>
 
-         <option value="Estimated Delivery"
-            ${order.order_status==="Estimated Delivery"?"selected":""}>
-            Estimated Delivery
-        </option>
 
         <option value="Shipped"
             ${order.order_status==="Shipped"?"selected":""}>
@@ -353,7 +369,7 @@ fetch("http://localhost:5000/api/admin/users",
 
             <td>${user.phone || ""}</td>
 
-            <td>${user.city || ""}</td>
+            <td>${user.district || ""}</td>
 
             <td>${user.state || ""}</td>
 
@@ -415,6 +431,11 @@ function showSection(sectionId){
     document
     .getElementById(sectionId)
     .style.display = "block";
+    if(sectionId==="heroStatsSection"){
+
+        loadHeroStats();
+
+    }
 }
 
 
@@ -485,3 +506,91 @@ async function loadReviews(){
 
 
 loadReviews();
+
+
+// loadhero
+function loadHeroStats(){
+
+fetch("http://localhost:5000/api/hero-stats")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+const table=document.getElementById("heroStatsTable");
+
+table.innerHTML="";
+
+data.forEach(item=>{
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${item.title}</td>
+
+<td>
+
+<input
+type="text"
+value="${item.value}"
+id="stat${item.id}">
+
+</td>
+
+<td>
+
+<button onclick="updateHeroStat(${item.id})">
+
+Update
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+});
+
+}
+
+
+
+// Update
+function updateHeroStat(id){
+
+const value=document.getElementById(`stat${id}`).value;
+
+fetch(`http://localhost:5000/api/hero-stats/${id}`, {
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json",
+Authorization:"Bearer " + token
+
+},
+
+body:JSON.stringify({
+
+value
+
+})
+
+})
+
+.then(res=>res.json())
+
+.then(()=>{
+
+alert("Updated");
+
+loadHeroStats();
+
+});
+
+}

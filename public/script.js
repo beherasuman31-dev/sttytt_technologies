@@ -281,6 +281,9 @@ async function loadFeaturedProducts(){
 
                         <span>${product.speed}</span>
 
+                        <span>${product.fast_charging_hours}</span>
+
+
                     </div>
 
                     <div class="model-footer">
@@ -403,3 +406,33 @@ window.addEventListener(
 updateCartCount();
 
 loadNotificationCount();
+
+
+// HERO STATES
+const heroStats = document.getElementById("heroStats");
+
+fetch("http://localhost:5000/api/hero-stats")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+heroStats.innerHTML="";
+
+data.forEach(item=>{
+
+heroStats.innerHTML += `
+
+<div>
+
+<h3>${item.value}</h3>
+
+<p>${item.title}</p>
+
+</div>
+
+`;
+
+});
+
+});

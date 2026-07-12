@@ -2,6 +2,40 @@
 // products.js
 // =========================
 
+
+
+
+// ================= MOBILE MENU =================
+
+const menuIcon =
+document.getElementById("menu-icon");
+
+const navLinks =
+document.querySelector(".nav-links");
+
+if(menuIcon){
+
+    menuIcon.addEventListener("click",()=>{
+
+        navLinks.classList.toggle("active");
+    });
+}
+
+document.addEventListener("click",(e)=>{
+
+    if(
+        navLinks &&
+        !navLinks.contains(e.target) &&
+        !menuIcon.contains(e.target)
+    ){
+
+        navLinks.classList.remove("active");
+    }
+});
+
+
+
+
 const productsContainer =
 document.getElementById("productsContainer");
 
@@ -659,7 +693,7 @@ async function buyNow(product){
 
          address:"Bhubaneswar",
 
-         city:"Bhubaneswar",
+         district:"Khorda",
 
          pincode:"751001",
 
