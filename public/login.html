@@ -735,7 +735,7 @@ if(password !== confirm){
     try{
 
         const response = await fetch(
-            "http://localhost:5000/api/send-register-otp",
+            "/api/send-register-otp",
              
             {
 
@@ -802,7 +802,7 @@ document
     try{
 
         const response = await fetch(
-            "http://localhost:5000/login",
+            "/login",
 
             {
 
@@ -872,7 +872,7 @@ async function handleCredentialResponse(response){
 
         const res = await fetch(
 
-            "http://localhost:5000/google-login",
+            "/google-login",
 
             {
 
@@ -961,7 +961,7 @@ document
 
         const response = await fetch(
 
-            "http://localhost:5000/api/send-forgot-otp",
+            "/api/send-forgot-otp",
 
             {
 
@@ -1054,7 +1054,7 @@ document
 
     const response = await fetch(
 
-        "http://localhost:5000/api/verify-forgot-otp",
+        "/api/verify-forgot-otp",
 
         {
 
@@ -1187,7 +1187,7 @@ document
 
         const response = await fetch(
 
-            "http://localhost:5000/api/verify-register-otp",
+            "/api/verify-register-otp",
 
             {
 
@@ -1279,7 +1279,7 @@ document
 
         const response = await fetch(
 
-            "http://localhost:5000/api/reset-password",
+            "/api/reset-password",
 
             {
 

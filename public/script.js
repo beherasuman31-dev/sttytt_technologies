@@ -49,7 +49,7 @@ loginLogoutBtn.addEventListener("click", async function(e){
 
         try{
 
-            await fetch("http://localhost:5000/api/logout",{
+            await fetch("/api/logout",{
                 method:"POST",
                 headers:{
                     Authorization:"Bearer " + localStorage.getItem("token")
@@ -131,7 +131,7 @@ async function updateCartCount(){
 
         const response = await fetch(
 
-            "http://localhost:5000/api/cart",
+            "/api/cart",
 
             {
 
@@ -193,7 +193,7 @@ async function loadNotificationCount(){
 
         const response = await fetch(
 
-            "http://localhost:5000/api/notification-count",
+            "/api/notification-count",
 
             {
 
@@ -238,7 +238,7 @@ async function loadFeaturedProducts(){
     try{
 
         const response = await fetch(
-            "http://localhost:5000/api/products"
+            "/api/products"
         );
 
         const products = await response.json();
@@ -262,7 +262,7 @@ async function loadFeaturedProducts(){
                 <div class="model-image">
 
                     <img
-                    src="http://localhost:5000${product.image}"
+                    src="${product.image}"
                     alt="${product.name}">
 
                 </div>
@@ -333,7 +333,7 @@ subject: this.querySelectorAll("input")[2].value,
 message: this.querySelector("textarea").value
 };
 
-const response = await fetch("http://localhost:5000/api/reviews",{
+const response = await fetch("/api/reviews",{
 
 method:"POST",
 
@@ -409,7 +409,7 @@ loadNotificationCount();
 // HERO STATES
 const heroStats = document.getElementById("heroStats");
 
-fetch("http://localhost:5000/api/hero-stats")
+fetch("/api/hero-stats")
 
 .then(res=>res.json())
 

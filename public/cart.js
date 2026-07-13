@@ -27,7 +27,7 @@ async function loadCart(){
 
         const response = await fetch(
 
-            "http://localhost:5000/api/cart",
+            "/api/cart",
 
             {
                 headers:{
@@ -88,7 +88,7 @@ Continue Shopping
     </div>
 
                 <div class="cart-product">
-                 <img src="http://localhost:5000${item.product_image}" class="cart_img">
+                 <img src="${item.product_image}" class="cart_img">
 
                     <div class="cart-details">
 
@@ -221,7 +221,7 @@ async function removeItem(id){
 
         await fetch(
 
-            `http://localhost:5000/api/cart/${id}`,
+            `/api/cart/${id}`,
 
             {
 
@@ -253,7 +253,7 @@ async function increaseQty(id,qty){
 
         await fetch(
 
-            `http://localhost:5000/api/cart/${id}`,
+            `/api/cart/${id}`,
 
             {
 
@@ -306,7 +306,7 @@ async function decreaseQty(id,qty){
 
         await fetch(
 
-            `http://localhost:5000/api/cart/${id}`,
+            `/api/cart/${id}`,
 
             {
 

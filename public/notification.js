@@ -18,7 +18,7 @@ if (!token) {
 } else {
 
     fetch(
-        "http://localhost:5000/api/notifications",
+        "/api/notifications",
         {
             headers: {
                 Authorization: token
@@ -72,7 +72,7 @@ if (!token) {
         // MARK AS READ
 
         fetch(
-            "http://localhost:5000/api/read-notifications",
+            "/api/read-notifications",
             {
                 method: "POST",
                 headers: {

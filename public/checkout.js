@@ -19,7 +19,7 @@ async function loadAddress(){
 
         const res = await fetch(
 
-            "http://localhost:5000/api/user-data",
+            "/api/user-data",
 
             {
 
@@ -120,7 +120,7 @@ Loading Checkout Items...
 
 const res = await fetch(
 
-"http://localhost:5000/api/checkout-summary",
+"/api/checkout-summary",
 
 {
 
@@ -165,7 +165,7 @@ data.forEach(item=>{
 
     <div class="checkoutItem">
 
-        <img src="http://localhost:5000${item.product_image}">
+        <img src="${item.product_image}">
 
         <div class="itemDetails">
 
@@ -272,7 +272,7 @@ document.getElementById(
 
             const res = await fetch(
 
-                "http://localhost:5000/api/update-profile",
+                "/api/update-profile",
 
                 {
 
@@ -552,7 +552,7 @@ async function placeOrder(
 
         const res = await fetch(
 
-            "http://localhost:5000/api/place-order",
+            "/api/place-order",
 
             {
 

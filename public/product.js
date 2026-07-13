@@ -71,7 +71,7 @@ async function fetchProducts(){
 
         const response = await fetch(
 
-            "http://localhost:5000/api/products"
+            "/api/products"
         );
 
         products = await response.json();
@@ -102,7 +102,7 @@ function displayProducts(items){
 
             <div class="product-image">
 
-                <img src="http://localhost:5000${product.image}" alt="">
+                <img src="${product.image}" alt="">
 
             </div>
 
@@ -297,7 +297,7 @@ function showDetails(id){
 
     <img
     id="mainProductImage"
-    src="http://localhost:5000${product.image}"
+    src="${product.image}"
     alt="">
 
 </div>
@@ -305,24 +305,24 @@ function showDetails(id){
 <div class="thumbnail-row">
 
     <img
-    src="http://localhost:5000${product.image}"
+    src="${product.image}"
     onclick="changeImage('${product.image}')">
 
     ${product.image2 ? `
     <img
-    src="http://localhost:5000${product.image2}"
+    src="${product.image2}"
     onclick="changeImage('${product.image2}')">
     ` : ""}
 
     ${product.image3 ? `
     <img
-    src="http://localhost:5000${product.image3}"
+    src="${product.image3}"
     onclick="changeImage('${product.image3}')">
     ` : ""}
 
     ${product.image4 ? `
     <img
-    src="http://localhost:5000${product.image4}"
+    src="${product.image4}"
     onclick="changeImage('${product.image4}')">
     ` : ""}
 
@@ -439,7 +439,7 @@ function showDetails(id){
                     \`${product.name}\`,
                     ${product.price},
                     \`${product.image}\`,
-                    \`http://localhost:5000${product.image}\`
+                    \`${product.image}\`
                 )">
 
                 Add To Cart
@@ -559,7 +559,7 @@ async function addToCart(
 
         const response = await fetch(
 
-            "http://localhost:5000/api/cart",
+            "/api/cart",
 
             {
 
@@ -620,7 +620,7 @@ async function updateCartCount(){
 
         const response = await fetch(
 
-            "http://localhost:5000/api/cart",
+            "/api/cart",
 
             {
 
@@ -711,6 +711,6 @@ function changeImage(image){
 
     document.getElementById(
         "mainProductImage"
-    ).src = "http://localhost:5000" + image;
+    ).src = "" + image;
 
 }

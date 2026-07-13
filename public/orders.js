@@ -3,7 +3,7 @@ const token = localStorage.getItem("token");
 const container =
 document.getElementById("ordersContainer");
 
-fetch("http://localhost:5000/api/orders",{
+fetch("/api/orders",{
 
     method:"GET",
 
@@ -62,7 +62,7 @@ fetch("http://localhost:5000/api/orders",{
 
                 <div class="ordered-product">
                  <img
-            src="http://localhost:5000${item.product_image}"
+            src="${item.product_image}"
            class="ordered-product-image">
 
                <div>
@@ -327,7 +327,7 @@ async function downloadInvoice(orderId){
     try{
 
         const res = await fetch(
-            `http://localhost:5000/api/invoice/${orderId}`,
+            `/api/invoice/${orderId}`,
             {
                 headers:{
                     Authorization: token
@@ -377,7 +377,7 @@ async function cancelOrder(orderId){
     try{
 
         const res = await fetch(
-            `http://localhost:5000/api/orders/${orderId}/cancel`,
+            `/api/orders/${orderId}/cancel`,
             {
                 method:"PUT",
                 headers:{

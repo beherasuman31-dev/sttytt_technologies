@@ -12,7 +12,7 @@ async function fetchProducts(){
     try{
 
         const response = await fetch(
-            "http://localhost:5000/api/products",
+            "/api/products",
             {
     headers:{
         Authorization:"Bearer " + token
@@ -32,7 +32,7 @@ async function fetchProducts(){
             <tr>
 
                 <td>
-                    <img src="http://localhost:5000${product.image}"
+                    <img src="${product.image}"
                     width="80">
                 </td>
 
@@ -97,7 +97,7 @@ formData.append("image3", document.getElementById("image3").files[0]);
 formData.append("image4", document.getElementById("image4").files[0]);
 
 const response = await fetch(
-    "http://localhost:5000/api/products",
+    "/api/products",
     {
         method: "POST",
         headers:{
@@ -129,7 +129,7 @@ async function deleteProduct(id){
 
         const response = await fetch(
 
-            `http://localhost:5000/api/products/${id}`,
+            `/api/products/${id}`,
 
             {
 
@@ -161,7 +161,7 @@ async function loadOrders(){
     const res =
     await fetch(
 
-    "http://localhost:5000/api/admin/orders", {
+    "/api/admin/orders", {
         headers:{
             Authorization:"Bearer " + token
         }
@@ -316,7 +316,7 @@ async function updateStatus(
 
     await fetch(
 
-    `http://localhost:5000/api/admin/order-status/${id}`,
+    `/api/admin/order-status/${id}`,
 
     {
 
@@ -338,7 +338,7 @@ async function updateStatus(
 }
 
 
-fetch("http://localhost:5000/api/admin/users",
+fetch("/api/admin/users",
     {
     headers:{
         Authorization:"Bearer " + token
@@ -399,7 +399,7 @@ function deleteUser(id){
 
     fetch(
 
-    `http://localhost:5000/api/admin/users/${id}`,
+    `/api/admin/users/${id}`,
 
     {
         method:"DELETE",
@@ -446,7 +446,7 @@ async function deleteReview(id){
     if(!confirm("Delete Review?")) return;
 
     await fetch(
-        "http://localhost:5000/api/admin/reviews/"+id,
+        "/api/admin/reviews/"+id,
         {
             method:"DELETE",
              headers:{
@@ -465,7 +465,7 @@ async function loadReviews(){
     try{
 
         const response = await fetch(
-            "http://localhost:5000/api/admin/reviews", {
+            "/api/admin/reviews", {
         headers:{
             Authorization:"Bearer " + token
         }
@@ -511,7 +511,7 @@ loadReviews();
 // loadhero
 function loadHeroStats(){
 
-fetch("http://localhost:5000/api/hero-stats")
+fetch("/api/hero-stats")
 
 .then(res=>res.json())
 
@@ -565,7 +565,7 @@ function updateHeroStat(id){
 
 const value=document.getElementById(`stat${id}`).value;
 
-fetch(`http://localhost:5000/api/hero-stats/${id}`, {
+fetch(`/api/hero-stats/${id}`, {
 
 method:"PUT",
 
