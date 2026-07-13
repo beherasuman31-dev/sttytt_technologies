@@ -1483,7 +1483,7 @@ select:focus-visible{
     }
 
     .model-content{
-        padding:18px;
+        padding:10px;
     }
 
     .model-content h3{
@@ -1509,38 +1509,6 @@ select:focus-visible{
 
     .testimonial-card{
         padding:22px;
-    }
-
-    .models-grid{
-        grid-template-columns:repeat(3,1fr) !important;
-        gap:6px;
-    }
-
-    .model-image{
-        height:64px;
-        padding:3px;
-    }
-
-    .model-content{
-        padding:5px;
-    }
-
-    .model-content h3{
-        font-size:.6rem;
-    }
-
-    .specs span{
-        font-size:.5rem;
-        padding:2px 5px;
-    }
-
-    .model-footer h4{
-        font-size:.65rem;
-    }
-
-    .card-btn{
-        font-size:.5rem;
-        padding:4px;
     }
 
 
