@@ -408,6 +408,43 @@ footer p{
     color:#D9C9AE;
 }
 
+
+.certification{
+    padding:80px 10%;
+    text-align:center;
+}
+
+.certificate-card{
+    max-width:500px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.certificate-card i{
+    font-size:100px;
+    color:#0d6efd;
+    margin-bottom:15px;
+}
+
+.certificate-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 28px;
+    background:linear-gradient(120deg, var(--maroon-3) 0%, var(--maroon-2) 55%, var(--maroon) 100%);
+    color:#fff;
+    text-decoration:none;
+    border-radius:8px;
+    transition:.3s;
+}
+
+.certificate-btn:hover{
+    background:var(--gold);
+    color: #6B0000;
+}
+
 /* ================= RESPONSIVE ================= */
 
 

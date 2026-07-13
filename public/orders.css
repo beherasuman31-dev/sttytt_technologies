@@ -381,21 +381,55 @@ body{
 
 .ordered-product{
 
-    align-items:flex-start;
+    gap:12px;
+
+    padding:12px;
 
 }
 
 .ordered-product-image{
 
-    width:70px;
+    width:90px;
 
-    height:70px;
+    height:90px;
 
 }
 
-.order-card{
+.product-details h4{
 
-    padding:16px;
+    font-size:15px;
+
+    display:-webkit-box;
+
+
+
+    -webkit-box-orient:vertical;
+
+    overflow:hidden;
+
+}
+
+.product-price{
+
+    font-size:18px;
+
+    margin-top:8px;
+
+}
+
+.product-info{
+
+    gap:6px;
+
+    margin-top:8px;
+
+}
+
+.product-info span{
+
+    font-size:12px;
+
+    padding:5px 10px;
 
 }
 
