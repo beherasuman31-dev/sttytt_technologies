@@ -88,7 +88,7 @@ Continue Shopping
     </div>
 
                 <div class="cart-product">
-                 <img src="${item.product_image}" class="cart_img">
+                 <img src="${item.product_image}" class="cart-img">
 
                     <div class="cart-details">
 

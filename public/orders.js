@@ -60,32 +60,30 @@ fetch("/api/orders",{
 
                 productsHTML += `
 
-<div class="ordered-product">
+                <div class="ordered-product">
+                 <img
+            src="${item.product_image}"
+           class="ordered-product-image">
 
-    <img src="${item.product_image}"
-         class="ordered-product-image">
+               <div>
 
-    <div class="product-details">
+                    <h4>
+                        ${item.product_name}
+                    </h4>
 
-        <h4>${item.product_name}</h4>
+                    <p>
+                        Qty : ${item.quantity}
+                    </p>
 
-        <div class="product-price">
-            ₹${item.product_price}
-        </div>
+                    <p>
+                        ₹${item.product_price}
+                    </p>
 
-        <div class="product-info">
+                </div>
+                </div>
+                
 
-            <span class="qty">
-                Qty : ${item.quantity}
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
-
-`;
+                `;
             });
 
         }catch(error){
