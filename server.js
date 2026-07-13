@@ -86,16 +86,12 @@ app.use("/uploads", express.static("public/uploads"));
 // ================= MYSQL CONNECTION =================
 
 const db = mysql.createConnection({
-
-    host:"localhost",
-
-    user:"root",
-
-    password:"Behera@123",
-
-    database:"sttytt"
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT
 });
-
 
 db.connect((err)=>{
 
@@ -3067,9 +3063,8 @@ app.delete("/api/admin/reviews/:id",verifyToken,verifyAdmin, (req, res) => {
 
 // ================= START SERVER =================
 
-app.listen(5000,()=>{
+const PORT = process.env.PORT || 5000;
 
-    console.log(
-        "Server Running On Port 5000"
-    );
+app.listen(PORT, () => {
+    console.log(`Server Running On Port ${PORT}`);
 });
