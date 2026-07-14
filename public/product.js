@@ -428,27 +428,30 @@ function showDetails(id){
             <!-- BUTTONS -->
 
             <div class="detail-buttons">
-                
-
-                <button
-
-                class="cart-btn"
-
-                onclick="addToCart(
+            <button class="cart-btn"
+             onclick="addToCart(
                     ${product.id},
                     \`${product.name}\`,
                     ${product.price},
                     \`${product.image}\`,
-                    \`${product.image}\`
-                )">
+                    \`${product.image}\` )"> Add To Cart </button>
 
-                Add To Cart
-
-                </button>
-
-            </div>
+                              <button
+class="share-btn"
+onclick="shareProduct(
+ \`${product.name}\`,
+${product.price},
+window.location.href
+)">
+<i class='bx bx-share-alt'></i>
+Share
+</button>
+                </div>
+          
 
         </div>
+
+        
 
     </div>
 
@@ -712,5 +715,40 @@ function changeImage(image){
     document.getElementById(
         "mainProductImage"
     ).src = "" + image;
+
+}
+
+
+async function shareProduct(name, price, url){
+
+    const shareData = {
+
+        title: name,
+
+        text: `${name}
+Price: ₹${price}
+
+Check this product:`,
+
+        url: url
+    };
+
+    if(navigator.share){
+
+        try{
+
+            await navigator.share(shareData);
+
+        }catch(err){
+
+            console.log(err);
+        }
+
+    }else{
+
+        navigator.clipboard.writeText(url);
+
+        alert("Link copied");
+    }
 
 }
