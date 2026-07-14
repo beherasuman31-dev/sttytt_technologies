@@ -884,7 +884,22 @@ select:focus-visible{
 
     .thumbnail-row img{ width:56px; height:56px; }
 
-    .close-btn{ top:auto; bottom:calc(100% + 8px); right:14px; font-size:0; }
+    .close-btn{
+    position:absolute;
+    top:14px;
+    right:14px;
+    font-size:24px;
+    color:var(--maroon);
+    background:#fff;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.2);
+    z-index:9999;
+}
 }
 
 /* ---- Very small phones — hold the 2-column grid ---- */

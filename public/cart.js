@@ -109,8 +109,7 @@ Continue Shopping
                             class="quantity-btn"
 
                             onclick="decreaseQty(
-                            ${item.id},
-                            ${item.quantity}
+                            ${item.id}
                             )">
 
                             -
@@ -125,7 +124,7 @@ Continue Shopping
 
                             <button
 class="quantity-btn"
-onclick="increaseQty(${item.id}, ${item.quantity})">
+onclick="increaseQty(${item.id})">
 +
 </button>
 
@@ -216,7 +215,7 @@ if(checkoutBtn){
 
 
 // ================= REMOVE ITEM =================
-
+let updating = {};
 async function removeItem(id){
 
     try{
@@ -246,35 +245,36 @@ async function removeItem(id){
 
 
 // ================= INCREASE =================
+async function increaseQty(id){
 
-async function increaseQty(id,qty){
+     if(updating[id]) return;
+
+    updating[id] = true;
 
     try{
 
-        qty++;
+         const item = cartData.find(p => p.id == id);
 
-        await fetch(
+        const qty = item.quantity + 1;
 
-            `/api/cart/${id}`,
+       const response = await fetch(
+    `/api/cart/${id}`,
+    {
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json",
+            Authorization: token
+        },
+        body:JSON.stringify({
+            quantity:qty
+        })
+    }
+);
 
-            {
+if(!response.ok){
+    throw new Error("Failed to update quantity");
+}
 
-                method:"PUT",
-
-                headers:{
-
-                    "Content-Type":"application/json",
-                    Authorization: token
-                },
-
-                body:JSON.stringify({
-
-                    quantity:qty
-                })
-            }
-        );
-
-          const item = cartData.find(p => p.id == id);
 
 item.quantity = qty;
 
@@ -285,49 +285,64 @@ document.getElementById(`price-${id}`).innerText =
 
 updateSummary();
 
-    }catch(err){
 
-        console.log(err);
+   }
+catch(err){
+    console.log(err);
+
+
+    }finally{
+
+        updating[id] = false;
+
+    
     }
 }
 
 
 
 // ================= DECREASE =================
+async function decreaseQty(id){
 
-async function decreaseQty(id,qty){
 
-    if(qty <= 1){
 
-        return;
-    }
+    if(updating[id]) return;
+
+    updating[id] = true;
 
     try{
 
-        qty--;
-
-        await fetch(
-
-            `/api/cart/${id}`,
-
-            {
-
-                method:"PUT",
-
-                headers:{
-
-                    "Content-Type":"application/json",
-                    Authorization: token
-                },
-
-                body:JSON.stringify({
-
-                    quantity:qty
-                })
-            }
-        );
-
+        
         const item = cartData.find(p => p.id == id);
+
+        if(item.quantity<=1){
+
+            updating[id]=false;
+            return;
+
+        }
+
+        const qty=item.quantity-1;
+
+    const response = await fetch(
+    `/api/cart/${id}`,
+    {
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json",
+            Authorization: token
+        },
+        body:JSON.stringify({
+            quantity:qty
+        })
+    }
+);
+
+if(!response.ok){
+    throw new Error("Failed to update quantity");
+}
+
+        
 
 item.quantity = qty;
 
@@ -338,9 +353,13 @@ document.getElementById(`price-${id}`).innerText =
 
 updateSummary();
 
-    }catch(err){
+   }
+catch(err){
+    console.log(err);
 
-        console.log(err);
+     }finally{
+
+        updating[id] = false;
     }
 }
 
