@@ -70,6 +70,46 @@ loginLogoutBtn.addEventListener("click", async function(e){
 });
 
 
+// ================= MOBILE LOGIN BUTTON POSITION =================
+
+function handleLoginBtnPosition(){
+
+    const loginBtn = document.getElementById("loginLogoutBtn");
+    const navLinks = document.querySelector(".nav-links");
+    const navIcons = document.querySelector(".nav-icons");
+
+    if(!loginBtn || !navLinks || !navIcons) return;
+
+    const isMobile = window.matchMedia("(max-width:900px)").matches;
+
+    if(isMobile){
+
+        // Mobile: nav-links ke andar li bana ke daalo
+        if(!loginBtn.parentElement.classList.contains("mobile-login-item")){
+
+            const li = document.createElement("li");
+            li.classList.add("mobile-login-item");
+            li.appendChild(loginBtn);
+            navLinks.appendChild(li);
+        }
+
+    }else{
+
+        // Desktop: wapas original position (nav-icons ke start mein)
+        if(loginBtn.parentElement.classList.contains("mobile-login-item")){
+
+            const wrapper = loginBtn.parentElement;
+            navIcons.insertBefore(loginBtn, navIcons.firstChild);
+            wrapper.remove();
+        }
+    }
+}
+
+handleLoginBtnPosition();
+
+window.addEventListener("resize", handleLoginBtnPosition);
+
+
 
 
 // ================= NAVBAR SHADOW =================

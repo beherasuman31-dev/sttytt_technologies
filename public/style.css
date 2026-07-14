@@ -1218,6 +1218,18 @@ select:focus-visible{
         font-size:14px;
     }
 
+    .nav-links .mobile-login-item{
+        margin-top:10px;
+        display:flex;
+        justify-content:center;
+    }
+
+    .nav-links .mobile-login-item .login-btn{
+        display:inline-block;
+        width:80%;
+        text-align:center;
+    }
+
     .hero{
         grid-template-columns:1fr;
         text-align:center;
