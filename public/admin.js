@@ -1,3 +1,12 @@
+
+// ================= DRAWER TOGGLE =================
+
+function toggleDrawer(){
+    document.getElementById("sideDrawer").classList.toggle("open");
+    document.getElementById("drawerOverlay").classList.toggle("active");
+}
+
+
 const token = localStorage.getItem("token");
 const productForm = document.getElementById("productForm");
 const productTableBody = document.getElementById("productTableBody");
@@ -377,7 +386,13 @@ function showSection(sectionId, navEl){
     if(sectionId === "heroStatsSection"){
         loadHeroStats();
     }
+
+    // menu item click par drawer band ho jaye (sab devices pe)
+    document.getElementById("sideDrawer").classList.remove("open");
+    document.getElementById("drawerOverlay").classList.remove("active");
 }
+
+
 
 
 // ================= REVIEWS =================
