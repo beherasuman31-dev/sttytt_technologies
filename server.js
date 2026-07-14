@@ -2804,10 +2804,24 @@ app.put("/api/admin/order-status/:id", verifyToken, verifyAdmin, (req, res) => {
 
             if(dateField){
 
+
+                if(status === "Cancelled"){
+
+        sql = `
+        UPDATE orders
+        SET
+        order_status=?,
+        cancelled_by='Admin',
+        cancelled_at=NOW()
+        WHERE id=?
+        `;
+           }else{
                 sql = `UPDATE orders
                 SET order_status=?,
                 ${dateField}=NOW()
                 WHERE id=?`;
+
+           }
 
             }else{
 
