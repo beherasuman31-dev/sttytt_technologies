@@ -16,411 +16,312 @@
 
         <div class="sidebar">
 
-    <a href="#" class="logo">
-            <img src="image/1000561758-removebg-preview.png" alt="STTYTT Logo">
-        </a>
+            <a href="#" class="logo">
+                <img src="image/1000561758-removebg-preview.png" alt="STTYTT Logo">
+            </a>
 
-    <ul>
+            <ul>
 
-        <li onclick="showSection('productSection')">
-            Products
-        </li>
+                <li class="nav-item active" data-section="productSection" onclick="showSection('productSection', this)">
+                    <span class="nav-dot"></span> Products
+                </li>
 
-        <li onclick="showSection('orderSection')">
-            Orders
-        </li>
+                <li class="nav-item" data-section="orderSection" onclick="showSection('orderSection', this)">
+                    <span class="nav-dot"></span> Orders
+                </li>
 
-        <li onclick="showSection('customerSection')">
-            Customers
-        </li>
+                <li class="nav-item" data-section="customerSection" onclick="showSection('customerSection', this)">
+                    <span class="nav-dot"></span> Customers
+                </li>
 
-        <li onclick="showSection('notificationSection')">
-            Notification
-        </li>
+                <li class="nav-item" data-section="notificationSection" onclick="showSection('notificationSection', this)">
+                    <span class="nav-dot"></span> Notification
+                </li>
 
-        <li onclick="showSection('reviewSection')">
-           Reviews
-        </li>
-         <li onclick="showSection('heroStatsSection')">
-             Hero Stats
-        </li>
+                <li class="nav-item" data-section="reviewSection" onclick="showSection('reviewSection', this)">
+                    <span class="nav-dot"></span> Reviews
+                </li>
+
+                <li class="nav-item" data-section="heroStatsSection" onclick="showSection('heroStatsSection', this)">
+                    <span class="nav-dot"></span> Hero Stats
+                </li>
+
+            </ul>
+
+            <div class="sidebar-footer">STTYTT Admin</div>
+
+        </div>
 
 
-    </ul>
+        <div class="main-content">
 
-</div>
+            <!-- DASHBOARD -->
 
+            <div id="dashboardSection" class="section" style="display:none;">
 
-<div class="main-content">
+                <div class="top-bar"><h1>Dashboard</h1></div>
 
-    <!-- DASHBOARD -->
+                <div class="cards">
+                    <div class="card">Total Products</div>
+                    <div class="card">Total Orders</div>
+                    <div class="card">Total Customers</div>
+                </div>
 
-    <div id="dashboardSection"
-    class="section"
-    style="display:none;">
-
-        <h1>Dashboard</h1>
-
-        <div class="cards">
-
-            <div class="card">
-                Total Products
             </div>
 
-            <div class="card">
-                Total Orders
+
+            <!-- PRODUCTS -->
+
+            <div id="productSection" class="section">
+
+                <div class="top-bar">
+                    <div>
+                        <h1>Product Management</h1>
+                        <span class="subtitle">Add, view and remove cycles listed on the site</span>
+                    </div>
+                </div>
+
+                <div class="form-card">
+
+                    <h2>Add New Cycle</h2>
+
+                    <form id="productForm" enctype="multipart/form-data">
+
+                        <input type="text" id="name" placeholder="Bike Name" required>
+
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Sport">Sport</option>
+                            <option value="Urban">Urban</option>
+                            <option value="Offroad">Offroad</option>
+                        </select>
+
+                        <textarea id="description" placeholder="Description" required></textarea>
+
+                        <input type="number" id="price" placeholder="Price" required>
+                        <input type="text" id="speed" placeholder="Top Speed" required>
+                        <input type="text" id="range_km" placeholder="Range" required>
+                        <input type="text" id="battery" placeholder="Battery" required>
+                        <input type="text" id="warranty" placeholder="Warranty" required>
+                        <input type="number" id="fast_charging_hours" placeholder="Fast Charging Hours" required>
+                        <input type="text" id="brake_type" placeholder="Brake Type" required>
+
+                        <input type="file" id="image" accept=".jpg,.jpeg,.png,.webp" required>
+                        <input type="file" id="image2" accept=".jpg,.jpeg,.png,.webp">
+                        <input type="file" id="image3" accept=".jpg,.jpeg,.png,.webp">
+                        <input type="file" id="image4" accept=".jpg,.jpeg,.png,.webp">
+
+                        <button type="submit">Add Product</button>
+
+                    </form>
+
+                </div>
+
+                <div class="table-card">
+
+                    <h2>All Products <span class="count-pill" id="productCount">0</span></h2>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="card">
-                Total Customers
+
+            <!-- ORDERS -->
+
+            <div id="orderSection" class="section" style="display:none;">
+
+                <div class="top-bar">
+                    <div>
+                        <h1>Orders Management</h1>
+                        <span class="subtitle">Track, verify and update order status</span>
+                    </div>
+                </div>
+
+                <div class="table-card">
+
+                    <h2>All Orders <span class="count-pill" id="orderCount">0</span></h2>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>UTR</th>
+                                    <th>Status</th>
+                                    <th>Cancelled By</th>
+                                    <th>Tracking</th>
+                                    <th>Order Date</th>
+                                    <th>Estimated Delivery</th>
+                                    <th>Confirmed</th>
+                                    <th>Shipped</th>
+                                    <th>Out For Delivery</th>
+                                    <th>Delivered</th>
+                                    <th>Address</th>
+                                    <th>Nearby</th>
+                                    <th>District</th>
+                                    <th>State</th>
+                                    <th>Pincode</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CUSTOMERS -->
+
+            <div id="customerSection" class="section" style="display:none;">
+
+                <div class="top-bar">
+                    <div>
+                        <h1>Customers</h1>
+                        <span class="subtitle">All registered users on the platform</span>
+                    </div>
+                </div>
+
+                <div class="table-card">
+
+                    <h2>All Customers <span class="count-pill" id="userCount">0</span></h2>
+
+                    <div class="table-wrapper">
+                        <table id="userTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>District</th>
+                                    <th>State</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userBody"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <div id="notificationSection" class="section" style="display:none;">
+
+                <div class="top-bar">
+                    <div>
+                        <h1>Send Notification</h1>
+                        <span class="subtitle">Push a message to all customers</span>
+                    </div>
+                </div>
+
+                <div class="form-card">
+
+                    <input type="text" id="notificationTitle" placeholder="Notification Title" style="margin-bottom:16px;">
+
+                    <textarea id="notificationMessage" placeholder="Notification Message" style="margin-bottom:16px;"></textarea>
+
+                    <button onclick="sendNotification()">Send Notification</button>
+
+                </div>
+
+            </div>
+
+
+            <!-- REVIEWS -->
+
+            <div id="reviewSection" class="section" style="display:none;">
+
+                <div class="top-bar">
+                    <div>
+                        <h1>Customer Reviews</h1>
+                        <span class="subtitle">Feedback and messages submitted by customers</span>
+                    </div>
+                </div>
+
+                <div class="table-card">
+
+                    <h2>All Reviews <span class="count-pill" id="reviewCount">0</span></h2>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Review</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviewTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO STATS -->
+
+            <div id="heroStatsSection" class="section" style="display:none;">
+
+                <div class="top-bar">
+                    <div>
+                        <h1>Hero Statistics</h1>
+                        <span class="subtitle">Numbers shown on the homepage hero section</span>
+                    </div>
+                </div>
+
+                <div class="table-card">
+
+                    <h2>Stats</h2>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Value</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="heroStatsTable"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
-
-    </div>
-
-
-
-    <!-- PRODUCTS -->
-
-    <div id="productSection"
-    class="section">
-
-        <div class="top-bar">
-
-            <h1>Product Management</h1>
-
-        </div>
-
-        <div class="form-card">
-
-            <h2>Add New Cycles</h2>
-
-            <form id="productForm" enctype="multipart/form-data">
-
-                <input
-                type="text"
-                id="name"
-                placeholder="Bike Name"
-                required>
-
-                <select
-                id="category"
-                required>
-
-                    <option value="">
-                        Select Category
-                    </option>
-
-                    <option value="Sport">
-                        Sport
-                    </option>
-
-                    <option value="Urban">
-                        Urban
-                    </option>
-
-                    <option value="Offroad">
-                        Offroad
-                    </option>
-
-                </select>
-
-                <textarea
-                id="description"
-                placeholder="Description"
-                required></textarea>
-
-                <input
-                type="number"
-                id="price"
-                placeholder="Price"
-                required>
-
-                <input
-                type="text"
-                id="speed"
-                placeholder="Top Speed"
-                required>
-
-                <input
-                type="text"
-                id="range_km"
-                placeholder="Range"
-                required>
-
-                <input
-                type="text"
-                id="battery"
-                placeholder="Battery"
-                required>
-
-                 <input
-                type="text"
-                id="warranty"
-                placeholder="Warranty"
-                required>
-
-                 <input
-                type="number"
-                id="fast_charging_hours"
-                placeholder="Fast_charging_hours"
-                required>
-
-                 <input
-                type="text"
-                id="brake_type"
-                placeholder="Brake_type"
-                required>
-                
-
-
-                <input
-type="file"
-id="image"
-accept=".jpg,.jpeg,.png,.webp"
-required>
-
-<input
-type="file"
-id="image2"
-accept=".jpg,.jpeg,.png,.webp">
-
-<input
-type="file"
-id="image3"
-accept=".jpg,.jpeg,.png,.webp">
-
-<input
-type="file"
-id="image4"
-accept=".jpg,.jpeg,.png,.webp">
-             
-
-                <button type="submit">
-                    Add Product
-                </button>
-
-            </form>
-
-        </div>
-
-        <div class="table-card">
-
-            <h2>All Products</h2>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="productTableBody">
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ORDERS -->
-
-    <div id="orderSection"
-    class="section"
-    style="display:none;">
-
-        <h2>Orders Management</h2>
-
-        <table>
-
-             <thead>
-
-<tr>
-
-<th>ID</th>
-<th>Customer</th>
-<th>Total</th>
-<th>Payment</th>
-<th>UTR</th>
-<th>Status</th>
-<th>Cancelled By</th>
-<th>Tracking</th>
-
-<th>Order Date</th>
-<th>Estimated Delivery</th>
-<th>Confirmed</th>
-<th>Shipped</th>
-<th>Out For Delivery</th>
-<th>Delivered</th>
-
-<th>Address</th>
-<th>District</th>
-<th>State</th>
-<th>Pincode</th>
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-            <tbody id="ordersTable">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-
-    <!-- CUSTOMERS -->
-
-    <div id="customerSection"
-    class="section"
-    style="display:none;">
-
-        <h2>Customers</h2>
-
-        <table id="userTable">
-
-            <thead>
-
-                <tr>
-
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>District</th>
-                    <th>State</th>
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="userBody">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-
-    <!-- NOTIFICATIONS -->
-
-    <div id="notificationSection"
-    class="section"
-    style="display:none;">
-
-        <h2>Send Notification</h2>
-
-        <input
-        type="text"
-        id="notificationTitle"
-        placeholder="Notification Title">
-
-        <br><br>
-
-        <textarea
-        id="notificationMessage"
-        placeholder="Notification Message"></textarea>
-
-        <br><br>
-
-        <button onclick="sendNotification()">
-
-            Send Notification
-
-        </button>
-
-    </div>
-
-    <!-- REVIEWS -->
-
-<div id="reviewSection"
-class="section"
-style="display:none;">
-
-    <h2>Customer Reviews</h2>
-
-    <table>
-
-        <thead>
-
-            <tr>
-
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Subject</th>
-                <th>Review</th>
-                <th>Date</th>
-                <th>Action</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody id="reviewTable">
-
-        </tbody>
-
-    </table>
-
-</div>
-
-</div>
-   
-
-<!-- HERO STATS -->
-
-<div id="heroStatsSection"
-class="section"
-style="display:none;">
-
-    <h2>Hero Statistics</h2>
-
-    <table>
-
-        <thead>
-
-            <tr>
-
-                <th>Title</th>
-                <th>Value</th>
-                <th>Action</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody id="heroStatsTable">
-
-        </tbody>
-
-    </table>
-
-</div>
-
-
-
 
     </div>
 

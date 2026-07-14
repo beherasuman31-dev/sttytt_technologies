@@ -29,10 +29,17 @@
     --border:#E6D9BE;
     --text:#2A0E0E;
     --muted:#7A6A5D;
-      --maroon:#3D0000;
+    --maroon:#3D0000;
     --maroon-2:#6B0000;
     --maroon-3:#1F0000;
 
+    /* status colors (badges) */
+    --status-processing:#8B6914;
+    --status-confirmed:#2E6B4F;
+    --status-shipped:#1F5C8B;
+    --status-out:#B4750F;
+    --status-delivered:#1F7A3D;
+    --status-cancelled:#C4302F;
 }
 
 body{
@@ -57,13 +64,15 @@ body{
 
 .sidebar{
     width:264px;
-    background:linear-gradient(120deg, var(--maroon-3) 0%, var(--maroon-2) 55%, var(--maroon) 100%);
+    background:linear-gradient(160deg, var(--maroon-3) 0%, var(--maroon-2) 55%, var(--maroon) 100%);
     color:#fff;
     padding:28px 18px;
     position:sticky;
     top:0;
     height:100vh;
     border-right:1px solid rgba(212,175,55,.12);
+    display:flex;
+    flex-direction:column;
 }
 
 .sidebar h2{
@@ -91,6 +100,17 @@ body{
     display:flex;
     align-items:center;
     gap:10px;
+    border:1px solid transparent;
+}
+
+.sidebar ul li .nav-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--gold);
+    opacity:.55;
+    flex-shrink:0;
+    transition:.25s ease;
 }
 
 .sidebar ul li:hover{
@@ -103,13 +123,30 @@ body{
     background:var(--sidebar-active);
     color:#fff;
     box-shadow:0 6px 16px rgba(139,105,20,.4);
+    border-color:rgba(212,175,55,.5);
+}
+
+.sidebar ul li.active .nav-dot{
+    opacity:1;
+    background:#fff;
+}
+
+.sidebar-footer{
+    margin-top:auto;
+    padding-top:18px;
+    border-top:1px solid rgba(212,175,55,.15);
+    font-size:12px;
+    color:#B79E7A;
+    text-align:center;
 }
 
 .logo{
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:12px;
     text-decoration:none;
+    margin-bottom:8px;
 }
 
 .logo img{
@@ -136,6 +173,8 @@ body{
     align-items:center;
     flex-wrap:wrap;
     gap:12px;
+    padding-bottom:16px;
+    border-bottom:2px solid var(--border);
 }
 
 .top-bar h1{
@@ -143,6 +182,13 @@ body{
     font-family:'Big Shoulders Display', sans-serif;
     font-size:32px;
     font-weight:700;
+}
+
+.top-bar .subtitle{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:4px;
+    display:block;
 }
 
 /* =========================
@@ -168,6 +214,19 @@ body{
     font-weight:700;
     padding-bottom:14px;
     border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.count-pill{
+    background:var(--primary-tint);
+    color:var(--primary);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:999px;
 }
 
 /* =========================
@@ -209,7 +268,7 @@ textarea{
 
 button{
     border:none;
-    background:maroon;
+    background:var(--maroon);
     color:#fff;
     padding:13px;
     border-radius:10px;
@@ -250,6 +309,7 @@ th{
     font-size:12.5px;
     text-transform:uppercase;
     letter-spacing:.4px;
+    white-space:nowrap;
 }
 
 th,
@@ -258,12 +318,13 @@ td{
     text-align:left;
     border-bottom:1px solid var(--border);
     font-size:14.5px;
+    vertical-align:middle;
 }
 
-td:has(> *[data-price]),
 .price-cell{
     font-family:'JetBrains Mono', monospace;
     font-weight:600;
+    color:var(--primary);
 }
 
 td img{
@@ -274,9 +335,32 @@ td img{
     border:1px solid var(--border);
 }
 
-tr:hover{
+tbody tr{
+    transition:.15s ease;
+}
+
+tbody tr:hover{
     background:var(--bg);
 }
+
+/* status badge */
+.status-badge{
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:.2px;
+    white-space:nowrap;
+}
+
+.status-processing{ background:var(--status-processing); }
+.status-confirmed{ background:var(--status-confirmed); }
+.status-shipped{ background:var(--status-shipped); }
+.status-out-for-delivery{ background:var(--status-out); }
+.status-delivered{ background:var(--status-delivered); }
+.status-cancelled{ background:var(--status-cancelled); }
 
 /* =========================
    BUTTONS
@@ -294,6 +378,37 @@ tr:hover{
     transform:translateY(-1px);
 }
 
+.verify-btn{
+    background:var(--primary-tint);
+    color:var(--primary);
+    font-weight:600;
+    padding:8px 12px;
+    font-size:12.5px;
+    margin-top:6px;
+}
+
+.verify-btn:hover{
+    background:var(--gold);
+    color:black;
+}
+
+.utr-cell{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+}
+
+/* status select in orders table */
+.status-select{
+    background:var(--white);
+    border:1px solid var(--border);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+}
 
 /* =========================
    TABLET
@@ -365,6 +480,10 @@ tr:hover{
         justify-content:center;
     }
 
+    .sidebar-footer{
+        display:none;
+    }
+
     .main-content{
         padding:15px;
     }
@@ -434,14 +553,8 @@ tr:hover{
         font-size:12.5px;
         text-transform:uppercase;
         letter-spacing:.3px;
+        content:attr(data-label);
     }
-
-    td:nth-child(1)::before{ content:"Image"; }
-    td:nth-child(2)::before{ content:"Name"; }
-    td:nth-child(3)::before{ content:"Category"; }
-    td:nth-child(4)::before{ content:"Price"; }
-    td:nth-child(5)::before{ content:"Stock"; }
-    td:nth-child(6)::before{ content:"Action"; }
 
     td img{
         width:90px;
