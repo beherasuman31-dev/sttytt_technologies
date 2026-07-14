@@ -154,6 +154,7 @@ ${order.utr_number || "Not Submitted"}
                 <strong>Address:</strong>
 
                 ${order.address},
+                ${order.nearby},
                 ${order.district},
                 ${order.state}
                 -

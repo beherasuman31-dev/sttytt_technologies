@@ -245,6 +245,8 @@ ${order.delivered_at
 
 <td>${order.address}</td>
 
+<td>${order.nearby}</td>
+
 <td>${order.district}</td>
 
 <td>${order.state}</td>

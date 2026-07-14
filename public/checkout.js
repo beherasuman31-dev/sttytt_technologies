@@ -77,6 +77,9 @@ async function loadAddress(){
         document.getElementById("address").value =
         user.address || "";
 
+         document.getElementById("nearby").value =
+        user.nearby || "";
+
         document.getElementById("district").value =
         user.district || "";
 
@@ -255,6 +258,10 @@ document.getElementById(
 
                 address:
                 document.getElementById("address").value,
+
+                 nearby:
+                document.getElementById("nearby").value,
+
 
                 district:
                 document.getElementById("district").value,

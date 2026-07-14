@@ -1220,6 +1220,7 @@ verifyToken,
         name,
         phone,
         address,
+        nearby,
         district,
         state,
         pincode
@@ -1236,6 +1237,7 @@ verifyToken,
     name=?,
     phone=?,
     address=?,
+    nearby=?,
     district=?,
     state=?,
     pincode=?
@@ -1254,6 +1256,7 @@ verifyToken,
         name,
         phone,
         address,
+        nearby,
         district,
         state,
         pincode,
@@ -1797,12 +1800,13 @@ verifyToken,
                         customer_name,
                         phone,
                         address,
+                        nearby,
                         district,
                         state,
                         pincode
                     )
 
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 
                     `;
 
@@ -1837,6 +1841,8 @@ verifyToken,
                             user.phone,
 
                             user.address,
+
+                            user.nearby,
 
                             user.district,
 
@@ -2929,6 +2935,7 @@ app.get("/api/admin/users",verifyToken,verifyAdmin, (req, res) => {
         email,
         phone,
         address,
+        nearby,
         district,
         state,
         pincode
