@@ -846,7 +846,12 @@ document
 
 }else{
 
-    window.location.href = "product.html";
+    const redirect =
+            localStorage.getItem("redirectAfterLogin") || "index.html";
+
+        localStorage.removeItem("redirectAfterLogin");
+
+        window.location.href = redirect;
 
 }
         }

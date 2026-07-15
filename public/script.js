@@ -65,6 +65,9 @@ loginLogoutBtn.addEventListener("click", async function(e){
         alert("Logout Successful");
 
         window.location.href="index.html";
+    }else{
+
+        localStorage.setItem("redirectAfterLogin","index.html");
     }
 
 });
@@ -417,6 +420,7 @@ function checkLoginAndRedirect(e){
 
     }else{
 
+        localStorage.setItem("redirectAfterLogin","product.html");
         window.location.href = "login.html";
     }
 }
