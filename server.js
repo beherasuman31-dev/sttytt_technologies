@@ -3082,6 +3082,283 @@ app.delete("/api/admin/reviews/:id",verifyToken,verifyAdmin, (req, res) => {
 });
 
 
+app.get("/api/dealership-products", (req,res)=>{
+
+    db.query(
+        "SELECT * FROM dealership_products",
+        (err,result)=>{
+
+            if(err){
+                return res.status(500).json([]);
+            }
+
+            res.json(result);
+
+        }
+    );
+
+});
+
+app.post(
+"/api/dealership-products",
+verifyToken,
+verifyAdmin,
+
+upload.single("image"),
+
+(req,res)=>{
+
+const {
+
+name,
+category,
+description,
+motor,
+battery,
+range_km
+
+}=req.body;
+
+const image=req.file
+?"/uploads/"+req.file.filename
+:"";
+
+db.query(
+
+`INSERT INTO dealership_products
+
+(name,category,description,motor,battery,range_km,image)
+
+VALUES(?,?,?,?,?,?,?)`,
+
+[
+name,
+category,
+description,
+motor,
+battery,
+range_km,
+image
+],
+
+(err)=>{
+
+if(err){
+
+console.log(err);
+
+return res.json({
+
+success:false,
+
+message:"Add Failed"
+
+});
+
+}
+
+res.json({
+
+success:true,
+
+message:"Dealership Product Added"
+
+});
+
+});
+
+});
+
+app.get(
+"/api/admin/dealership-products",
+
+verifyToken,
+verifyAdmin,
+
+(req,res)=>{
+
+db.query(
+
+"SELECT * FROM dealership_products ORDER BY id DESC",
+
+(err,result)=>{
+
+if(err){
+
+return res.json([]);
+
+}
+
+res.json(result);
+
+});
+
+});
+
+
+app.delete(
+
+"/api/dealership-products/:id",
+
+verifyToken,
+verifyAdmin,
+
+(req,res)=>{
+
+db.query(
+
+"DELETE FROM dealership_products WHERE id=?",
+
+[req.params.id],
+
+(err)=>{
+
+if(err){
+
+return res.json({
+
+success:false
+
+});
+
+}
+
+res.json({
+
+success:true,
+
+message:"Deleted"
+
+});
+
+});
+
+});
+
+app.put(
+
+"/api/dealership-products/:id",
+
+verifyToken,
+verifyAdmin,
+
+upload.single("image"),
+
+(req,res)=>{
+
+const{
+
+name,
+category,
+description,
+motor,
+battery,
+range_km
+
+}=req.body;
+
+let sql;
+
+let values;
+
+if(req.file){
+
+sql=`
+
+UPDATE dealership_products
+
+SET
+
+name=?,
+category=?,
+description=?,
+motor=?,
+battery=?,
+range_km=?,
+image=?
+
+WHERE id=?
+
+`;
+
+values=[
+
+name,
+category,
+description,
+motor,
+battery,
+range_km,
+"/uploads/"+req.file.filename,
+req.params.id
+
+];
+
+}else{
+
+sql=`
+
+UPDATE dealership_products
+
+SET
+
+name=?,
+category=?,
+description=?,
+motor=?,
+battery=?,
+range_km=?
+
+WHERE id=?
+
+`;
+
+values=[
+
+name,
+category,
+description,
+motor,
+battery,
+range_km,
+req.params.id
+
+];
+
+}
+
+db.query(
+
+sql,
+
+values,
+
+(err)=>{
+
+if(err){
+
+return res.json({
+
+success:false
+
+});
+
+}
+
+res.json({
+
+success:true,
+
+message:"Updated"
+
+});
+
+});
+
+});
+
+
+
 // ================= START SERVER =================
 
 const PORT = process.env.PORT || 5000;

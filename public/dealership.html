@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sttytt — Cycle, E-Cycle Conversion Kits &amp; Lithium Battery Franchise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon-ink:#2a0710;
+    --maroon:#57101f;
+    --maroon-light:#7a1830;
+    --gold:#d4af37;
+    --gold-soft:#ecd48a;
+    --ivory:#f7f1e4;
+    --ivory-2:#efe4cd;
+    --text-dark:#241014;
+    --steel:#7d6a5d;
+    --line-dark: rgba(247,241,228,0.14);
+    --line-light: rgba(42,7,16,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Jost',sans-serif;
+    background:var(--ivory);
+    color:var(--text-dark);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.brand-name{font-family:'Cormorant Garamond',serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  input,select,textarea{font-family:inherit;}
+  ::selection{background:var(--gold); color:var(--maroon-ink);}
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+    outline:3px solid var(--gold);
+    outline-offset:3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  .navbar{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:rgba(42,7,16,0.94);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--gold);
+  }
+  .nav-container{
+    max-width:1260px; margin:0 auto;
+    display:flex; align-items:center; gap:16px;
+    padding:13px 24px;
+  }
+  .home-btn{
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(212,175,55,0.1);
+    border:1px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);
+    flex-shrink:0;
+    transition:transform .25s ease, background .25s ease;
+  }
+  .home-btn:hover{ background:var(--gold); color:var(--maroon-ink); transform:translateX(-3px);}
+  .home-btn svg{width:18px;height:18px;}
+
+  .logo-slot{
+    width:120px;height:70px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0; position:relative;
+  }
+  .logo-slot span{
+    font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:1px;
+    color:rgba(212,175,55,0.6);
+  }
+  .logo-slot img{width:100%;height:100%;object-fit:contain;border-radius:8px;}
+
+  .brand-name{
+    color:var(--ivory); font-size:22px; font-weight:700; letter-spacing:.3px;
+    white-space:nowrap;
+  }
+  .brand-name span{color:var(--gold);}
+
+  .nav-links{
+    display:flex; gap:26px; margin-left:auto; align-items:center;
+    font-family:'Jost',sans-serif;
+    font-size:14.5px; font-weight:500; color:rgba(247,241,228,0.82);
+  }
+  .nav-links a{ position:relative; padding:4px 0; transition:color .2s;}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:-2px; height:1.5px; width:0;
+    background:var(--gold); transition:width .25s ease;
+  }
+  .nav-links a:hover{color:var(--ivory);}
+  .nav-links a:hover::after{width:100%;}
+
+  .nav-cta{
+    background:var(--gold); color:var(--maroon-ink); padding:9px 18px; border-radius:6px;
+    font-weight:700; font-size:13.5px; white-space:nowrap;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .nav-cta:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(212,175,55,0.3);}
+
+  /* Search */
+  .search-wrap{position:relative; display:flex; align-items:center;}
+  .search-btn{
+    width:38px;height:38px;border-radius:50%; color:var(--gold);
+    display:flex;align-items:center;justify-content:center; flex-shrink:0;
+    border:1px solid rgba(212,175,55,0.4); transition:background .2s;
+  }
+  .search-btn:hover{background:rgba(212,175,55,0.12);}
+  .search-btn svg{width:17px;height:17px;}
+  .search-input{
+    width:0; opacity:0; padding:0; border:1px solid var(--gold); border-radius:20px;
+    background:rgba(247,241,228,0.06); color:var(--ivory); font-size:13.5px;
+    transition:width .3s ease, opacity .3s ease, padding .3s ease; margin-left:0;
+  }
+  .search-input.open{ width:200px; opacity:1; padding:9px 16px; margin-left:8px;}
+  .search-input::placeholder{color:rgba(247,241,228,0.45);}
+
+  .hamburger{display:none; width:32px;height:32px; color:var(--ivory);}
+  .hamburger svg{width:100%;height:100%;}
+
+  @media (max-width:960px){
+    .nav-links{
+      position:fixed; top:70px; right:-100%; height:calc(100vh - 70px);
+      width:270px; background:var(--maroon-ink); flex-direction:column; align-items:flex-start;
+      padding:30px 26px; gap:22px; transition:right .3s ease;
+      border-left:1px solid var(--gold);
+    }
+    .nav-links.open{right:0;}
+    .search-wrap{order:5;}
+    .search-input.open{width:180px;}
+    .brand-name{font-size:17px;}
+    .hamburger{display:block; margin-left:auto;}
+    .nav-cta{display:none;}
+  }
+  
+  em{
+    color:var(--gold);
+  }
+
+
+  section{padding:100px 24px;}
+  .container{max-width:1200px; margin:0 auto;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:2.5px;
+    text-transform:uppercase; color:var(--maroon); font-weight:600;
+    display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .eyebrow::before{content:""; width:26px; height:2px; background:var(--gold);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse at 15% -10%, #4a0e1f 0%, var(--maroon-ink) 55%);
+    color:var(--ivory); padding:170px 24px 110px; position:relative; overflow:hidden;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(135deg, rgba(212,175,55,0.05) 0px, rgba(212,175,55,0.05) 1px, transparent 1px, transparent 46px);
+    mask-image:radial-gradient(ellipse at 60% 20%, black 0%, transparent 72%);
+  }
+  .hero-grid{
+    position:relative; display:grid; grid-template-columns:1.15fr 0.85fr; gap:50px; align-items:center;
+    max-width:1200px; margin:0 auto;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 4.6vw, 3.8rem); line-height:1.14; font-weight:700; margin-bottom:22px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--gold);}
+  .hero p.lead{ font-size:1.1rem; color:rgba(247,241,228,0.72); max-width:54ch; margin-bottom:34px; line-height:1.7; font-family:'Jost',sans-serif;}
+  .hero-actions{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--gold); color:var(--maroon-ink); padding:15px 28px; border-radius:6px;
+    font-weight:700; font-size:15px; transition:transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 10px 26px rgba(212,175,55,0.3);}
+  .btn-ghost{
+    border:1.5px solid rgba(212,175,55,0.5); color:var(--ivory); padding:15px 28px; border-radius:6px;
+    font-weight:600; font-size:15px; transition:border-color .2s, background .2s;
+  }
+  .btn-ghost:hover{border-color:var(--gold); background:rgba(212,175,55,0.1);}
+
+  /* Signature: gold-foil plaque */
+  .plate{
+    background:linear-gradient(160deg,#3a0c19,#280610);
+    border:1px solid var(--gold); border-radius:4px; padding:30px 26px; position:relative;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(212,175,55,0.15);
+  }
+  .plate::before,.plate::after,.plate .rivet-bl,.plate .rivet-br{
+    content:""; position:absolute; width:7px; height:7px; border-radius:50%;
+    background:var(--gold);
+  }
+  .plate::before{top:14px; left:14px;}
+  .plate::after{top:14px; right:14px;}
+  .plate .rivet-bl{position:absolute; bottom:14px; left:14px; width:7px; height:7px; border-radius:50%;background:var(--gold);}
+  .plate .rivet-br{position:absolute; bottom:14px; right:14px; width:7px; height:7px; border-radius:50%;background:var(--gold);}
+  .plate-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:2.5px; color:var(--gold);
+    text-transform:uppercase; margin-bottom:16px; text-align:center;
+  }
+  .plate-row{
+    display:flex; justify-content:space-between; padding:11px 4px; border-bottom:1px dashed rgba(212,175,55,0.25);
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; color:rgba(247,241,228,0.85);
+  }
+  .plate-row:last-child{border-bottom:none;}
+  .plate-row b{color:var(--ivory); font-weight:600;}
+  .plate-row .val{color:var(--gold); font-weight:700;}
+
+  /* ---------- PRODUCTS ---------- */
+  .products{background:var(--ivory);}
+  .section-head{max-width:660px; margin-bottom:50px;}
+  .section-head h2{font-size:clamp(1.9rem,3vw,2.7rem); color:var(--maroon); line-height:1.2; font-weight:700;}
+  .section-head p{color:var(--steel); margin-top:14px; font-size:1.02rem; line-height:1.65;}
+
+  .search-status{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--maroon);
+    margin-bottom:20px; display:none;
+  }
+  .search-status.show{display:block;}
+  .no-results{
+    display:none; text-align:center; padding:40px 20px; color:var(--steel);
+    font-style:italic; border:1px dashed var(--line-light); border-radius:10px;
+  }
+  .no-results.show{display:block;}
+
+  .product-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(255px,1fr)); gap:26px;}
+  .p-card{
+    background:#fffdf8; border:1px solid var(--line-light); border-radius:8px; padding:28px 24px;
+    transition:transform .3s ease, box-shadow .3s ease, opacity .25s ease; position:relative; overflow:hidden;
+  }
+  .p-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--maroon), var(--gold));
+  }
+  .p-card:hover{transform:translateY(-6px); box-shadow:0 20px 40px -18px rgba(42,7,16,0.25);}
+  .p-card.hidden-card{display:none;}
+  .p-card .tag{
+    display:inline-block; font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:1.5px;
+    background:var(--maroon); color:var(--gold-soft); padding:4px 10px; border-radius:4px; margin-bottom:16px;
+    text-transform:uppercase;
+  }
+  .p-card h3{font-size:1.4rem; margin-bottom:10px; color:var(--maroon-ink);}
+  .p-card p{color:var(--steel); font-size:.95rem; line-height:1.6; margin-bottom:18px;}
+  .spec-list{border-top:1px solid var(--line-light); padding-top:14px;}
+  .spec-list div{
+    display:flex; justify-content:space-between; font-size:12.5px; padding:5px 0;
+    font-family:'JetBrains Mono',monospace; color:var(--steel);
+  }
+  .spec-list div b{color:var(--text-dark); font-weight:600;}
+
+  /* ---------- FRANCHISE ---------- */
+  .franchise{
+    background:var(--maroon-ink); color:var(--ivory); position:relative;
+  }
+  .franchise .section-head h2{color:var(--ivory);}
+  .franchise .section-head p{color:rgba(247,241,228,0.65);}
+  .franchise .eyebrow{color:var(--gold);}
+  .franchise-wrap{display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:start;}
+  .benefit-list{display:flex; flex-direction:column; gap:18px; margin-top:8px;}
+  .benefit{display:flex; gap:14px; align-items:flex-start;}
+  .benefit .num{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--maroon-ink); background:var(--gold);
+    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; font-weight:700; margin-top:2px;
+  }
+  .benefit b{display:block; margin-bottom:3px; font-size:1.05rem; font-family:'Cormorant Garamond',serif; font-weight:700;}
+  .benefit span{color:rgba(247,241,228,0.65); font-size:.92rem; line-height:1.55;}
+
+  .fee-plate{
+    background:linear-gradient(160deg,#3a0c19,#230510);
+    border:1px solid var(--gold); border-radius:6px; padding:38px 30px;
+    position:relative; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .fee-plate .rivet-tl,.fee-plate .rivet-tr,.fee-plate .rivet-bl,.fee-plate .rivet-br{
+    content:""; position:absolute; width:8px; height:8px; border-radius:50%;
+    background:var(--gold);
+  }
+  .fee-plate .rivet-tl{top:16px;left:16px;} .fee-plate .rivet-tr{top:16px;right:16px;}
+  .fee-plate .rivet-bl{bottom:16px;left:16px;} .fee-plate .rivet-br{bottom:16px;right:16px;}
+  .fee-plate .eyebrow{color:var(--gold); justify-content:center;}
+  .fee-plate .eyebrow::before{display:none;}
+  .fee-amount{
+    text-align:center; font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,3.4rem);
+    font-weight:700; color:var(--gold); margin:10px 0 6px;
+  }
+  .fee-sub{text-align:center; color:rgba(247,241,228,0.6); font-size:.9rem; margin-bottom:26px;}
+  .fee-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:26px;}
+  .fee-item{
+    background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.25);
+    border-radius:6px; padding:14px; text-align:center;
+  }
+  .fee-item .n{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--ivory); font-size:1.15rem;}
+  .fee-item .l{font-size:11.5px; color:rgba(247,241,228,0.55); margin-top:4px; letter-spacing:.3px;}
+  .fee-plate .btn-primary{width:100%; text-align:center;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--ivory-2);}
+  .contact-wrap{display:grid; grid-template-columns:0.9fr 1.1fr; gap:50px;}
+  .info-card{
+    background:#fffdf8; border:1px solid var(--line-light); border-radius:8px; padding:30px;
+  }
+  .info-card h3{color:var(--maroon); font-size:1.3rem; margin-bottom:20px;}
+  .info-row{display:flex; gap:14px; margin-bottom:20px; align-items:flex-start;}
+  .info-row .ico{
+    width:38px;height:38px; border-radius:6px; background:var(--maroon); color:var(--gold);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .info-row .ico svg{width:18px;height:18px;}
+  .info-row b{display:block; font-size:.95rem; color:var(--text-dark); font-family:'Jost',sans-serif;}
+  .info-row span{color:var(--steel); font-size:.9rem;}
+
+  form{background:#fffdf8; border:1px solid var(--line-light); border-radius:8px; padding:32px;}
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:6px; margin-bottom:16px;}
+  .field.full{grid-column:1/-1;}
+  label{font-size:.85rem; font-weight:600; color:var(--text-dark);}
+  input, select, textarea{
+    padding:12px 14px; border:1.5px solid var(--line-light); border-radius:6px;
+    font-size:.95rem; background:#fbf8f1; transition:border-color .2s;
+  }
+  input:focus, select:focus, textarea:focus{border-color:var(--maroon); outline:none;}
+  textarea{resize:vertical; min-height:100px;}
+  .submit-btn{
+    background:var(--maroon); color:var(--gold-soft); padding:14px 26px; border-radius:6px;
+    font-weight:700; width:100%; font-size:15px; transition:transform .2s, background .2s;
+  }
+  .submit-btn:hover{transform:translateY(-2px); background:#42000e;}
+  .form-note{font-size:.8rem; color:var(--steel); margin-top:10px; text-align:center;}
+  .toast{
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(120%);
+    background:var(--maroon-ink); color:var(--gold); padding:14px 24px; border-radius:8px;
+    border:1px solid var(--gold);
+    font-weight:600; font-size:.9rem; box-shadow:0 15px 40px rgba(0,0,0,0.35);
+    transition:transform .35s ease; z-index:2000;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);}
+
+  footer{
+    background:var(--maroon-ink); color:rgba(247,241,228,0.55); text-align:center;
+    padding:30px 24px; font-size:.85rem; border-top:1px solid var(--gold);
+  }
+  footer span{color:var(--gold); font-weight:600;}
+
+  .reveal{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .franchise-wrap{grid-template-columns:1fr;}
+    .contact-wrap{grid-template-columns:1fr;}
+    .form-grid{grid-template-columns:1fr;}
+    section{padding:70px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="back-btn">
+    <button  class="home-btn" id="homeBtn" aria-label="Return to home / Scroll to top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+      </svg>
+    </button>
+    </a>
+
+
+    <!-- Company logo slot: place your logo image src here -->
+    <div class="logo-slot">
+      <a href="#" class="logo">
+            <img src="image/1000561758-removebg-preview.png" alt="STTYTT Logo">
+        </a>
+    </div>
+
+   
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-close">Home</a></li>
+      <li><a href="#products" class="nav-close">Products</a></li>
+      <li><a href="#franchise" class="nav-close">Franchise</a></li>
+      <li><a href="#contact" class="nav-close">Contact</a></li>
+      <li class="search-wrap">
+        <button class="search-btn" id="searchToggle" aria-label="Search products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search products…" aria-label="Search products">
+      </li>
+      <li><a href="#contact" class="nav-cta nav-close">Get Dealership</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow" style="color:var(--gold);">Cycles • E-Cycles • EV Conversion Kits • Lithium Battery</div>
+      <h1>Turn Any Cycle,Petrol Bike or Scooter <em>Electric</em> With One Kit</h1>
+      <p class="lead">Cycles, e-cycle conversion kits (for both bikes and scooters), and lithium inverter batteries — a full dealership and franchise across India, starting from just <b>₹1,00,000</b>.</p>
+      <div class="hero-actions">
+      </div>
+    </div>
+
+    <div class="plate">
+      <div class="rivet-tl"></div><div class="rivet-tr"></div>
+      <div class="rivet-bl"></div><div class="rivet-br"></div>
+      <div class="plate-label">Product Rating Plate</div>
+      <div class="plate-row"><b>Conversion Kit</b><span class="val">Bike + Scooter</span></div>
+      <div class="plate-row"><b>Battery Type</b><span class="val">Lithium-ion</span></div>
+      <div class="plate-row"><b>Voltage Range</b><span class="val">48V – 60V</span></div>
+      <div class="plate-row"><b>Inverter Support</b><span class="val">Yes</span></div>
+      <div class="plate-row"><b>Warranty</b><span class="val">12–24 Months</span></div>
+      <div class="plate-row"><b>Min. Franchise Fee</b><span class="val">₹1,00,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Product Range</div>
+      <h2>Everything Under One Roof — From Cycles to Electric Scooters</h2>
+      <p>The dealership carries every product today's EV demand calls for — from everyday cycles to high-capacity lithium batteries. Use the search icon in the menu to filter instantly.</p>
+    </div>
+
+    <p class="search-status" id="searchStatus"></p>
+
+    <div class="product-grid" id="productGrid">
+      <div class="p-card reveal" data-search="cycle bicycle dealership standard gear">
+        <span class="tag">Cycle</span>
+        <h3>Cycle Dealership</h3>
+        <p>Standard and geared bicycles for all age groups — a ready range built for city, school and everyday use.</p>
+        <div class="spec-list">
+          <div><span>Frame</span><b>Steel / Alloy</b></div>
+          <div><span>Variants</span><b>10+ Models</b></div>
+        </div>
+      </div>
+
+      <div class="p-card reveal" data-search="e-cycle conversion kit bicycle electric">
+        <span class="tag">E-Cycle Kit</span>
+        <h3>E-Cycle Conversion Kit</h3>
+        <p>A plug-and-ride kit that turns any regular cycle into an electric cycle within a few hours.</p>
+        <div class="spec-list">
+          <div><span>Motor</span><b>250W–350W</b></div>
+          <div><span>Range</span><b>40–60 km</b></div>
+        </div>
+      </div>
+
+      <div class="p-card reveal" data-search="bike scooter conversion kit ev petrol">
+        <span class="tag">Bike &amp; Scooter Kit</span>
+        <h3>Bike / Scooter EV Conversion Kit</h3>
+        <p>An electric conversion kit for petrol bikes and scooters — the EV experience without buying a new vehicle.</p>
+        <div class="spec-list">
+          <div><span>Motor</span><b>1000W–3000W</b></div>
+          <div><span>Range</span><b>60–100 km</b></div>
+        </div>
+      </div>
+
+      <div class="p-card reveal" data-search="lithium inverter battery home shop">
+        <span class="tag">Lithium Battery</span>
+        <h3>Lithium Inverter Battery</h3>
+        <p>Long-life lithium inverter batteries built for home, shop and EV use alike.</p>
+        <div class="spec-list">
+          <div><span>Capacity</span><b>50Ah–200Ah</b></div>
+          <div><span>Life Cycle</span><b>2000+ cycles</b></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="no-results" id="noResults">No products match your search. Try "cycle", "kit", or "battery".</p>
+  </div>
+  <div id="hiddenProducts" class="product-grid"></div>
+</section>
+
+<!-- ============ FRANCHISE ============ -->
+<section class="franchise" id="franchise">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Dealership / Franchise</div>
+      <h2>Start a <em>STTYTT</em> Cycle Franchise in Your City</h2>
+      <p>Low investment, complete training and steadily rising EV demand — full backing for every franchise partner.</p>
+    </div>
+
+    <div class="franchise-wrap">
+      <div class="reveal">
+        <div class="benefit-list">
+          <div class="benefit">
+            <div class="num">1</div>
+            <div><b>Complete Product Range</b><span>Cycles, e-cycle kits, bike/scooter conversion kits and lithium batteries — all under one franchise.</span></div>
+          </div>
+          <div class="benefit">
+            <div class="num">2</div>
+            <div><b>Technical Training</b><span>Full training on conversion kit fitting and battery servicing.</span></div>
+          </div>
+          <div class="benefit">
+            <div class="num">3</div>
+            <div><b>Marketing Support</b><span>Assistance with branding, signage, catalogues and digital promotion.</span></div>
+          </div>
+          <div class="benefit">
+            <div class="num">4</div>
+            <div><b>Low Minimum Investment</b><span>Franchise fee starts at just ₹1,00,000, making it easy to get started.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fee-plate reveal">
+        <div class="rivet-tl"></div><div class="rivet-tr"></div>
+        <div class="rivet-bl"></div><div class="rivet-br"></div>
+        <div class="eyebrow">Minimum Franchise Fee</div>
+        <div class="fee-amount">₹1,00,000</div>
+        <div class="fee-sub">Onwards — investment may vary by territory and store size</div>
+        <div class="fee-grid">
+          <div class="fee-item"><div class="n">100%</div><div class="l">Full Product Access</div></div>
+          <div class="fee-item"><div class="n">✓</div><div class="l">Training Included</div></div>
+          <div class="fee-item"><div class="n">Pan-India</div><div class="l">Territory Available</div></div>
+          <div class="fee-item"><div class="n">✓</div><div class="l">Marketing Support</div></div>
+        </div>
+        <a href="#contact" class="btn-primary">Apply for Franchise</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Contact Us</div>
+      <h2>Talk to Us About Franchise or Dealership</h2>
+      <p>Fill in the form below or reach out directly by call or email — our team responds within 24 hours.</p>
+    </div>
+
+    <div class="contact-wrap">
+      <div class="info-card reveal">
+        <h3>Company Contact Details</h3>
+
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.11 4.18 2 2 0 0 1 4.09 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><b>Phone</b><span>+91 8480114554</span></div>
+        </div>
+
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></div>
+          <div><b>Email</b><span>info@sttytt.com</span></div>
+        </div>
+
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><b>Head Office</b><span>Plot No. 14, Industrial Area, Bhubaneswar, India</span></div>
+        </div>
+
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div><b>Office Hours</b><span>Mon–Sat, 10 AM – 7 PM</span></div>
+        </div>
+      </div>
+
+      <form id="contactForm" class="reveal">
+        <div class="form-grid">
+          <div class="field">
+            <label for="fname">Full Name</label>
+            <input type="text" id="fname" name="fname" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label for="fphone">Mobile Number</label>
+            <input type="tel" id="fphone" name="fphone" placeholder="10-digit number" pattern="[0-9]{10}" required>
+          </div>
+          <div class="field">
+            <label for="femail">Email</label>
+            <input type="email" id="femail" name="femail" placeholder="you@example.com">
+          </div>
+          <div class="field">
+            <label for="fcity">City</label>
+            <input type="text" id="fcity" name="fcity" placeholder="e.g. Jaipur" required>
+          </div>
+          <div class="field full">
+            <label for="finterest">Interested In</label>
+            <select id="finterest" name="finterest">
+              <option>Cycle Dealership</option>
+              <option>E-Cycle Conversion Kit</option>
+              <option>Bike / Scooter EV Conversion Kit</option>
+              <option>Lithium Inverter Battery</option>
+              <option>Full Franchise (All Products)</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="fmsg">Message</label>
+            <textarea id="fmsg" name="fmsg" placeholder="Tell us about your investment capacity and location..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Send Inquiry</button>
+        <p class="form-note">Our team will reach out as soon as you submit the form. No payment is required now.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 <span>STTYTT Tecnologies Pvt.Ltd</span> — Cycle, e-cycle conversion kits, bike/scooter EV kits and lithium inverter battery franchise. All rights reserved.
+</footer>
+
+<div class="toast" id="toast">Thank you! Our team will contact you shortly.</div>
+
+<script>
+  // Home / return-to-top button
+  document.getElementById('homeBtn').addEventListener('click', () => {
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  // Mobile nav toggle
+  const hamburger = document.getElementById('hamburgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  document.querySelectorAll('.nav-close').forEach(link=>{
+    link.addEventListener('click', ()=> navLinks.classList.remove('open'));
+  });
+
+  // Search toggle + live product filter
+  const searchToggle = document.getElementById('searchToggle');
+  const searchInput = document.getElementById('searchInput');
+  const searchStatus = document.getElementById('searchStatus');
+  const noResults = document.getElementById('noResults');
+  const cards = Array.from(document.querySelectorAll('.p-card'));
+
+  searchToggle.addEventListener('click', ()=>{
+    searchInput.classList.toggle('open');
+    if(searchInput.classList.contains('open')) searchInput.focus();
+  });
+
+
+  
+
+  function runSearch(){
+    const q = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    cards.forEach(card=>{
+      const haystack = (card.dataset.search + ' ' + card.querySelector('h3').textContent).toLowerCase();
+      const match = q === '' || haystack.includes(q);
+      card.classList.toggle('hidden-card', !match);
+      if(match) visibleCount++;
+    });
+
+    if(q === ''){
+      searchStatus.classList.remove('show');
+    }else{
+      searchStatus.textContent = `Showing ${visibleCount} result${visibleCount===1?'':'s'} for "${searchInput.value}"`;
+      searchStatus.classList.add('show');
+    }
+    noResults.classList.toggle('show', visibleCount === 0 && q !== '');
+  }
+
+  const container = document.getElementById("hiddenProducts");
+
+async function loadHiddenProducts(){
+
+    const keyword = searchInput.value.trim().toLowerCase();
+
+    if(keyword===""){
+        container.innerHTML="";
+        return;
+    }
+
+    const res = await fetch("/api/dealership-products");
+    const products = await res.json();
+
+    container.innerHTML="";
+
+    products.forEach(product=>{
+
+        const match =
+            product.name.toLowerCase().includes(keyword) ||
+            product.category.toLowerCase().includes(keyword);
+
+        if(match){
+
+            container.innerHTML += `
+
+            <div class="p-card">
+
+                <img src="${product.image}" style="width:100%;height:200px;object-fit:cover;border-radius:8px;">
+
+                <span class="tag">${product.category}</span>
+
+                <h3>${product.name}</h3>
+
+                <p>${product.description}</p>
+
+                <div class="spec-list">
+
+                    <div>
+                        <span>Motor</span>
+                        <b>${product.motor}</b>
+                    </div>
+
+                    <div>
+                        <span>Battery</span>
+                        <b>${product.battery}</b>
+                    </div>
+
+                    <div>
+                        <span>Range</span>
+                        <b>${product.range_km}</b>
+                    </div>
+
+                </div>
+
+            </div>
+
+            `;
+        }
+
+    });
+
+}
+
+searchInput.addEventListener("input",async()=>{
+
+    runSearch();
+
+    await loadHiddenProducts();
+
+});
+  searchInput.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      document.getElementById('products').scrollIntoView({behavior:'smooth'});
+    }
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Contact form submit (demo — no backend)
+  const form = document.getElementById('contactForm');
+  const toast = document.getElementById('toast');
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    toast.classList.add('show');
+    form.reset();
+    setTimeout(()=> toast.classList.remove('show'), 3500);
+  });
+
+  // Optional: load a logo dynamically if you set window.COMPANY_LOGO_URL = "path/to/logo.png"
+  if (window.COMPANY_LOGO_URL) {
+    const logoImg = document.getElementById('companyLogo');
+    const placeholderText = document.getElementById('logoPlaceholderText');
+    logoImg.src = window.COMPANY_LOGO_URL;
+    logoImg.style.display = 'block';
+    placeholderText.style.display = 'none';
+  }
+
+
+
+  
+</script>
+
+</body>
+</html>

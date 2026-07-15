@@ -69,6 +69,15 @@
                 <i class='bx bx-bar-chart-alt-2'></i><span>Hero Stats</span>
             </li>
 
+            <li class="nav-item"
+    data-section="dealershipSection"
+    onclick="showSection('dealershipSection', this)">
+
+    <i class='bx bx-store'></i>
+    <span>Dealership Products</span>
+
+</li>
+
         </ul>
 
         <div class="drawer-footer">STTYTT Admin Panel</div>
@@ -332,6 +341,141 @@
         </div>
 
     </div>
+
+    <!-- DEALERSHIP PRODUCTS -->
+
+<div id="dealershipSection"
+class="section"
+style="display:none;">
+
+<div class="top-bar">
+
+<div>
+
+<h1>
+<i class='bx bx-store'></i>
+Dealership Products
+</h1>
+
+<span class="subtitle">
+
+Products shown only through search
+
+</span>
+
+</div>
+
+</div>
+
+
+<div class="form-card">
+
+<h2>Add Dealership Product</h2>
+
+<form id="dealershipForm"
+enctype="multipart/form-data">
+
+<input
+type="text"
+id="d_name"
+placeholder="Product Name"
+required>
+
+<input
+type="text"
+id="d_category"
+placeholder="Category"
+required>
+
+<textarea
+id="d_description"
+placeholder="Description"
+required></textarea>
+
+<input
+type="text"
+id="d_motor"
+placeholder="Motor">
+
+<input
+type="text"
+id="d_battery"
+placeholder="Battery">
+
+<input
+type="text"
+id="d_range"
+placeholder="Range">
+
+<input
+type="file"
+id="d_image"
+required>
+
+<button type="submit">
+
+Add Dealership Product
+
+</button>
+
+</form>
+
+</div>
+
+
+<div class="table-card">
+
+<h2>
+
+Dealership Products
+
+<span
+class="count-pill"
+id="dealershipCount">
+
+0
+
+</span>
+
+</h2>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Image</th>
+
+<th>Name</th>
+
+<th>Category</th>
+
+<th>Motor</th>
+
+<th>Battery</th>
+
+<th>Range</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="dealershipTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
 
     <script src="admin.js"></script>
 

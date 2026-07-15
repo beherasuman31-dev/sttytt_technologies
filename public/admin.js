@@ -10,7 +10,11 @@ function toggleDrawer(){
 const token = localStorage.getItem("token");
 const productForm = document.getElementById("productForm");
 const productTableBody = document.getElementById("productTableBody");
+const dealershipForm =
+document.getElementById("dealershipForm");
 
+const dealershipTable =
+document.getElementById("dealershipTable");
 // ================= STATUS BADGE HELPER =================
 
 function statusBadgeClass(status){
@@ -386,6 +390,11 @@ function showSection(sectionId, navEl){
     if(sectionId === "heroStatsSection"){
         loadHeroStats();
     }
+    if(sectionId==="dealershipSection"){
+
+    loadDealershipProducts();
+
+}
 
     // menu item click par drawer band ho jaye (sab devices pe)
     document.getElementById("sideDrawer").classList.remove("open");
@@ -513,3 +522,191 @@ function updateHeroStat(id){
         loadHeroStats();
     });
 }
+
+// ================= DEALERSHIP PRODUCTS =================
+
+// LOAD
+
+async function loadDealershipProducts(){
+
+    const res = await fetch(
+
+        "/api/admin/dealership-products",
+
+        {
+            headers:{
+                Authorization:"Bearer " + token
+            }
+        }
+
+    );
+
+    const products = await res.json();
+
+    dealershipTable.innerHTML="";
+
+    products.forEach(product=>{
+
+        dealershipTable.innerHTML+=`
+
+        <tr>
+
+            <td>
+
+                <img
+                src="${product.image}"
+                width="80">
+
+            </td>
+
+            <td>${product.name}</td>
+
+            <td>${product.category}</td>
+
+            <td>${product.motor}</td>
+
+            <td>${product.battery}</td>
+
+            <td>${product.range_km}</td>
+
+            <td>
+
+                <button
+                class="delete-btn"
+
+                onclick="deleteDealershipProduct(${product.id})">
+
+                Delete
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+    document.getElementById("dealershipCount").innerText=
+    products.length;
+
+}
+
+
+
+// ADD
+
+dealershipForm.addEventListener(
+
+"submit",
+
+async(e)=>{
+
+e.preventDefault();
+
+const formData=new FormData();
+
+formData.append(
+"name",
+document.getElementById("d_name").value
+);
+
+formData.append(
+"category",
+document.getElementById("d_category").value
+);
+
+formData.append(
+"description",
+document.getElementById("d_description").value
+);
+
+formData.append(
+"motor",
+document.getElementById("d_motor").value
+);
+
+formData.append(
+"battery",
+document.getElementById("d_battery").value
+);
+
+formData.append(
+"range_km",
+document.getElementById("d_range").value
+);
+
+formData.append(
+
+"image",
+
+document.getElementById("d_image").files[0]
+
+);
+
+const res=await fetch(
+
+"/api/dealership-products",
+
+{
+
+method:"POST",
+
+headers:{
+
+Authorization:"Bearer "+token
+
+},
+
+body:formData
+
+}
+
+);
+
+const data=await res.json();
+
+alert(data.message);
+
+dealershipForm.reset();
+
+loadDealershipProducts();
+
+});
+
+
+
+// DELETE
+
+async function deleteDealershipProduct(id){
+
+if(!confirm("Delete Product?")) return;
+
+await fetch(
+
+"/api/dealership-products/"+id,
+
+{
+
+method:"DELETE",
+
+headers:{
+
+Authorization:"Bearer "+token
+
+}
+
+}
+
+);
+
+loadDealershipProducts();
+
+}
+
+
+
+// Auto Load
+
+loadDealershipProducts();
