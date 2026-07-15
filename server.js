@@ -3359,6 +3359,98 @@ message:"Updated"
 
 
 
+app.post("/api/inquiries",(req,res)=>{
+
+    const {
+
+        full_name,
+        phone,
+        email,
+        city,
+        interest,
+        message
+
+    } = req.body;
+
+    const sql = `
+    INSERT INTO inquiries
+    (full_name,phone,email,city,interest,message)
+    VALUES(?,?,?,?,?,?)
+    `;
+
+    db.query(
+
+        sql,
+
+        [
+
+            full_name,
+            phone,
+            email,
+            city,
+            interest,
+            message
+
+        ],
+
+        (err,result)=>{
+
+            if(err){
+
+                console.log(err);
+
+                return res.status(500).json({
+                    success:false
+                });
+
+            }
+
+            res.json({
+
+                success:true,
+                message:"Inquiry Sent"
+
+            });
+
+        }
+
+    );
+
+});
+
+
+app.delete(
+
+"/api/admin/inquiries/:id",
+
+verifyToken,
+verifyAdmin,
+
+(req,res)=>{
+
+    db.query(
+
+        "DELETE FROM inquiries WHERE id=?",
+
+        [req.params.id],
+
+        ()=>{
+
+            res.json({
+
+                success:true,
+                message:"Deleted"
+
+            });
+
+        }
+
+    );
+
+});
+
+
+
 // ================= START SERVER =================
 
 const PORT = process.env.PORT || 5000;

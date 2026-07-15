@@ -69,6 +69,19 @@
                 <i class='bx bx-bar-chart-alt-2'></i><span>Hero Stats</span>
             </li>
 
+             <li class="nav-item"
+
+data-section="inquirySection"
+
+onclick="showSection('inquirySection',this)">
+
+<i class='bx bx-message-detail'></i>
+
+<span>Inquiry</span>
+
+</li>
+
+
             <li class="nav-item"
     data-section="dealershipSection"
     onclick="showSection('dealershipSection', this)">
@@ -77,6 +90,7 @@
     <span>Dealership Products</span>
 
 </li>
+
 
         </ul>
 
@@ -472,6 +486,58 @@ id="dealershipCount">
 </table>
 
 </div>
+
+</div>
+
+</div>
+
+<div id="inquirySection"
+
+class="section"
+
+style="display:none;">
+
+<div class="top-bar">
+
+<h1>Customer Inquiry</h1>
+
+</div>
+
+<div class="table-card">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Phone</th>
+
+<th>Email</th>
+
+<th>City</th>
+
+<th>Interest</th>
+
+<th>Message</th>
+
+<th>Date</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="inquiryTable">
+
+</tbody>
+
+</table>
 
 </div>
 

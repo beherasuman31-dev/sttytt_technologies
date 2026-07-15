@@ -394,6 +394,12 @@ function showSection(sectionId, navEl){
 
     loadDealershipProducts();
 
+    }
+
+    if(sectionId==="inquirySection"){
+
+    loadInquiries();
+
 }
 
     // menu item click par drawer band ho jaye (sab devices pe)
@@ -710,3 +716,99 @@ loadDealershipProducts();
 // Auto Load
 
 loadDealershipProducts();
+
+
+async function loadInquiries(){
+
+    const res=await fetch(
+
+        "/api/admin/inquiries",
+
+        {
+
+            headers:{
+
+                Authorization:"Bearer "+token
+
+            }
+
+        }
+
+    );
+
+    const data=await res.json();
+
+    const table=document.getElementById("inquiryTable");
+
+    table.innerHTML="";
+
+    data.forEach(i=>{
+
+        table.innerHTML+=`
+
+        <tr>
+
+            <td>${i.id}</td>
+
+            <td>${i.full_name}</td>
+
+            <td>${i.phone}</td>
+
+            <td>${i.email}</td>
+
+            <td>${i.city}</td>
+
+            <td>${i.interest}</td>
+
+            <td>${i.message}</td>
+
+            <td>${new Date(i.created_at).toLocaleDateString()}</td>
+
+            <td>
+
+                <button
+
+                onclick="deleteInquiry(${i.id})"
+
+                class="delete-btn">
+
+                Delete
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+async function deleteInquiry(id){
+
+    if(!confirm("Delete Inquiry?")) return;
+
+    await fetch(
+
+        "/api/admin/inquiries/"+id,
+
+        {
+
+            method:"DELETE",
+
+            headers:{
+
+                Authorization:"Bearer "+token
+
+            }
+
+        }
+
+    );
+
+    loadInquiries();
+
+}
