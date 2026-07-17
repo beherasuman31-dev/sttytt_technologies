@@ -719,36 +719,70 @@ function changeImage(image){
 }
 
 
-async function shareProduct(name, price, url){
-
+async function shareProduct(name, price, url) {
     const shareData = {
-
         title: name,
-
-        text: `${name}
-Price: ₹${price}
-
-Check this product:`,
-
+        text: `🛍️ ${name}\n💰 Price: ₹${price}\n\nCheck this amazing product 👇`,
         url: url
     };
 
-    if(navigator.share){
-
-        try{
-
+    // Native share (mobile/supported browsers)
+    if (navigator.share) {
+        try {
             await navigator.share(shareData);
-
-        }catch(err){
-
-            console.log(err);
+        } catch (err) {
+            if (err.name !== "AbortError") {
+                console.error("Share failed:", err);
+                fallbackCopy(url);
+            }
         }
-
-    }else{
-
-        navigator.clipboard.writeText(url);
-
-        alert("Link copied");
+    } else {
+        fallbackCopy(url);
     }
+}
 
+async function fallbackCopy(url) {
+    try {
+        await navigator.clipboard.writeText(url);
+        showToast("✅ Link copied to clipboard!");
+    } catch (err) {
+        console.error("Copy failed:", err);
+        showToast("❌ Could not copy link");
+    }
+}
+
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1f1f1f;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        animation: fadeInOut 2.5s ease forwards;
+    `;
+
+    const style = document.createElement("style");
+    style.textContent = `
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, 10px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, 10px); }
+        }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+        style.remove();
+    }, 2500);
 }
