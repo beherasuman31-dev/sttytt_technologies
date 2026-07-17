@@ -473,7 +473,7 @@ document.getElementById(
 
             const options = {
 
-                key: "rzp_test_T591J8J71XfrC3",
+                key: "rzp_live_TEaPTf3Syw9ZDT",
 
                 amount: total * 100,
 
