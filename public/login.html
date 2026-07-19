@@ -922,8 +922,11 @@ async function handleCredentialResponse(response){
 
             alert("Google Login Success");
 
-            window.location.href =
-                "product.html";
+           if (data.role === "admin") {
+         window.location.href = "admin.html";
+         } else {
+         window.location.href = "product.html";
+          }
         }
 
     }catch(error){

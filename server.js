@@ -1099,7 +1099,8 @@ app.post("/google-login", async (req, res) => {
 
                     return res.json({
                         success:true,
-                        token:jwtToken
+                        token:jwtToken,
+                        email:result[0].role
                     });
                 }
 
@@ -1128,7 +1129,8 @@ app.post("/google-login", async (req, res) => {
 
                         res.json({
                             success:true,
-                            token:jwtToken
+                            token:jwtToken,
+                            email:email
                         });
                     }
                 );
