@@ -13,7 +13,7 @@ const path = require("path");
 const multer = require("multer");
 const PDFDocument = require("pdfkit");
 const QRCode = require("qrcode");
-const nodemailer = require("nodemailer");
+
 const { OAuth2Client } =
 require("google-auth-library");
 const SibApiV3Sdk = require("sib-api-v3-sdk");
@@ -63,27 +63,6 @@ const upload = multer({
 });
 // ================= EMAIL =================
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
-  family: 4,
-  connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
-
-transporter.verify((error, success) => {
-    if (error) {
-        console.log("SMTP VERIFY ERROR:", error);
-    } else {
-        console.log("SMTP Server Ready");
-    }
-});
 
 // ================= MIDDLEWARE =================
 
@@ -568,25 +547,38 @@ app.post("/api/send-forgot-otp",(req,res)=>{
 
             try{
 
-                await transporter.sendMail({
+               await apiInstance.sendTransacEmail({
 
-                    from:process.env.EMAIL_USER,
+    sender: {
+        name: "STTYTT Technologies Pvt. Ltd.",
+        email: "sttytt.com@gmail.com"
+    },
 
-                    to:email,
+    to: [
+        {
+            email: email
+        }
+    ],
 
-                    subject:"Reset Password OTP",
+    subject: "Reset Password OTP",
 
-                    html:`
+    htmlContent: `
 
-                    <h2>STTYTT</h2>
+    <div style="font-family:Arial;padding:20px">
 
-                    <h1>${otp}</h1>
+        <h2>STTYTT Technologies Pvt. Ltd.</h2>
 
-                    <p>Valid for 5 minutes</p>
+        <p>Your password reset OTP is:</p>
 
-                    `
+        <h1 style="color:#2563eb">${otp}</h1>
 
-                });
+        <p>Valid for 5 minutes.</p>
+
+    </div>
+
+    `
+
+});
 
                 res.json({
 
