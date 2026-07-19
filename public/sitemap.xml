@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-<url>
-<loc>https://www.sttytt.com/</loc>
-<priority>1.0</priority>
-</url>
+  <url>
+    <loc>https://www.sttytt.com/</loc>
+    <priority>1.0</priority>
+  </url>
 
-<url>
-<loc>https://www.sttytt.com/product.html</loc>
-</url>
+  <url>
+    <loc>https://www.sttytt.com/product.html</loc>
+  </url>
 
-<url>
-<loc>https://www.sttytt.com/dealership.html</loc>
-</url>
+  <url>
+    <loc>https://www.sttytt.com/dealership.html</loc>
+  </url>
 
-<url>
-<loc>https://www.sttytt.com/learn.html</loc>
-</url>
+  <url>
+    <loc>https://www.sttytt.com/cart.html</loc>
+  </url>
 
-<url>
-<loc>https://www.sttytt.com/login.html</loc>
-</url>
+  <url>
+    <loc>https://www.sttytt.com/checkout.html</loc>
+  </url>
+
+  <url>
+    <loc>https://www.sttytt.com/orders.html</loc>
+  </url>
+
+  <url>
+    <loc>https://www.sttytt.com/notification.html</loc>
+  </url>
+
+  <url>
+    <loc>https://www.sttytt.com/learn.html</loc>
+  </url>
+
+  <url>
+    <loc>https://www.sttytt.com/login.html</loc>
+  </url>
 
 </urlset>

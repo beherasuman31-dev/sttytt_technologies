@@ -1,4 +1,7 @@
 User-agent: *
+
 Allow: /
+
+Disallow: /admin.html
 
 Sitemap: https://www.sttytt.com/sitemap.xml
