@@ -16,6 +16,14 @@ const QRCode = require("qrcode");
 const nodemailer = require("nodemailer");
 const { OAuth2Client } =
 require("google-auth-library");
+const SibApiV3Sdk = require("sib-api-v3-sdk");
+
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+
+const apiKey = defaultClient.authentications["api-key"];
+apiKey.apiKey = process.env.BREVO_API_KEY;
+
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 dotenv.config();
 const razorpay = new Razorpay({
@@ -60,6 +68,9 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   family: 4,
+  connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -280,102 +291,46 @@ app.post("/api/send-register-otp", async (req, res) => {
 
             try {
 
-                await transporter.sendMail({
+  
+             await apiInstance.sendTransacEmail({
+    sender: {
+        email: "sttytt.com@gmail.com",
+        name: "STTYTT Technologies Pvt. Ltd."
+    },
 
-    from: process.env.EMAIL_USER,
-
-    to: email,
+    to: [
+        {
+            email: email
+        }
+    ],
 
     subject: "Verify Your Email - STTYTT Technologies Pvt. Ltd.",
 
-    html: `
+    htmlContent: `
     <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;background:#f4f4f4;padding:30px;">
-        
+
         <div style="background:#ffffff;border-radius:10px;padding:40px;border:1px solid #e5e5e5;">
-            
-            <h2 style="margin:0;color:#0f172a;">
-                STTYTT Technologies Pvt. Ltd.
-            </h2>
 
-            <p style="color:#555;margin-top:5px;">
-                Electric Mobility E-Commerce Platform
-            </p>
+            <h2>STTYTT Technologies Pvt. Ltd.</h2>
 
-            <hr style="border:none;border-top:1px solid #eee;margin:25px 0;">
+            <p>Electric Mobility E-Commerce Platform</p>
 
-            <h3 style="color:#111;">
-                Verify Your Email Address
-            </h3>
+            <hr>
 
-            <p style="font-size:15px;color:#555;line-height:1.7;">
-                Thank you for choosing <b>STTYTT Technologies Pvt. Ltd.</b>.
-                To complete your registration and secure your account,
-                please use the One-Time Password (OTP) below.
-            </p>
+            <h3>Verify Your Email Address</h3>
 
-            <div style="
-                background:#f8fafc;
-                border:2px dashed #2563eb;
-                padding:20px;
-                text-align:center;
-                border-radius:8px;
-                margin:30px 0;
-            ">
-                <p style="margin:0;font-size:14px;color:#666;">
-                    Your Verification Code
-                </p>
+            <p>Thank you for choosing <b>STTYTT Technologies Pvt. Ltd.</b></p>
 
-                <h1 style="
-                    letter-spacing:8px;
-                    color:#2563eb;
-                    margin:10px 0;
-                    font-size:40px;
-                ">
-                    ${otp}
-                </h1>
-
-                <p style="margin:0;color:#666;">
-                    Valid for <b>5 Minutes</b>
-                </p>
+            <div style="text-align:center;padding:20px;border:2px dashed #2563eb;">
+                <h1>${otp}</h1>
+                <p>Valid for 5 Minutes</p>
             </div>
-
-            <p style="color:#555;font-size:15px;line-height:1.7;">
-                Please enter this OTP on the verification page to activate
-                your account. This code can only be used once.
-            </p>
-
-            <div style="
-                background:#fff8e1;
-                border-left:4px solid #f59e0b;
-                padding:15px;
-                margin:25px 0;
-            ">
-                <strong>Security Notice</strong>
-                <ul style="margin-top:10px;color:#555;">
-                    <li>Never share this OTP with anyone.</li>
-                    <li>STTYTT will never ask for your OTP by phone, email, or chat.</li>
-                    <li>If you did not request this verification, you can safely ignore this email.</li>
-                </ul>
-            </div>
-
-            <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-
-            <p style="font-size:14px;color:#666;line-height:1.6;">
-                This is an automated email. Please do not reply to this message.
-            </p>
-
-            <p style="font-size:14px;color:#666;">
-                Regards,<br>
-                <strong>STTYTT Technologies Pvt. Ltd.</strong><br>
-                Electric Mobility E-Commerce Platform
-            </p>
 
         </div>
 
     </div>
     `
 });
-
 
 
                 console.log("Email Sent Successfully");
