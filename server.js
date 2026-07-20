@@ -273,7 +273,7 @@ app.post("/api/send-register-otp", async (req, res) => {
   
              await apiInstance.sendTransacEmail({
     sender: {
-        email: "sttytt.com@gmail.com",
+        email: "info@sttytt.com",
         name: "STTYTT Technologies Pvt. Ltd."
     },
 
@@ -551,7 +551,7 @@ app.post("/api/send-forgot-otp",(req,res)=>{
 
     sender: {
         name: "STTYTT Technologies Pvt. Ltd.",
-        email: "sttytt.com@gmail.com"
+        email: "info@stytt.com"
     },
 
     to: [
