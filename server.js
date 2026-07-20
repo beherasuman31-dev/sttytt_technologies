@@ -285,30 +285,115 @@ app.post("/api/send-register-otp", async (req, res) => {
 
     subject: "Verify Your Email - STTYTT Technologies Pvt. Ltd.",
 
-    htmlContent: `
-    <div style="max-width:600px;margin:auto;font-family:Arial,sans-serif;background:#f4f4f4;padding:30px;">
+htmlContent: `
+<div style="margin:0;padding:40px 0;background:#f4f1ed;font-family:Arial,Helvetica,sans-serif;">
 
-        <div style="background:#ffffff;border-radius:10px;padding:40px;border:1px solid #e5e5e5;">
+  <table align="center" width="620" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #e7d8b6;box-shadow:0 15px 35px rgba(0,0,0,.12);">
 
-            <h2>STTYTT Technologies Pvt. Ltd.</h2>
+    <!-- Header -->
+    <tr>
+      <td style="background:linear-gradient(135deg,#3B0A1E,#5A102A,#3B0A1E);padding:40px;text-align:center;">
 
-            <p>Electric Mobility E-Commerce Platform</p>
+        <img src="https://www.sttytt.com/image/1000561758-removebg-preview.png" width="170" alt="STTYTT Logo">
 
-            <hr>
+        <h1 style="margin:18px 0 8px;color:#D4AF37;font-size:32px;">
+          STTYTT Technologies
+        </h1>
 
-            <h3>Verify Your Email Address</h3>
+        <p style="margin:0;color:#ffffff;font-size:16px;">
+          Sustainable Electric Mobility Platform
+        </p>
 
-            <p>Thank you for choosing <b>STTYTT Technologies Pvt. Ltd.</b></p>
+      </td>
+    </tr>
 
-            <div style="text-align:center;padding:20px;border:2px dashed #2563eb;">
-                <h1>${otp}</h1>
-                <p>Valid for 5 Minutes</p>
-            </div>
+    <!-- Body -->
+    <tr>
+      <td style="padding:45px;">
+
+        <h2 style="margin-top:0;color:#4A0E1F;text-align:center;">
+          Verify Your Email Address
+        </h2>
+
+        <p style="color:#555;font-size:16px;line-height:28px;text-align:center;">
+          Hello,
+          <br><br>
+          Thank you for choosing
+          <b>STTYTT Technologies Pvt. Ltd.</b>.
+          <br>
+          Please use the One-Time Password below to complete your account verification.
+        </p>
+
+        <div style="margin:40px auto;background:#FFF9ED;border:2px dashed #D4AF37;border-radius:14px;padding:25px;text-align:center;max-width:360px;">
+
+          <div style="font-size:14px;color:#777;margin-bottom:12px;">
+            YOUR VERIFICATION CODE
+          </div>
+
+          <div style="font-size:42px;font-weight:bold;letter-spacing:12px;color:#4A0E1F;">
+            ${otp}
+          </div>
+
+          <div style="margin-top:15px;color:#666;font-size:15px;">
+            Valid for <b>5 Minutes</b>
+          </div>
 
         </div>
 
-    </div>
-    `
+        <div style="background:#FFF4D6;border-left:5px solid #D4AF37;padding:18px;border-radius:10px;margin-top:35px;">
+
+          <b style="color:#4A0E1F;">
+            Security Tips
+          </b>
+
+          <ul style="color:#555;line-height:28px;padding-left:20px;margin-bottom:0;">
+
+            <li>Never share this OTP with anyone.</li>
+
+            <li>STTYTT will never ask for your OTP.</li>
+
+            <li>If you didn't request this verification, please ignore this email.</li>
+
+          </ul>
+
+        </div>
+
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="background:#3B0A1E;padding:35px;text-align:center;">
+
+        <h3 style="margin:0;color:#D4AF37;">
+          Need Help?
+        </h3>
+
+        <p style="margin:18px 0 6px;color:#ffffff;">
+          📧 info@sttytt.com
+        </p>
+
+        <p style="margin:0;color:#ffffff;">
+          🌐 www.sttytt.com
+        </p>
+
+        <hr style="margin:25px 0;border:none;border-top:1px solid rgba(255,255,255,.2);">
+
+        <p style="margin:0;color:#D7C9A0;font-size:13px;">
+          © 2026 STTYTT Technologies Pvt. Ltd.
+        </p>
+
+        <p style="margin-top:10px;color:#ffffff;font-size:12px;">
+          Driving India's Future with Sustainable Electric Mobility
+        </p>
+
+      </td>
+    </tr>
+
+  </table>
+
+</div>
+`
 });
 
 
@@ -551,7 +636,7 @@ app.post("/api/send-forgot-otp",(req,res)=>{
 
     sender: {
         name: "STTYTT Technologies Pvt. Ltd.",
-        email: "info@stytt.com"
+        email: "info@sttytt.com"
     },
 
     to: [
