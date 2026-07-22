@@ -91,6 +91,59 @@ async function fetchProducts(){
 fetchProducts();
 
 
+function getDiscountedPrice(product){
+
+    let finalPrice = Number(product.price);
+
+    const now = new Date();
+
+    const saleStart = product.sale_start ? new Date(product.sale_start) : null;
+    const saleEnd = product.sale_end ? new Date(product.sale_end) : null;
+
+    const saleActive =
+        (!saleStart || now >= saleStart) &&
+        (!saleEnd || now <= saleEnd);
+
+    if(saleActive){
+
+        if(product.discount_type === "percentage"){
+
+            finalPrice =
+                product.original_price -
+                (product.original_price * product.discount_value / 100);
+
+        }
+
+        else if(product.discount_type === "fixed"){
+
+            finalPrice =
+                product.original_price -
+                product.discount_value;
+
+        }
+
+    }
+
+    return Math.round(finalPrice);
+
+}
+
+function isSaleActive(product){
+
+    const now = new Date();
+
+    const saleStart = product.sale_start ? new Date(product.sale_start) : null;
+    const saleEnd = product.sale_end ? new Date(product.sale_end) : null;
+
+    return (
+        product.discount_type !== "none" &&
+        (!saleStart || now >= saleStart) &&
+        (!saleEnd || now <= saleEnd)
+    );
+
+}
+
+
 // ================= ADD PRODUCT =================
 
 productForm.addEventListener(
@@ -105,6 +158,22 @@ async(e)=>{
     formData.append("category", document.getElementById("category").value);
     formData.append("description", document.getElementById("description").value);
     formData.append("price", document.getElementById("price").value);
+
+    formData.append("original_price",
+document.getElementById("original_price").value);
+
+formData.append("discount_type",
+document.getElementById("discount_type").value);
+
+formData.append("discount_value",
+document.getElementById("discount_value").value);
+
+formData.append("sale_start",
+document.getElementById("sale_start").value);
+
+formData.append("sale_end",
+document.getElementById("sale_end").value);
+
     formData.append("speed", document.getElementById("speed").value);
     formData.append("range_km", document.getElementById("range_km").value);
     formData.append("battery", document.getElementById("battery").value);
@@ -202,6 +271,11 @@ async function editProduct(id){
     document.getElementById("category").value = product.category;
     document.getElementById("description").value = product.description;
     document.getElementById("price").value = product.price;
+    document.getElementById("original_price").value = product.original_price;
+    document.getElementById("discount_type").value = product.discount_type;
+    document.getElementById("discount_value").value = product.discount_value;
+    document.getElementById("sale_start").value = product.sale_start || "";
+    document.getElementById("sale_end").value = product.sale_end || "";
     document.getElementById("speed").value = product.speed;
     document.getElementById("range_km").value = product.range_km;
     document.getElementById("battery").value = product.battery;

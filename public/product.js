@@ -159,9 +159,28 @@ function displayProducts(items){
 
                     <div class="product-price">
 
-                        ₹${product.price}
+   ${
+    isSaleActive(product)
+    ? `
+        <span style="text-decoration:line-through;color:#888">
+            ₹${product.original_price}
+        </span><br>
 
-                    </div>
+        <span style="color:#c62828;font-size:22px;font-weight:bold">
+            ₹${getDiscountedPrice(product)}
+        </span>
+
+        <span style="background:red;color:#fff;padding:3px 8px;border-radius:5px;font-size:12px">
+            ${product.discount_type==="percentage"
+                ? product.discount_value+"% OFF"
+                : "₹"+product.discount_value+" OFF"}
+        </span>
+        `
+        :
+        `₹${product.price}`
+    }
+
+</div>
 
                     <button
                     class="view-btn"
@@ -352,11 +371,31 @@ function showDetails(id){
 
             </div>
 
-            <h2 class="detail-price">Price:
+            <h2 class="detail-price">
 
-                ₹${product.price}
+${
+isSaleActive(product)
+?
+`
+<span style="text-decoration:line-through;color:#888">
+₹${product.original_price}
+</span><br>
 
-            </h2>
+<span style="color:#c62828;font-size:30px;font-weight:bold">
+₹${getDiscountedPrice(product)}
+</span>
+
+<span style="background:red;color:#fff;padding:4px 10px;border-radius:5px;font-size:13px">
+${product.discount_type==="percentage"
+?product.discount_value+"% OFF"
+:"₹"+product.discount_value+" OFF"}
+</span>
+`
+:
+`₹${product.price}`
+}
+
+</h2>
 
             <p class="detail-description">
 
@@ -432,7 +471,7 @@ function showDetails(id){
              onclick="addToCart(
                     ${product.id},
                     \`${product.name}\`,
-                    ${product.price},
+                    ${getDiscountedPrice(product)},
                     \`${product.image}\`,
                     \`${product.image}\` )"> Add To Cart </button>
 
@@ -440,7 +479,7 @@ function showDetails(id){
 class="share-btn"
 onclick="shareProduct(
  \`${product.name}\`,
-${product.price},
+${getDiscountedPrice(product)},
 window.location.href
 )">
 <i class='bx bx-share-alt'></i>

@@ -138,10 +138,25 @@ onclick="showSection('inquirySection',this)">
                         <option value="Offroad">Offroad</option>
                     </select>
 
-                    <textarea id="description" placeholder="Description" required></textarea>
+                   <textarea id="description" placeholder="Description" required></textarea>
 
-                    <input type="number" id="price" placeholder="Price" required>
-                    <input type="text" id="speed" placeholder="Top Speed" required>
+<input type="number" id="original_price" placeholder="Original Price" required>
+
+<input type="number" id="price" placeholder="Selling Price" required>
+
+<select id="discount_type">
+    <option value="none">No Discount</option>
+    <option value="percentage">Percentage (%)</option>
+    <option value="fixed">Flat Amount (₹)</option>
+</select>
+
+<input type="number" id="discount_value" placeholder="Discount Value">
+
+<input type="datetime-local" id="sale_start">
+
+<input type="datetime-local" id="sale_end">
+
+<input type="text" id="speed" placeholder="Top Speed" required>
                     <input type="text" id="range_km" placeholder="Range" required>
                     <input type="text" id="battery" placeholder="Battery" required>
                     <input type="text" id="warranty" placeholder="Warranty" required>
