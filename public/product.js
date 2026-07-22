@@ -63,6 +63,43 @@ document.getElementById("closeModal");
 let products = [];
 
 
+
+
+
+function getDiscountedPrice(product){
+
+    let price = Number(product.original_price || product.price);
+
+    if(product.discount_type === "percentage"){
+        price = price - (price * Number(product.discount_value) / 100);
+    }
+    else if(product.discount_type === "fixed"){
+        price = price - Number(product.discount_value);
+    }
+
+    return Math.max(0, Math.round(price));
+}
+
+function isSaleActive(product){
+
+    const now = new Date();
+
+    const saleStart = product.sale_start
+        ? new Date(product.sale_start)
+        : null;
+
+    const saleEnd = product.sale_end
+        ? new Date(product.sale_end)
+        : null;
+
+    return (
+        product.discount_type !== "none" &&
+        (!saleStart || now >= saleStart) &&
+        (!saleEnd || now <= saleEnd)
+    );
+}
+
+
 // ================= FETCH PRODUCTS =================
 
 async function fetchProducts(){
@@ -85,6 +122,26 @@ async function fetchProducts(){
 }
 
 fetchProducts();
+
+
+function isSaleActive(product){
+
+    const now = new Date();
+
+    const saleStart = product.sale_start
+        ? new Date(product.sale_start)
+        : null;
+
+    const saleEnd = product.sale_end
+        ? new Date(product.sale_end)
+        : null;
+
+    return (
+        product.discount_type !== "none" &&
+        (!saleStart || now >= saleStart) &&
+        (!saleEnd || now <= saleEnd)
+    );
+}
 
 
 // ================= DISPLAY PRODUCTS =================
