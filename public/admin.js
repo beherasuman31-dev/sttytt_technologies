@@ -64,6 +64,11 @@ async function fetchProducts(){
                 <td data-label="Category">${product.category}</td>
 
                 <td data-label="Action">
+                        <button class="edit-btn"
+        onclick="editProduct(${product.id})">
+        Edit
+    </button>
+
                     <button class="delete-btn" onclick="deleteProduct(${product.id})">
                         Delete
                     </button>
@@ -112,25 +117,37 @@ async(e)=>{
     formData.append("image3", document.getElementById("image3").files[0]);
     formData.append("image4", document.getElementById("image4").files[0]);
 
-    const response = await fetch(
-        "/api/products",
-        {
-            method: "POST",
-            headers:{
-                Authorization:"Bearer " + token
-            },
-            body: formData
-        }
-    );
+   const url = editingProductId
+    ? `/api/products/${editingProductId}`
+    : "/api/products";
 
-    const data = await response.json();
+const method = editingProductId
+    ? "PUT"
+    : "POST";
 
-    alert(data.message);
+const response = await fetch(url,{
+    method,
+    headers:{
+        Authorization:"Bearer " + token
+    },
+    body:formData
+});
 
-    if(data.success){
-        productForm.reset();
-        fetchProducts();
-    }
+const data = await response.json();
+
+alert(data.message);
+
+if(data.success){
+
+    editingProductId = null;
+
+    productForm.reset();
+
+    productForm.querySelector("button").innerHTML =
+    "<i class='bx bx-plus'></i> Add Product";
+
+    fetchProducts();
+}
 });
 
 
@@ -163,6 +180,36 @@ async function deleteProduct(id){
         console.log(error);
         alert("Delete Failed");
     }
+}
+
+
+let editingProductId = null;
+
+async function editProduct(id){
+
+    const res = await fetch("/api/products", {
+    headers: {
+        Authorization: "Bearer " + token
+    }
+});
+    const products = await res.json();
+
+    const product = products.find(p => p.id == id);
+
+    editingProductId = id;
+
+    document.getElementById("name").value = product.name;
+    document.getElementById("category").value = product.category;
+    document.getElementById("description").value = product.description;
+    document.getElementById("price").value = product.price;
+    document.getElementById("speed").value = product.speed;
+    document.getElementById("range_km").value = product.range_km;
+    document.getElementById("battery").value = product.battery;
+    document.getElementById("warranty").value = product.warranty;
+    document.getElementById("fast_charging_hours").value = product.fast_charging_hours;
+    document.getElementById("brake_type").value = product.brake_type;
+
+    productForm.querySelector("button").textContent = "Update Product";
 }
 
 

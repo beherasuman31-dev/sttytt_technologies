@@ -121,6 +121,7 @@ const client = new OAuth2Client(
 );
 
 
+
 // ================= VERIFY TOKEN =================
 
 function verifyToken(req,res,next){
@@ -1542,6 +1543,136 @@ app.delete("/api/products/:id",verifyToken,verifyAdmin,(req,res)=>{
     );
 });
 
+
+
+app.put(
+"/api/products/:id",
+verifyToken,
+verifyAdmin,
+upload.fields([
+    {name:"image",maxCount:1},
+    {name:"image2",maxCount:1},
+    {name:"image3",maxCount:1},
+    {name:"image4",maxCount:1}
+]),
+(req,res)=>{
+
+   const id = req.params.id;
+
+db.query(
+    "SELECT * FROM products WHERE id=?",
+    [id],
+    (err, result) => {
+
+        if(err){
+            return res.json({
+                success:false,
+                message:"Database Error"
+            });
+        }
+
+        if(result.length === 0){
+            return res.json({
+                success:false,
+                message:"Product Not Found"
+            });
+        }
+
+        const oldProduct = result[0];
+
+        const {
+    name,
+    category,
+    description,
+    price,
+    speed,
+    range_km,
+    battery,
+    warranty,
+    fast_charging_hours,
+    brake_type
+} = req.body;
+
+const image =
+req.files?.image
+? "/uploads/" + req.files.image[0].filename
+: oldProduct.image;
+
+const image2 =
+req.files?.image2
+? "/uploads/" + req.files.image2[0].filename
+: oldProduct.image2;
+
+const image3 =
+req.files?.image3
+? "/uploads/" + req.files.image3[0].filename
+: oldProduct.image3;
+
+const image4 =
+req.files?.image4
+? "/uploads/" + req.files.image4[0].filename
+: oldProduct.image4;
+
+    const sql = `
+UPDATE products
+SET
+name=?,
+category=?,
+description=?,
+price=?,
+speed=?,
+range_km=?,
+battery=?,
+warranty=?,
+fast_charging_hours=?,
+brake_type=?,
+image=?,
+image2=?,
+image3=?,
+image4=?
+WHERE id=?
+`;
+
+db.query(
+    sql,
+    [
+        name,
+        category,
+        description,
+        price,
+        speed,
+        range_km,
+        battery,
+        warranty,
+        fast_charging_hours,
+        brake_type,
+        image,
+        image2,
+        image3,
+        image4,
+        id
+    ],
+    (err, result) => {
+
+        if(err){
+            console.log(err);
+            return res.json({
+                success:false,
+                message:"Product Update Failed"
+            });
+        }
+
+        res.json({
+            success:true,
+            message:"Product Updated Successfully"
+        });
+
+    }
+);
+
+    }
+);
+});
 
 // ================= ADD TO CART =================
 
