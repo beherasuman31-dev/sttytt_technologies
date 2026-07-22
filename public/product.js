@@ -122,6 +122,7 @@ async function fetchProducts(){
 }
 
 fetchProducts();
+console.log(products[0]);
 
 
 function isSaleActive(product){
