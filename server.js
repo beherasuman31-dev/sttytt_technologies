@@ -1705,8 +1705,9 @@ db.query(
 });
 
 // ================= ADD TO CART =================
+// ================= ADD TO CART =================
 
-app.post("/api/cart", verifyToken, (req,res)=>{
+app.post("/api/cart", verifyToken, (req, res) => {
 
     const {
         product_id,
@@ -1716,46 +1717,93 @@ app.post("/api/cart", verifyToken, (req,res)=>{
         quantity
     } = req.body;
 
-    const sql = `
-    INSERT INTO cart
-    (
-        user_email,
-        product_id,
-        product_name,
-        product_price,
-        product_image,
-        quantity
-    )
-    VALUES (?,?,?,?,?,?)
-    `;
-
+    // Pehle check karo product already cart me hai ya nahi
     db.query(
-        sql,
-        [
-            req.user.email,
-            product_id,
-            product_name,
-            product_price,
-            product_image,
-            quantity
-        ],
-        (err,result)=>{
+        "SELECT * FROM cart WHERE user_email=? AND product_id=?",
+        [req.user.email, product_id],
+        (err, result) => {
 
-            if(err){
+            if (err) {
                 console.log(err);
-
                 return res.json({
-                    success:false,
-                    message:"Cart Insert Failed"
+                    success: false,
+                    message: "Database Error"
                 });
             }
 
-            res.json({
-                success:true,
-                message:"Added To Cart"
-            });
+            // Product already exists
+            if (result.length > 0) {
+
+                const oldQty = Number(result[0].quantity);
+                const newQty = oldQty + Number(quantity);
+
+                db.query(
+                    "UPDATE cart SET quantity=? WHERE id=?",
+                    [newQty, result[0].id],
+                    (err) => {
+
+                        if (err) {
+                            console.log(err);
+                            return res.json({
+                                success: false,
+                                message: "Cart Update Failed"
+                            });
+                        }
+
+                        return res.json({
+                            success: true,
+                            message: "Cart Quantity Updated"
+                        });
+                    }
+                );
+
+            } else {
+
+                // Product cart me nahi hai to insert karo
+                const sql = `
+                INSERT INTO cart
+                (
+                    user_email,
+                    product_id,
+                    product_name,
+                    product_price,
+                    product_image,
+                    quantity
+                )
+                VALUES (?,?,?,?,?,?)
+                `;
+
+                db.query(
+                    sql,
+                    [
+                        req.user.email,
+                        product_id,
+                        product_name,
+                        product_price,
+                        product_image,
+                        quantity
+                    ],
+                    (err) => {
+
+                        if (err) {
+                            console.log(err);
+
+                            return res.json({
+                                success: false,
+                                message: "Cart Insert Failed"
+                            });
+                        }
+
+                        res.json({
+                            success: true,
+                            message: "Added To Cart"
+                        });
+                    }
+                );
+            }
         }
     );
+
 });
 // ================= GET CART =================
 

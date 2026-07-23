@@ -153,6 +153,73 @@ select:focus-visible{
 
 #menu-icon:hover{ color:var(--gold); }
 
+/* NAV ICONS */
+
+.nav-icons{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.notification-icon,
+.cart-icon{
+    position:relative;
+    color:#F5DEB3;
+    font-size:20px;
+    text-decoration:none;
+    transition:.3s ease;
+}
+
+.notification-icon:hover,
+.cart-icon:hover{
+    color:#FFD700;
+}
+
+/* BADGE */
+
+.notification-count,
+#cart-count{
+    position:absolute;
+    top:-8px;
+    right:-10px;
+
+    width:22px;
+    height:22px;
+
+    background:#FFD700;
+    color:#5A0B0B;
+
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+    font-weight:700;
+
+    border:2px solid #5A0B0B;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .notification-icon,
+    .cart-icon{
+        font-size:24px;
+    }
+
+    .notification-count,
+    #cart-count{
+        width:20px;
+        height:20px;
+        font-size:11px;
+        top:-6px;
+        right:-8px;
+    }
+
+}
+
 /* ============ 4. HERO ============ */
 .hero{
     width:100%;
