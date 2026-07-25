@@ -1007,20 +1007,16 @@ app.post("/register", async (req, res) => {
 app.post("/login", (req, res) => {
 
     const {
-        identifier,
+        email,
         password
     } = req.body;
 
-   const sql = `
-SELECT * FROM users
-WHERE email = ?
-OR phone = ?
-LIMIT 1
-`;
+    const sql =
+        "SELECT * FROM users WHERE email=?";
 
-  db.query(
-    sql,
-    [identifier, identifier],
+    db.query(
+        sql,
+        [email],
 
         async (err, result) => {
 
