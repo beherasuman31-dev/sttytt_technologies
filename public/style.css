@@ -1139,7 +1139,32 @@ select:focus-visible{
     color:#B8A488;
     font-size:.9rem;
 }
+.footer-social{
+    display:flex;
+    gap:16px;
+    margin-top:20px;
+}
 
+.footer-social a{
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid #c9a227;
+    border-radius:50%;
+    color:#c9a227;
+    font-size:24px;
+    text-decoration:none;
+    transition:.35s ease;
+}
+
+.footer-social a:hover{
+    background:#c9a227;
+    color:#3d0000;
+    transform:translateY(-6px) scale(1.08);
+    box-shadow:0 10px 25px rgba(201,162,39,.35);
+}
 
 
 /* =========================================================
@@ -1439,6 +1464,16 @@ select:focus-visible{
 
     .contact-form .form-row{
         flex-direction:column;
+    }
+        .footer-social{
+        justify-content:center;
+        align-items:center;
+        width:100%;
+        margin:25px auto 0;
+    }
+
+    .footer-social a{
+        margin:0;
     }
 
     
