@@ -345,11 +345,12 @@
 
             <div class="form-group">
 
-                <label>Email</label>
+                <label>Email or Mobile Number</label>
 
-                <input type="email"
-                    id="login-email"
-                    placeholder="email@example.com">
+<input
+    type="text"
+    id="login-identifier"
+    placeholder="Enter Email or Mobile Number">
 
             </div>
 
@@ -808,8 +809,8 @@ document
 .getElementById("login-btn")
 .addEventListener("click", async () => {
 
-    const email =
-        document.getElementById("login-email").value;
+   const identifier =
+document.getElementById("login-identifier").value;
 
     const password =
         document.getElementById("l-pwd").value;
@@ -829,7 +830,7 @@ document
 
                 body:JSON.stringify({
 
-                    email,
+                    identifier,
                     password
                 })
             }
