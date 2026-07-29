@@ -125,26 +125,6 @@ fetchProducts();
 console.log(products[0]);
 
 
-function isSaleActive(product){
-
-    const now = new Date();
-
-    const saleStart = product.sale_start
-        ? new Date(product.sale_start)
-        : null;
-
-    const saleEnd = product.sale_end
-        ? new Date(product.sale_end)
-        : null;
-
-    return (
-        product.discount_type !== "none" &&
-        (!saleStart || now >= saleStart) &&
-        (!saleEnd || now <= saleEnd)
-    );
-}
-
-
 // ================= DISPLAY PRODUCTS =================
 
 function displayProducts(items){
@@ -227,8 +207,7 @@ function displayProducts(items){
         <span style="color:#c62828;font-size:22px;font-weight:bold">
             ₹${getDiscountedPrice(product)}
         </span>
-
-        <span style="background:red;color:#fff;padding:3px 8px;border-radius:5px;font-size:12px">
+            <span class="discount-badge">
             ${product.discount_type==="percentage"
                 ? product.discount_value+"% OFF"
                 : "₹"+product.discount_value+" OFF"}
@@ -443,7 +422,7 @@ isSaleActive(product)
 ₹${getDiscountedPrice(product)}
 </span>
 
-<span style="background:red;color:#fff;padding:4px 10px;border-radius:5px;font-size:13px">
+<span class="discount-badge">
 ${product.discount_type==="percentage"
 ?product.discount_value+"% OFF"
 :"₹"+product.discount_value+" OFF"}
