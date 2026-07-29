@@ -181,10 +181,25 @@ document.getElementById("sale_end").value);
     formData.append("fast_charging_hours", document.getElementById("fast_charging_hours").value);
     formData.append("brake_type", document.getElementById("brake_type").value);
 
-    formData.append("image", document.getElementById("image").files[0]);
-    formData.append("image2", document.getElementById("image2").files[0]);
-    formData.append("image3", document.getElementById("image3").files[0]);
-    formData.append("image4", document.getElementById("image4").files[0]);
+    const image = document.getElementById("image").files[0];
+if (image) {
+    formData.append("image", image);
+}
+
+const image2 = document.getElementById("image2").files[0];
+if (image2) {
+    formData.append("image2", image2);
+}
+
+const image3 = document.getElementById("image3").files[0];
+if (image3) {
+    formData.append("image3", image3);
+}
+
+const image4 = document.getElementById("image4").files[0];
+if (image4) {
+    formData.append("image4", image4);
+}
 
    const url = editingProductId
     ? `/api/products/${editingProductId}`
